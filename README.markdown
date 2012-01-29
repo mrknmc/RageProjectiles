@@ -1,4 +1,4 @@
-Angry Birds project for the Informatics 1 OOP tutorial.
+Angry Birds project for the Informatics 1 OOP tutorial
 =======================================================
 
 * So far application only determines whether an object hits a target.
