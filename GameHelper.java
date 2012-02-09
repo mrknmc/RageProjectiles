@@ -1,16 +1,15 @@
-
 public class AngryBirds {	
 	
-    //public static void main (String[] args) {
+	public static void main (String[] args) {
 		
-    /*double angle = Integer.parseInt(args[0]),
+		double angle = Integer.parseInt(args[0]),
 			speed = Double.parseDouble(args[1]),
 			xDiff = Double.parseDouble(args[2]),
 			yDiff = Double.parseDouble(args[3]);
 	
 		AngryBirds.calculate (angle, speed, xDiff, yDiff);
 	}
-    */
+
 	public static void calculate (double angle, double speed, double xDifference, double yDifference) {
 		
 		double rad = Math.toRadians(angle);
