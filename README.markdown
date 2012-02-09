@@ -1,23 +1,29 @@
 Angry Birds project for the Informatics 1 OOP tutorial
 =======================================================
 
-GameHandler
-* Main Method is in GameHandler.java
-* The user is prompted for angle, speed, length difference and height difference
-* After three guesses the program exits
+GameHandler.
 
-AngryBirds
-* Contains methods for physics calculations
+* Main Method is in GameHandler.java.
+* The user is prompted for angle, speed, length difference and height difference.
+* After three guesses the program exits.
 
-GameHelper - *Place Holder*
+AngryBirds.
+
+* Contains methods for physics calculations.
+
+GameHelper - *Place Holder*.
+
 * Will contain methods for user input etc.
 
-Projectile
-* Attributes: weight/speed, colour, size
-* Subclasses for big/slow and small fast projectiles
+Projectile - *Place Holder*.
 
-Obstructions  - *Place Holder*
-* Attributes: Hits, shape, size, colour
+* Attributes: weight/speed, colour, size.
+* Subclasses for big/slow and small fast projectiles.
 
-Target  - *Place Holder*
-* Attributes: Points, shape, size, colour
+Obstructions  - *Place Holder*.
+
+* Attributes: Hits, shape, size, colour.
+
+Target  - *Place Holder*.
+
+* Attributes: Points, shape, size, colour.
