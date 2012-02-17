@@ -11,6 +11,7 @@ tmp/**/*
 *~.nib
 local.properties
 .classpath
+.gitignore
 .settings/
 .loadpath
 
