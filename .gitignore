@@ -1,7 +1,7 @@
 *.class
 *.pydevproject
-.project
-.metadata
+*.project
+*.metadata
 bin/**
 tmp/**
 tmp/**/*
@@ -10,9 +10,9 @@ tmp/**/*
 *.swp
 *~.nib
 local.properties
-.classpath
-.gitignore
-.settings/
+*.classpath
+*.gitignore
+*.settings/
 .loadpath
 
 # External tool builders
