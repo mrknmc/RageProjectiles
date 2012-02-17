@@ -1,12 +1,16 @@
 
-public class ProjectileBirds {
+public class Projectile {
   
 
 			// Attributes for the object
 			private int width;
 			private int height;
 			private weight; 
-			private colour; 
+			private colour;
+			Point origin;
+			Point leftBottomCorner;
+			Point rightTopCorner;
+			Point rightBottomCorner;
 
 
 			// Methods for getting the value of attributes
@@ -34,6 +38,9 @@ public class ProjectileBirds {
 			this.width = w;
 			this.height = h;
 			this.colour = c;
+			this.leftBottomCorner = new Point(origin.x, origin.y+size);
+			this.rightTopCorner = new Point(origin.x+size, origin.y);
+			this.rightBottomCorner = new Point(origin.x+size, origin.y+size);
 
 			}
 
