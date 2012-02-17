@@ -10,7 +10,7 @@ public class World {
 	
 	public World(int anObstructionCount, int aTargetCount) {
 		// Constructs a new world with the given parameters
-		gravity = 981;
+		gravity = 9.81;
 		obstructionCount = anObstructionCount;
 		targetCount = aTargetCount;
 		
@@ -34,7 +34,7 @@ public class World {
 	}
 	
 	public void calculate(double anAngle, double aSpeed) {
-		// Calculates whether a projectile hits a target
+		// Calculates whether a projectile hits the target
 		
 		double time;
 		double xDifference;
