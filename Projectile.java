@@ -1,47 +1,34 @@
 import java.awt.Point;
+//import java.awt.Color;
 
 public class Projectile {
   
 
 			// Attributes for the object
-			private int width;
-			private int height;
-			private weight; 
-			private colour;
-			Point origin;
+			int size;
+		//	private Color colour;
+			Point position;
 			Point leftBottomCorner;
 			Point rightTopCorner;
 			Point rightBottomCorner;
 
 
 			// Methods for getting the value of attributes
-			public int getWidth(){
-			return this.width;
-			}
-			
-			public int getHeight(){
-			return this.height; 
+			public int getSize(){
+			return this.size;
 			}
 
-			public int getWeight(){
-			return this.weight;
-			}
-
-			//public void 
-			//this.
-			//}
 			
 			// Not too sure what I should be putting here
 
 
 			// Constructor
-			public ProjectileBirds(int w, int h, color c){
-			this.width = w;
-			this.height = h;
-			this.colour = c;
-			this.leftBottomCorner = new Point(origin.x, origin.y+size);
-			this.rightTopCorner = new Point(origin.x+size, origin.y);
-			this.rightBottomCorner = new Point(origin.x+size, origin.y+size);
+			public Projectile(Point p, int s) {
+				this.size = s;
+				this.position = p;
+				this.leftBottomCorner = new Point(position.x, position.y+size);
+				this.rightTopCorner = new Point(position.x+size, position.y);
+				this.rightBottomCorner = new Point(position.x+size, position.y+size);
 
 			}
 

@@ -1,16 +1,16 @@
 import java.awt.Point;
 
 public class World {
-	double gravity;
+	double gravity; //constant
 	int obstructionCount;
 	static int targetCount;
 	static Target[] targets;
 	Obstruction[] obstructions;
 	Projectile projectile;
 	
+	// Constructs a new world with the given parameters	
 	public World(int anObstructionCount, int aTargetCount) {
-		// Constructs a new world with the given parameters
-		gravity = 9.81;
+		gravity = 196; // acceleration inpx/s^2
 		obstructionCount = anObstructionCount;
 		targetCount = aTargetCount;
 		
@@ -38,18 +38,20 @@ public class World {
 		
 		double time;
 		double xDifference;
+		double yDifference;
 		double angle = anAngle;
-		double speed = aSpeed; // converts meters to centimeters
+		double speed = aSpeed;
 		double rad = Math.toRadians(angle);
 		Point landing;
 		
 		for (int i = 0; i < targetCount; i++) {
-			time = solveQuadratic(gravity/2, -speed * Math.sin(rad), (projectile.rightBottomCorner.y - targets[i].origin.y) );
-			xDifference = speed * Math.cos(rad) * time;
-			landing = new Point(projectile.rightBottomCorner.x + (int) xDifference, targets[i].origin.y);
+			yDifference = projectile.rightBottomCorner.y - targets[i].position.y; // Calculates the difference in Y direction
+			time = solveQuadratic(gravity/2, -speed * Math.sin(rad), yDifference);
+			xDifference = speed * Math.cos(rad) * time;                           // Returns the difference in X direction
+			landing = new Point(projectile.rightBottomCorner.x + (int) xDifference, targets[i].position.y); // projectile landing point
 			
 			if ( time == 0 ) {
-				System.out.println("Imaginary result");
+				System.out.println("The target is too damn high!"); // If target is higher than projectile can reach
 			} else if ( ( (landing.x >= targets[i].leftBottomCorner.x)
 						&& (landing.x <= targets[i].rightBottomCorner.x) )
 						|| ( (landing.x - projectile.size >= targets[i].leftBottomCorner.x)
@@ -76,9 +78,9 @@ public class World {
 		*/
 	}
 	
+	// Returns a time it takes for projectile to reach the Y distance
     public static double solveQuadratic (double a, double b, double c) {
-		// Solves a quadratic equation and returns a maximum of the roots
-		
+	
 		double d, x1, x2;
 		
 		if (b*b - 4*a*c < 0) {
@@ -94,13 +96,13 @@ public class World {
 	public void printTargetPositions() {
 		// Prints out the position of the Targets
 		for (int i = 0; i < targetCount; i++) {
-			System.out.printf("Target #%d is at %d, %d\t", i+1, targets[i].origin.x, targets[i].origin.y);
+			System.out.printf("Target #%d is at %d, %d\t", i+1, targets[i].position.x, targets[i].position.y);
 		}
 	}
 	
 	public void printProjectilePosition() {
 		// Prints out the position of the Projectile
-		System.out.printf("Your projectile is at %d, %d \n\n", projectile.origin.x, projectile.origin.y);
+		System.out.printf("Your projectile is at %d, %d \n\n", projectile.position.x, projectile.position.y);
 	}
 	
 	public static void drawWorld() {

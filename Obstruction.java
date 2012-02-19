@@ -7,7 +7,7 @@ public class Obstruction {
 	private int width;
 	private int height;
 	private Point position; // The Point and Color data types will need 
-	private Color colour;   // to be declared seperately.
+//	private Color colour;   // to be declared seperately.
 
 
 	// Methods for getting the value of attributes.
@@ -38,7 +38,6 @@ public class Obstruction {
 		this.width = w;
 		this.height = h;
 		this.position = p;
-		this.colour = c;
 
 	}
 

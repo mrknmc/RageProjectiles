@@ -15,7 +15,7 @@ public class GameHandler {
 		    System.out.println("Guess: " + counter);
 		    System.out.print("Angle (°): ");
 		    double angle = input.nextDouble();
-		    System.out.print("Speed (cm/s): ");
+		    System.out.print("Speed (px/s): ");
 		    double speed = input.nextDouble();    
 		    world.calculate(angle,speed);    
 		}
