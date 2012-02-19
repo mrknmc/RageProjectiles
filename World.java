@@ -10,7 +10,7 @@ public class World {
 	
 	// Constructs a new world with the given parameters	
 	public World(int anObstructionCount, int aTargetCount) {
-		gravity = 196; // acceleration inpx/s^2
+		gravity = 196; // acceleration in px/s^2
 		obstructionCount = anObstructionCount;
 		targetCount = aTargetCount;
 		
@@ -33,8 +33,8 @@ public class World {
 		} 
 	}
 	
+	// Calculates whether a projectile hits the target
 	public void calculate(double anAngle, double aSpeed) {
-		// Calculates whether a projectile hits the target
 		
 		double time;
 		double xDifference;
@@ -61,6 +61,7 @@ public class World {
 				System.out.println("Missed target #" + i+1 + "! Projectile landed at " + landing.x + ", " + landing.y);
 			}
 		}
+		
 		/*
 		if (timeYs == "Im") {
 			return 0;
@@ -105,7 +106,15 @@ public class World {
 		System.out.printf("Your projectile is at %d, %d \n\n", projectile.position.x, projectile.position.y);
 	}
 	
+	// Draws 
 	public static void drawWorld() {
+		projectile.draw();
+		for (int i = 0; i < targetCount; i++) {
+			targets[i].draw();
+		}
+		for (int i = 0; i < obstructionCount; i++) {
+			obstructions[i].draw();
+		}
 		
 	}
 	

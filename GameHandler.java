@@ -3,12 +3,11 @@ import java.util.Scanner;
 public class GameHandler {
     
     public static void main(String[] args) {
-		
 		int counter;
 		World world = new World(2,2);
 		Scanner input = new Scanner(System.in);
 		
-		for (counter = 1; counter < 2; counter++) {
+		for (counter = 1; counter < 4; counter++) {
 			world.printProjectilePosition();
 			world.printTargetPositions();
 			System.out.print("\n\n");
