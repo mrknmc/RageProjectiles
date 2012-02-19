@@ -5,10 +5,6 @@ public class Component {
 	Point leftBottomCorner;
 	Point rightTopCorner;
 	Point rightBottomCorner;
-	
-	public int getSize() {
-		return this.size;
-	}
 
 	public Point getPosition() {
 			return this.position;
