@@ -1,3 +1,5 @@
+import java.awt.Point;
+
 public class Target extends Component {
 	int size;
 
