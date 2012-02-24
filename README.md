@@ -8,13 +8,17 @@ Angry Birds project for the Informatics 1 OOP tutorial
  
 ### World
  * Contains methods for physics calculations.
+ * Communicates with Animator
+ 
+### Animator
+ * Will contain methods to draw components
  
 ### GameHelper - *Place Holder*.
  * Will contain methods for user input etc.
  
 ### Component
  * Superclass of Projectile, Obstruction and Target
- * Each component has a position and corners
+ * Each component has a position, width, height and corners
  
 ### Projectile
  * Attributes: speed, colour, size.
