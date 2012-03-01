@@ -66,6 +66,9 @@ public class World {
 	    				(0.5 * gravity * dt * dt));							// Calculates the y coordinate
 	    		projectile.move(x,y);										// Updates the position of the projectile
 	    		printProjectilePosition();									// Calls the animator to repaint with new coordinates
+	    		if (projectile.getPosition().x > 500) {
+	    			timer.stop();
+	    		}
 	    	}
 	    });
 		timer.setInitialDelay(pause);
