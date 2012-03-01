@@ -2,24 +2,25 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
+import java.util.Scanner;
 
-public class World implements ActionListener {
-	double gravity; 				// Gravity constant
-	int obstructionCount;			// Number of obstructions
-	static int targetCount;			// Number of targets
-	static Target[] targets;		// Target array containing targets
-	Obstruction[] obstructions;		// Obstruction array containing obstructions
-	Projectile projectile;			// Projectile
-	Timer timer;					// Timer object that will handle GUI refreshing
-	Animator animator;				// Animator that will animate the GUI
-	int animSpeed = 1000;			// Speed of the animation in ms. Should be around 2ms, temporarily set to 1s for testing
-	int pause = 100;				// Delay of the start of animation
-	double dt = 0;					// Time elapsed (initialised to zero)
+public class World {
+	double gravity = 196;	 				// Gravity constant, acceleration in px/s^2; 
+	int obstructionCount;					// Number of obstructions
+	static int targetCount;					// Number of targets
+	static Target[] targets;				// Target array containing targets
+	Obstruction[] obstructions;				// Obstruction array containing obstructions
+	Projectile projectile;					// Projectile
+	Timer timer;
+//	Animator animator;						// Animator that will animate the GUI
+	int animSpeed = 40;					// Speed of the animation in ms. 25 FPS - 40ms, temporarily set to 1s for testing
+	int pause = 100;						// Delay of the start of animation
+	double dt = 0;							// Time elapsed (initialised to zero)
+//	ActionListener taskPerformer;			// Task performed while in the timer
 		
 	
 	// Constructs a new world with the given parameters	
 	public World(int anObstructionCount, int aTargetCount) {
-		gravity = 196; // acceleration in px/s^2
 		obstructionCount = anObstructionCount;
 		targetCount = aTargetCount;
 		
@@ -40,14 +41,39 @@ public class World implements ActionListener {
 			Point targetOrigin = new Point(795+(i*60), 560);
 			targets[i] = new Target(targetOrigin, 30, 30);
 		} 
-		timer = new Timer(animSpeed, this);
-		timer.setInitialDelay(pause); 
 	}
 	
 	// Starts the world
 	public void startWorld() {
-		timer.start();
+		Scanner input = new Scanner(System.in);
+		
+		System.out.print("\n\n");
+	    System.out.print("Angle (°): ");
+	    int angle = input.nextInt();
+	    projectile.setAngle(angle);
+	    System.out.print("Speed (px/s): ");
+	    int projSpeed = input.nextInt();
+	    projectile.setSpeed(projSpeed);
+	    
+	    // Hopefully the thing that gets called when the timer updates
+	    timer = new Timer(animSpeed, new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		dt += ((double) animSpeed/1000);							// Time passes another constant, must be converted to seconds
+	    		double projSpeed = projectile.getSpeed();					// Speed of the projectile
+	    		double projRad = Math.toRadians(projectile.getAngle());		// Angle of the projectile in radians
+	    		int x = (int) (projSpeed * Math.cos(projRad) * dt);			// Calculates the x coordinate
+	    		int y = (int) ((projSpeed * Math.sin(projRad) * dt) -
+	    				(0.5 * gravity * dt * dt));							// Calculates the y coordinate
+	    		projectile.move(x,y);										// Updates the position of the projectile
+	    		printProjectilePosition();									// Calls the animator to repaint with new coordinates
+	    	}
+	    });
+		timer.setInitialDelay(pause);
+		while (projectile.getPosition().x < 500) {
+			timer.start();
+		}
 	}
+	
 	
 	// Calculates whether a projectile hits the target
 	/*
@@ -130,19 +156,9 @@ public class World implements ActionListener {
 		int y = projectile.getPosition().y;
 		System.out.printf("Your projectile is at %d, %d \n\n", x, y);
 	}
+	
 
-	// Hopefully the method that gets called when the timer updates
-	public void actionPerformed(ActionEvent e) {
-		dt += (double) (animSpeed/1000);							// Time passes another constant, must be converted to seconds
-		int projSpeed = projectile.getSpeed();						// Speed of the projectile
-		double projRad = Math.toRadians(projectile.getAngle());		// Angle of the projectile
-		int x = (int) (projSpeed * Math.cos(projRad) * dt);			// Calculates the x coordinate
-		int y = (int) ((projSpeed * Math.sin(projRad) * dt) -
-				(0.5 * gravity * dt * dt));							// Calculates the y coordinate
-		Point pos = new Point(x,y);
-		projectile.setPosition(pos);								// Updates the position of the projectile
-		animator.printProgress();									// Calls the animator to repaint with new coordinates
-	}
+}
 	
 	/*
 	public World(int anObstructCount, int[] obstructionLocations) {
@@ -152,5 +168,3 @@ public class World implements ActionListener {
 		Obstruction[] obstructions = new Obstruction[obstructionCount];
 	}
 	*/
-	
-}

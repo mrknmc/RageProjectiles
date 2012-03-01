@@ -1,4 +1,6 @@
-public class Animator extends JPanel {
+// import javax.swing.JPanel;
+
+public class Animator {
 	
 	// This method should be the one that paints the projectile and other components with their position on GUI
 	/*
@@ -8,9 +10,7 @@ public class Animator extends JPanel {
 	*/
 		
 	// Just a temporary method to print the progress of a projectile to the console
-	public void printProgress() {
-		int x = projectile.getPosition().x;
-		int y = projectile.getPosition().y;
+	public static void printProgress(int x, int y) {
 		System.out.printf("Projectile is at %d, %d.\n", x, y);
 	}
 }

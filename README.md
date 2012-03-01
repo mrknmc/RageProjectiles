@@ -13,7 +13,7 @@ Angry Birds project for the Informatics 1 OOP tutorial
 ### Animator
  * Will contain methods to draw components
  
-### GameHelper - *Place Holder*.
+### GameHelper - *Place Holder*
  * Will contain methods for user input etc.
  
 ### Component
