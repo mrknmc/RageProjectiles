@@ -13,10 +13,9 @@ public class World {
 	Projectile projectile;					// Projectile
 	Timer timer;
 //	Animator animator;						// Animator that will animate the GUI
-	int animSpeed = 40;					// Speed of the animation in ms. 25 FPS - 40ms, temporarily set to 1s for testing
+	int animSpeed = 40;						// Speed of the animation in ms. 25 FPS - 40ms, temporarily set to 1s for testing
 	int pause = 100;						// Delay of the start of animation
 	double dt = 0;							// Time elapsed (initialised to zero)
-//	ActionListener taskPerformer;			// Task performed while in the timer
 		
 	
 	// Constructs a new world with the given parameters	
@@ -64,17 +63,20 @@ public class World {
 	    		int x = (int) (projSpeed * Math.cos(projRad) * dt);			// Calculates the x coordinate
 	    		int y = (int) ((projSpeed * Math.sin(projRad) * dt) -
 	    				(0.5 * gravity * dt * dt));							// Calculates the y coordinate
+	    		
 	    		projectile.move(x,y);										// Updates the position of the projectile
-	    		printProjectilePosition();									// Calls the animator to repaint with new coordinates
-	    		if (projectile.getPosition().x > 500) {
+	    		printProjectilePosition();	
+	    		// Calls the animator to repaint with new coordinates
+	    		if (projectile.getPosition().x > 800) {
 	    			timer.stop();
 	    		}
+	    		
 	    	}
 	    });
+	    
 		timer.setInitialDelay(pause);
-		while (projectile.getPosition().x < 500) {
-			timer.start();
-		}
+		timer.start();
+		while (true) {}
 	}
 	
 	
