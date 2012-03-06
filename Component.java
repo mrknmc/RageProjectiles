@@ -31,6 +31,8 @@ public class Component {
 	
 	public Component(Point aPoint, int aWidth, int aHeight) {
 		this.position = aPoint;
+		this.height = aHeight;
+		this.width = aWidth;
 		this.leftBottomCorner = new Point(this.position.x, this.position.y+this.height);
 		this.rightTopCorner = new Point(this.position.x+this.width, this.position.y);
 		this.rightBottomCorner = new Point(this.position.x+this.width, this.position.y+this.height);

@@ -5,14 +5,14 @@ import javax.swing.*;
 import java.util.Scanner;
 
 public class World extends JFrame{
-	double gravity = 196;	 				// Gravity constant, acceleration in px/s^2; 
+	double gravity = -196;	 				// Gravity constant, acceleration in px/s^2; 
 	int obstructionCount;					// Number of obstructions
 	static int targetCount;					// Number of targets
 	static Target[] targets;				// Target array containing targets
 	Obstruction[] obstructions;				// Obstruction array containing obstructions
 	Projectile projectile;					// Projectile
 	Timer timer;
-//	Animator animator;						// Animator that will animate the GUI
+	Animator animator = new Animator(10,10,10,10);						// Animator that will animate the GUI
 	int animSpeed = 40;						// Speed of the animation in ms. 25 FPS - 40ms, temporarily set to 1s for testing
 	int pause = 100;						// Delay of the start of animation
 	double dt = 0;							// Time elapsed (initialised to zero)
@@ -28,24 +28,30 @@ public class World extends JFrame{
 		obstructions = new Obstruction[obstructionCount];
 		Point projectileOrigin = new Point(50, 560);
 		projectile = new Projectile(projectileOrigin, 30, 30, 440);
+		animator.updateProjPos(50,560);
+		animator.setProjSize(30,30);
 		
 		// Fills the obstructions array with obstructions
 		for (int i = 0; i < obstructionCount; i++) {
-			Point obstructOrigin = new Point(800+(i*60), 560 );
+			Point obstructOrigin = new Point(600+(i*120), 560 );
 			obstructions[i] = new Obstruction(obstructOrigin, 80, 20);
+			animator.addObstruction(obstructions[i]);
 		}
 
 		// Fills the targets array with targets
 		for (int i = 0; i < targetCount; i++) {
-			Point targetOrigin = new Point(795+(i*60), 560);
-			targets[i] = new Target(targetOrigin, 30, 30);
+			Point targetOrigin = new Point(565+(i*120), 560);
+			Target t = new Target(targetOrigin, 30, 30);
+			targets[i] = t;
+			animator.addTarget(t);
 		} 
 		
 		// GUI
-	       setTitle("Angry Birds");
-	       setSize(900, 200);
-	       setLocationRelativeTo(null);
-	       setDefaultCloseOperation(EXIT_ON_CLOSE);
+		add(animator);
+		setTitle("Angry Birds");
+	    setSize(1024, 900);
+	    setLocationRelativeTo(null);
+	    setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 	}
 	
@@ -56,7 +62,7 @@ public class World extends JFrame{
 		System.out.print("\n\n");
 	    System.out.print("Angle (°): ");
 	    int angle = input.nextInt();
-	    projectile.setAngle(angle);
+	    projectile.setAngle((-1) * angle); // Angle of 90 is straight down, so invert angle to make user friendly
 	    System.out.print("Speed (px/s): ");
 	    int projSpeed = input.nextInt();
 	    projectile.setSpeed(projSpeed);
@@ -72,7 +78,8 @@ public class World extends JFrame{
 	    				(0.5 * gravity * dt * dt));							// Calculates the y coordinate
 	    		
 	    		projectile.move(x,y);										// Updates the position of the projectile
-	    		printProjectilePosition();	
+	    		animator.updateProjPos((int) projectile.getPosition().getX(), (int) projectile.getPosition().getY());
+	    		printProjectilePosition();
 	    		// Calls the animator to repaint with new coordinates
 	    		if (projectile.getPosition().x > 800) {
 	    			timer.stop();
