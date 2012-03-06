@@ -1,10 +1,10 @@
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.Timer;
+import javax.swing.*;
 import java.util.Scanner;
 
-public class World {
+public class World extends JFrame{
 	double gravity = 196;	 				// Gravity constant, acceleration in px/s^2; 
 	int obstructionCount;					// Number of obstructions
 	static int targetCount;					// Number of targets
@@ -40,6 +40,13 @@ public class World {
 			Point targetOrigin = new Point(795+(i*60), 560);
 			targets[i] = new Target(targetOrigin, 30, 30);
 		} 
+		
+		// GUI
+	       setTitle("Angry Birds");
+	       setSize(900, 200);
+	       setLocationRelativeTo(null);
+	       setDefaultCloseOperation(EXIT_ON_CLOSE);
+
 	}
 	
 	// Starts the world
