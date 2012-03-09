@@ -1,6 +1,8 @@
 Angry Birds project for the Informatics 1 OOP tutorial
 ======================================================
 
+![World](http://f.cl.ly/items/053a331N0q290t3d0R2T/WorldExample.jpg)
+
 ### GameHandler
  * Main Method is in GameHandler.java.
  * The user is prompted for angle, speed, length difference and height difference.
