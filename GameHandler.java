@@ -1,4 +1,3 @@
-import javax.swing.*;
 public class GameHandler {
     
     public static void main(String[] args) {

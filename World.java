@@ -5,17 +5,21 @@ import javax.swing.*;
 import java.util.Scanner;
 
 public class World extends JFrame{
-	double gravity = -196;	 				// Gravity constant, acceleration in px/s^2; 
-	int obstructionCount;					// Number of obstructions
-	static int targetCount;					// Number of targets
-	static Target[] targets;				// Target array containing targets
-	Obstruction[] obstructions;				// Obstruction array containing obstructions
-	Projectile projectile;					// Projectile
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	double gravity = -196;	 							// Gravity constant, acceleration in px/s^2; 
+	int obstructionCount;								// Number of obstructions
+	static int targetCount;								// Number of targets
+	static Target[] targets;							// Target array containing targets
+	Obstruction[] obstructions;							// Obstruction array containing obstructions
+	Projectile projectile;								// Projectile
 	Timer timer;
-	Animator animator = new Animator(10,10,10,10);						// Animator that will animate the GUI
-	int animSpeed = 40;						// Speed of the animation in ms. 25 FPS - 40ms, temporarily set to 1s for testing
-	int pause = 100;						// Delay of the start of animation
-	double dt = 0;							// Time elapsed (initialised to zero)
+	Animator animator = new Animator(10,10,10,10);		// Animator that will animate the GUI
+	int animSpeed = 40;									// Speed of the animation in ms. 25 FPS - 40ms, temporarily set to 1s for testing
+	int pause = 100;									// Delay of the start of animation
+	double dt = 0;										// Time elapsed (initialised to zero)
 		
 	
 	// Constructs a new world with the given parameters	
@@ -49,7 +53,7 @@ public class World extends JFrame{
 		// GUI
 		add(animator);
 		setTitle("Angry Birds");
-	    setSize(1024, 900);
+	    setSize(960, 640);
 	    setLocationRelativeTo(null);
 	    setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -67,7 +71,7 @@ public class World extends JFrame{
 	    int projSpeed = input.nextInt();
 	    projectile.setSpeed(projSpeed);
 	    
-	    // Hopefully the thing that gets called when the timer updates
+	    // The thing that gets called when the timer updates
 	    timer = new Timer(animSpeed, new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
 	    		dt += ((double) animSpeed/1000);							// Time passes another constant, must be converted to seconds

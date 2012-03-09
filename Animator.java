@@ -4,6 +4,10 @@ import javax.swing.*;
 
 public class Animator extends JPanel{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int projX;
 	private int projY;
 	private int projW;
