@@ -1,6 +1,10 @@
 import java.util.ArrayList;
 import java.awt.*;
+import java.awt.image.*;
 import javax.swing.*;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
 public class Animator extends JPanel{
 	
@@ -11,7 +15,9 @@ public class Animator extends JPanel{
 	private int projX;
 	private int projY;
 	private int projW;
-	private int projH;
+	private int projH;	
+	private BufferedImage bgImage;
+	private BufferedImage projImage;
 	
 	private ArrayList<Target> targets = new ArrayList<Target>();
 	private ArrayList<Obstruction> obstructions = new ArrayList<Obstruction>();
@@ -28,10 +34,11 @@ public class Animator extends JPanel{
 		
 		super.paintComponent(g);
 				
-		
+		g.drawImage(bgImage, 0, 0, null);
 		g.setColor(new Color (0,0,0));
 		
-		g.fillOval(this.projX, this.projY, this.projW, this.projH);
+		g.drawImage(projImage, this.projX, this.projY, this.projW, this.projH, null);
+		//g.fillOval(this.projX, this.projY, this.projW, this.projH);
 		
 		g.setColor(new Color(255,0,0));
 		for(Obstruction o : obstructions){
@@ -71,5 +78,16 @@ public class Animator extends JPanel{
 		this.projW = pW;
 		this.projH = pH;
 		
+		try {                
+			bgImage = ImageIO.read(new File("img/bg.jpg"));
+		} catch (IOException ex) {
+	        // handle exception...
+		}
+		
+		try {                
+			projImage = ImageIO.read(new File("img/LolGuy.png"));
+		} catch (IOException ex) {
+	        // handle exception...
+		}
 	}
 }

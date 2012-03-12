@@ -2,24 +2,15 @@ import java.awt.Point;
 
 public class Projectile extends Component {
 	// Attributes for the object
-	private int speed;
-	private int angle;
+	private Velocity velocity;
 	
 	// Methods for getting the value of attributes	
-	public int getSpeed() {
-		return this.speed;
+	public Velocity getVelocity() {
+		return velocity;
 	}
 	
-	public void setSpeed(int s) {
-		this.speed = s;
-	}
-	
-	public int getAngle() {
-		return this.angle;
-	}
-	
-	public void setAngle(int a) {
-		this.angle = a;
+	public void setVelocity(Velocity v) {
+		velocity = v;
 	}
 	
 	public void move(int x, int y) {
@@ -31,9 +22,7 @@ public class Projectile extends Component {
 	}
 	
 	// Constructor
-	public Projectile(Point p, int w, int h, int s) {
+	public Projectile(Point p, int w, int h) {
 		super(p, w, h);
-		this.speed = s;
 	}
-
-	}
+}
