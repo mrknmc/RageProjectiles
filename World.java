@@ -3,23 +3,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class World extends JFrame{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	double gravity = -9.81;	 							// Gravity constant, acceleration in px/s^2; 
-	int obstructionCount;								// Number of obstructions
-	static int targetCount;								// Number of targets
-	static Target[] targets;							// Target array containing targets
-	Obstruction[] obstructions;							// Obstruction array containing obstructions
-	Projectile projectile;								// Projectile
+	double gravity = -9.81;	 													// Gravity constant, acceleration in px/s^2; 
+	int obstructionCount;														// Number of obstructions
+	static int targetCount;													// Number of targets
+	private ArrayList<Target> targets = new ArrayList<Target>();				// Target array containing targets
+	private ArrayList<Obstruction> obstructions = new ArrayList<Obstruction>();	// Obstruction array containing obstructions
+	Projectile projectile;														// Projectile
 	Timer timer;
-	Animator animator = new Animator(10,10,10,10);		// Animator that will animate the GUI
-	int animSpeed = 17;									// Speed of the animation in ms. 25 FPS - 40ms 60FPS - 16.67ms
-	int pause = 10;										// Delay of the start of animation
-	double dt = 0;										// Time elapsed (initialised to zero)	
+	Animator animator;															// Animator that will animate the GUI
+	int animSpeed = 17;															// Speed of the animation in ms. 25 FPS - 40ms 60FPS - 16.67ms
+	int pause = 10;																// Delay of the start of animation
+	double dt = 0;																// Time elapsed (initialised to zero)	
 	
 	// Constructs a new world with the given parameters	
 	public World(int anObstructionCount, int aTargetCount) {
@@ -27,27 +28,29 @@ public class World extends JFrame{
 		targetCount = aTargetCount;
 		
 		// Initialises new Projectile, Obstructions and Targets
-		targets = new Target[targetCount];
-		obstructions = new Obstruction[obstructionCount];
+		//targets = new Target[targetCount];
+		//obstructions = new Obstruction[obstructionCount];
 		Point projectileOrigin = new Point(50, 550);
 		projectile = new Projectile(projectileOrigin, 54, 54);				// Sets the height and width to 30px
-		animator.updateProjPos(50,550);
-		animator.setProjSize(54,54);
+		//animator.updateProjPos(50,550);
+		//animator.setProjSize(54,54);
 		
 		// Fills the obstructions array with obstructions
 		for (int i = 0; i < obstructionCount; i++) {
 			Point obstructOrigin = new Point(600+(i*120), 580 );
-			obstructions[i] = new Obstruction(obstructOrigin, 80, 30);
-			animator.addObstruction(obstructions[i]);
+			Obstruction o = new Obstruction(obstructOrigin, 80, 30);
+			obstructions.add(o);
+			//animator.addObstruction(obstructions[i]);
 		}
 
 		// Fills the targets array with targets
 		for (int i = 0; i < targetCount; i++) {
 			Point targetOrigin = new Point(565+(i*120), 580);
 			Target t = new Target(targetOrigin, 30, 30);
-			targets[i] = t;
-			animator.addTarget(t);
+			targets.add(t);
+			//animator.addTarget(t);
 		} 
+		animator = new Animator(projectile, obstructions, targets);
 		
 		// GUI
 		add(animator);
@@ -79,7 +82,8 @@ public class World extends JFrame{
 	    				(0.5 * gravity * dt * dt));									// Calculates the y coordinate
 	    		
 	    		projectile.move(x,y);												// Updates the position of the projectile
-	    		animator.updateProjPos((int) projectile.getPosition().getX(), (int) projectile.getPosition().getY());
+	    		animator.repaint();
+	    		//animator.updateProjPos((int) projectile.getPosition().getX(), (int) projectile.getPosition().getY());
 	    		printProjectilePosition();
 	    		// Calls the animator to repaint with new coordinates
 	    		if (projectile.getPosition().y > 554) {
@@ -161,10 +165,10 @@ public class World extends JFrame{
 	
 	// Prints the position of the target
 	public void printTargetPositions() {
-		for (int i = 0; i < targetCount; i++) {
-			int x = targets[i].getPosition().x;
-			int y = targets[i].getPosition().y;
-			System.out.printf("Target #%d is at %d, %d\t", i+1, x, y);
+		for (Target t : targets) {
+			int x = t.getPosition().x;
+			int y = t.getPosition().y;
+			System.out.printf("Target is at %d, %d\t", x, y);
 		}
 	}
 	
