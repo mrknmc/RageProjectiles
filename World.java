@@ -55,7 +55,7 @@ public class World extends JFrame{
 		// GUI
 		add(animator);
 		setTitle("Angry Birds");
-	    setSize(1024, 768);
+	    setSize(960, 662);
 	    setLocationRelativeTo(null);
 	    setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -84,9 +84,9 @@ public class World extends JFrame{
 	    		projectile.move(x,y);												// Updates the position of the projectile
 	    		animator.repaint();
 	    		//animator.updateProjPos((int) projectile.getPosition().getX(), (int) projectile.getPosition().getY());
-	    		printProjectilePosition();
+	    		//printProjectilePosition();
 	    		// Calls the animator to repaint with new coordinates
-	    		if (projectile.getPosition().y > 554) {
+	    		if (projectile.getPosition().y > 552) {
 	    			timer.stop();
 	    		}
 	    		
