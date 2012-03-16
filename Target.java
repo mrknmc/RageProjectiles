@@ -7,6 +7,10 @@ public class Target extends Component {
 		alive = false;
 	}
 	
+	public int getRadius() {
+		return getHeight() / 2;
+	}
+	
 	public boolean isAlive() {
 		return alive;
 	}

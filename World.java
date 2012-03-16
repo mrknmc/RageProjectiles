@@ -10,7 +10,7 @@ public class World extends JFrame{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	double gravity = -9.81;	 													// Gravity constant, acceleration in px/s^2; 
+	double gravity = -20;	 													// Gravity constant, acceleration in px/s^2; 
 	int obstructionCount;														// Number of obstructions
 	static int targetCount;													// Number of targets
 	private ArrayList<Target> targets = new ArrayList<Target>();				// Target array containing targets
@@ -37,7 +37,7 @@ public class World extends JFrame{
 		
 		// Fills the obstructions array with obstructions
 		for (int i = 0; i < obstructionCount; i++) {
-			Point obstructOrigin = new Point(600+(i*120), 580 );
+			Point obstructOrigin = new Point(600+(i*120), 557);
 			Obstruction o = new Obstruction(obstructOrigin, 80, 30);
 			obstructions.add(o);
 			//animator.addObstruction(obstructions[i]);
@@ -45,7 +45,7 @@ public class World extends JFrame{
 
 		// Fills the targets array with targets
 		for (int i = 0; i < targetCount; i++) {
-			Point targetOrigin = new Point(565+(i*120), 580);
+			Point targetOrigin = new Point(565+(i*120), 557);
 			Target t = new Target(targetOrigin, 30, 30);
 			targets.add(t);
 			//animator.addTarget(t);
@@ -86,7 +86,7 @@ public class World extends JFrame{
 	    		//animator.updateProjPos((int) projectile.getPosition().getX(), (int) projectile.getPosition().getY());
 	    		//printProjectilePosition();
 	    		// Calls the animator to repaint with new coordinates
-	    		if (projectile.getPosition().y > 552) {
+	    		if (projectile.getPosition().y >= 553) {
 	    			timer.stop();
 	    		}
 	    		

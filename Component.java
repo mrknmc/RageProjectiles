@@ -1,15 +1,12 @@
 import java.awt.Point;
 
 public class Component {
-	int height;
-	int width;	
-	Point position;
-	Point leftBottomCorner;
-	Point rightTopCorner;
-	Point rightBottomCorner;
+	private int height;
+	private int width;	
+	private Point position;
 
 	public Point getPosition() {
-			return this.position;
+			return position;
 	}
 
 	public void setPosition(Point p) {
@@ -17,25 +14,21 @@ public class Component {
 	}
 	
 	public int getWidth() {
-		return this.width;
+		return width;
 	}
 
 	public int getHeight() {
-		return this.height;
+		return height;
 	}
-
-	public void destroyed() {
-	// Not really sure what should go here.
-
+	
+	public Point bRCorner() {
+		return new Point(position.x+width, position.y+height);
 	}
 	
 	public Component(Point aPoint, int aWidth, int aHeight) {
-		this.position = aPoint;
-		this.height = aHeight;
-		this.width = aWidth;
-		this.leftBottomCorner = new Point(this.position.x, this.position.y+this.height);
-		this.rightTopCorner = new Point(this.position.x+this.width, this.position.y);
-		this.rightBottomCorner = new Point(this.position.x+this.width, this.position.y+this.height);
+		position = aPoint;
+		height = aHeight;
+		width = aWidth;
 	}
 
 }

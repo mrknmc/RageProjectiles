@@ -21,6 +21,8 @@ public class Animator extends JPanel{
 	 */
 	private BufferedImage bgImage;
 	private BufferedImage projImage;
+	private BufferedImage tarImage;
+	private BufferedImage trollImage;
 
 	private ArrayList<Target> targets = new ArrayList<Target>();
 	private ArrayList<Obstruction> obstructions = new ArrayList<Obstruction>();
@@ -30,18 +32,24 @@ public class Animator extends JPanel{
 
 		g.drawImage(bgImage, 0, 0, null);
 		g.setColor(new Color (0,0,0));
-
+		
 		g.drawImage(projImage, projectile.getPosition().x, projectile.getPosition().y, null);
 		g.setColor(new Color(255,0,0));
+		/*
 		for(Obstruction o : obstructions){
 			g.fillRect((int) o.getPosition().getX(), (int) o.getPosition().getY(), o.getWidth(), o.getHeight());
 		}
-
+		*/
 		g.setColor(new Color(0,255,0));
 
 		for(Target t : targets){
+			if (projectile.gonnaHit(t) && t.isAlive()) {
+				t.destroy();
+				projImage = trollImage;
+			}
 			if (t.isAlive()) {
-				g.fillRect((int) t.getPosition().getX(), (int) t.getPosition().getY(), t.getWidth(), t.getHeight());
+				g.drawImage(tarImage, t.getPosition().x, t.getPosition().y, null);
+				// g.fillRect((int) t.getPosition().getX(), (int) t.getPosition().getY(), t.getWidth(), t.getHeight());
 			}
 		}
 	}
@@ -97,12 +105,9 @@ public class Animator extends JPanel{
 		targets = t;
 		try {                
 			bgImage = ImageIO.read(new File("img/bg.jpg"));
-		} catch (IOException ex) {
-			// handle exception...
-		}
-
-		try {                
+			tarImage = ImageIO.read(new File("img/MeGusta.png"));
 			projImage = ImageIO.read(new File("img/LolGuy.png"));
+			trollImage = ImageIO.read(new File("img/Troll.png"));
 		} catch (IOException ex) {
 			// handle exception...
 		}
