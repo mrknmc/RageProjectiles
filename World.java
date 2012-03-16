@@ -86,8 +86,18 @@ public class World extends JFrame{
 	    		//animator.updateProjPos((int) projectile.getPosition().getX(), (int) projectile.getPosition().getY());
 	    		//printProjectilePosition();
 	    		// Calls the animator to repaint with new coordinates
+<<<<<<< HEAD
 	    		if (projectile.getPosition().y >= 553) {
 	    			timer.stop();
+=======
+	    		
+	    		
+	    		// http://www.blitzbasic.com/Community/posts.php?topic=85396
+	    		if (projectile.getPosition().y >= 552) {
+	    			//timer.stop();
+	    			projectile.move(projectile.position.x, 552);
+	    			projectile.getVelocity().bounce();
+>>>>>>> 3c731517f3fad515b4270ac956ce5de37e3e4612
 	    		}
 	    		
 	    	}
