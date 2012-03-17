@@ -1,60 +1,42 @@
 public class Velocity {
-	private double magnitude;
-	private double angle;
 	private double xcomponent;
 	private double ycomponent;
 	
-	public Velocity(double a, double m) {
-		angle = a;
-		magnitude = m;
-		xcomponent = this.calcXComponent();
-		ycomponent = this.calcYComponent();
+	public Velocity(double xc, double yc) {
+		xcomponent = xc;
+		ycomponent = yc;
 	}
-	
-	private double calcXComponent(){
-		double rad = Math.toRadians(angle);
-		return Math.cos(rad) * magnitude;	
-	}
-	
-	private double calcYComponent(){
-		double rad = Math.toRadians(angle);
-		return Math.sin(rad) * magnitude;
-	}
-	
+
 	public double getXComponent() {
-		//double rad = Math.toRadians(angle);
-		//return Math.cos(rad) * magnitude;
 		return xcomponent;
 	}
 	
 	public double getYComponent() {
-		//double rad = Math.toRadians(angle);
-		//return Math.sin(rad) * magnitude;
 		return ycomponent;
 	}
 	
+	public void setXComponent(double x) {
+		xcomponent = x;
+	}
+	
+	public void setYComponent(double y) {
+		ycomponent = y;
+	}
+	
 	public double getMagnitude() {
-		return magnitude;
+		return Math.sqrt(Math.pow(xcomponent, 2) + Math.pow(ycomponent, 2));
 	}
 	
 	public double getAngle() {
-		return angle;
+		return Math.toDegrees(Math.atan(ycomponent/xcomponent));
 	}
 	
-	public void setMagnitude(double m) {
-		magnitude = m;
-		xcomponent = this.calcXComponent();
-		ycomponent = this.calcYComponent();
+	public void updateY(double a) {
+		ycomponent += a;
 	}
 	
-	public void setAngle(double a) {
-		angle = a;
-		xcomponent = this.calcXComponent();
-		ycomponent = this.calcYComponent();
-	}
-	
-	public void bounce(){
-		ycomponent = -1 * ycomponent;
+	public void updateX(double a) {
+		xcomponent *= a;
 	}
 	
 }
