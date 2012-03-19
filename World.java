@@ -6,9 +6,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class World extends JFrame{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	double gravity = 540;	 													// Gravity constant, acceleration in px/s^2; 
 	int obstructionCount;														// Number of obstructions
@@ -55,13 +53,34 @@ public class World extends JFrame{
 	
 	// Starts the world
 	public void startWorld() {
-		Scanner input = new Scanner(System.in);
+		//Scanner input = new Scanner(System.in);
 		
+		/*
 		System.out.print("\n\n");
 	    System.out.print("Angle (°): ");
 	    int angle = input.nextInt();
 	    System.out.print("Speed (px/s): ");
 	    int projSpeed = input.nextInt();
+	    */
+	    boolean a = animator.havePoints(); 
+
+		while(a == false){
+			long t0 = System.currentTimeMillis();
+			long t1;
+			do { 
+				t1 = System.currentTimeMillis();
+			}
+			while (t1 - t0 < 300);
+			a = animator.havePoints();
+		}
+		
+
+
+		int angle = animator.getAngle();
+		int projSpeed = animator.getSpeed();
+		
+		System.out.print("Angle: " + angle + "; Length: " + projSpeed);
+		
 	    double rad = Math.toRadians(angle);
 	    double xc = Math.cos(rad)*projSpeed;
 	    double yc = Math.sin(rad)*projSpeed;
