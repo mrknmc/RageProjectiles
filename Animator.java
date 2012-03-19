@@ -77,7 +77,7 @@ public class Animator extends JPanel implements MouseListener{
 		if (angle < 0){
 			angle = -angle;
 		}
-		System.out.println("Angle: " + angle + "; y=" + ydiff + "; x=" + xdiff + "; y/x: " + ((double)ydiff/xdiff)); 
+		//System.out.println("Angle: " + angle + "; y=" + ydiff + "; x=" + xdiff + "; y/x: " + ((double)ydiff/xdiff)); 
 		return angle;
 	}
 	
