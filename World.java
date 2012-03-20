@@ -101,7 +101,11 @@ public class World extends JFrame{
 	    		 if( projectile.getVelocity().getYComponent() == 0){                // Ending conditions for current go
 	    			if(projectile.getHit() == false){
 	    				System.out.println("No hits");
-	    				projectile.setImageNoHit();
+	    				try {                
+	    					projectile.setImage(ImageIO.read(new File("img/okayGuy.png")));
+	    				} catch (IOException ex) {
+	    					// handle exception...
+	    				}
 	    			}
 	    			animator.repaint();
 	    			System.out.println("Finished");
