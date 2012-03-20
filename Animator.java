@@ -53,6 +53,9 @@ public class Animator extends JPanel implements MouseListener{
 				g.drawImage(t.getImage(), t.getPosition().x, t.getPosition().y, null);
 			}
 		}
+		g.setColor(new Color(0,0,0));
+		g.drawLine(initialPoint.x, initialPoint.y, endPoint.x,endPoint.y);
+		
 	}
 
 	// Constructor
@@ -66,6 +69,8 @@ public class Animator extends JPanel implements MouseListener{
 			// handle exception...
 		}
 		this.addMouseListener(this);
+		this.initialPoint = new Point(0,0);
+		this.endPoint = new Point(0,0);
 	}
 	
 	public boolean havePoints(){
@@ -83,7 +88,10 @@ public class Animator extends JPanel implements MouseListener{
 	
 	public int getSpeed(){
 		double length = Math.sqrt(xdiff * xdiff + ydiff * ydiff);
-		return (int)  (3 * length);		
+		if(length > 450){
+			length = 450;
+		}
+		return (int)  (2 * length);		
 	}
 
 	@Override

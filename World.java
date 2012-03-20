@@ -18,8 +18,8 @@ public class World extends JFrame{
 	Animator animator;															// Animator that will animate the GUI
 	int animSpeed = 17;															// Speed of the animation in ms. 25 FPS - 40ms 60FPS - 16.67ms
 	int pause = 10;																// Delay of the start of animation
-	double dt = 0.017;																// Time elapsed (initialised to zero)	
-	
+	double dt = 0.017;																// Time elapsed (initialised to zero)
+
 	// Constructs a new world with the given parameters	
 	public World(int anObstructionCount, int aTargetCount) {
 		obstructionCount = anObstructionCount;
@@ -99,6 +99,11 @@ public class World extends JFrame{
 	    			projectile.getVelocity().updateX(0.8);
 	    		}
 	    		animator.repaint();
+	    		 if(projectile.getPosition().x > 960){
+	    			/*projectile.setPosition(new Point(50,550));
+	    			projectile.setVelocity(new Velocity(0,0));
+	    			//this.startWorld(); */
+	    		} 
 	    	}
 	    });
 	    
