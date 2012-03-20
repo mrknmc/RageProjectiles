@@ -1,16 +1,34 @@
 import java.util.ArrayList;
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.image.*;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-public class Animator extends JPanel{
+public class Animator extends JPanel implements MouseListener{
 
 	private static final long serialVersionUID = 1L;
 	private Projectile projectile;
 	private BufferedImage bgImage;
+<<<<<<< HEAD
+=======
+	
+	private Point initialPoint;
+	private Point endPoint;
+	private boolean havePoints = false;
+	private int xdiff;
+	private int ydiff;
+	
+	
+	/*
+	private BufferedImage projImage;
+	private BufferedImage tarImage;
+	private BufferedImage trollImage;
+	 */
+	
+>>>>>>> fc71f189e436b39edc40f26029bd090b3cceaca4
 	private ArrayList<Target> targets = new ArrayList<Target>();
 	private ArrayList<Obstruction> obstructions = new ArrayList<Obstruction>();
 
@@ -38,6 +56,9 @@ public class Animator extends JPanel{
 				g.drawImage(t.getImage(), t.getPosition().x, t.getPosition().y, null);
 			}
 		}
+		g.setColor(new Color(0,0,0));
+		g.drawLine(initialPoint.x, initialPoint.y, endPoint.x,endPoint.y);
+		
 	}
 
 	// Constructor
@@ -50,5 +71,64 @@ public class Animator extends JPanel{
 		} catch (IOException ex) {
 			// handle exception...
 		}
+		this.addMouseListener(this);
+		this.initialPoint = new Point(0,0);
+		this.endPoint = new Point(0,0);
+	}
+	
+	public boolean havePoints(){
+		return havePoints;
+	}
+	
+	public int getAngle(){
+		int angle = (int) (Math.toDegrees(Math.atan((double) ydiff/xdiff)));
+		if (angle < 0){
+			angle = -angle;
+		}
+		//System.out.println("Angle: " + angle + "; y=" + ydiff + "; x=" + xdiff + "; y/x: " + ((double)ydiff/xdiff)); 
+		return angle;
+	}
+	
+	public int getSpeed(){
+		double length = Math.sqrt(xdiff * xdiff + ydiff * ydiff);
+		if(length > 450){
+			length = 450;
+		}
+		return (int)  (2 * length);		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		//  Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		//  Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		//  Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		initialPoint = new Point(arg0.getX(),arg0.getY());
+		//System.out.println(initialPoint);
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		endPoint = new Point(arg0.getX(),arg0.getY());
+		ydiff = this.endPoint.y - this.initialPoint.y;
+		xdiff = this.initialPoint.x - this.endPoint.x;
+		this.havePoints = true;
+		//System.out.println(endPoint);
+		
 	}
 }

@@ -6,9 +6,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class World extends JFrame{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	double gravity = 540;	 													// Gravity constant, acceleration in px/s^2; 
 	int obstructionCount;														// Number of obstructions
@@ -20,8 +18,8 @@ public class World extends JFrame{
 	Animator animator;															// Animator that will animate the GUI
 	int animSpeed = 17;															// Speed of the animation in ms. 25 FPS - 40ms 60FPS - 16.67ms
 	int pause = 10;																// Delay of the start of animation
-	double dt = 0.017;																// Time elapsed (initialised to zero)	
-	
+	double dt = 0.017;																// Time elapsed (initialised to zero)
+
 	// Constructs a new world with the given parameters	
 	public World(int anObstructionCount, int aTargetCount) {
 		obstructionCount = anObstructionCount;
@@ -55,13 +53,34 @@ public class World extends JFrame{
 	
 	// Starts the world
 	public void startWorld() {
-		Scanner input = new Scanner(System.in);
+		//Scanner input = new Scanner(System.in);
 		
+		/*
 		System.out.print("\n\n");
 	    System.out.print("Angle (°): ");
 	    int angle = input.nextInt();
 	    System.out.print("Speed (px/s): ");
 	    int projSpeed = input.nextInt();
+	    */
+	    boolean a = animator.havePoints(); 
+
+		while(a == false){
+			long t0 = System.currentTimeMillis();
+			long t1;
+			do { 
+				t1 = System.currentTimeMillis();
+			}
+			while (t1 - t0 < 300);
+			a = animator.havePoints();
+		}
+		
+
+
+		int angle = animator.getAngle();
+		int projSpeed = animator.getSpeed();
+		
+		System.out.print("Angle: " + angle + "; Length: " + projSpeed);
+		
 	    double rad = Math.toRadians(angle);
 	    double xc = Math.cos(rad)*projSpeed;
 	    double yc = Math.sin(rad)*projSpeed;
@@ -80,6 +99,11 @@ public class World extends JFrame{
 	    			projectile.getVelocity().updateX(0.8);
 	    		}
 	    		animator.repaint();
+	    		 if(projectile.getPosition().x > 960){
+	    			/*projectile.setPosition(new Point(50,550));
+	    			projectile.setVelocity(new Velocity(0,0));
+	    			//this.startWorld(); */
+	    		} 
 	    	}
 	    });
 	    
