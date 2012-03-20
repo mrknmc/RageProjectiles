@@ -86,7 +86,6 @@ public class Animator extends JPanel implements MouseListener{
 		if (angle < 0){
 			angle = -angle;
 		}
-		//System.out.println("Angle: " + angle + "; y=" + ydiff + "; x=" + xdiff + "; y/x: " + ((double)ydiff/xdiff)); 
 		return angle;
 	}
 	
@@ -119,8 +118,6 @@ public class Animator extends JPanel implements MouseListener{
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		initialPoint = new Point(arg0.getX(),arg0.getY());
-		//System.out.println(initialPoint);
-		
 	}
 
 	@Override
@@ -129,7 +126,5 @@ public class Animator extends JPanel implements MouseListener{
 		ydiff = this.endPoint.y - this.initialPoint.y;
 		xdiff = this.initialPoint.x - this.endPoint.x;
 		this.havePoints = true;
-		//System.out.println(endPoint);
-		
 	}
 }

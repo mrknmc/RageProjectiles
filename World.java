@@ -22,9 +22,8 @@ public class World extends JFrame{
 	Animator animator;															// Animator that will animate the GUI
 	int animSpeed = 17;															// Speed of the animation in ms. 25 FPS - 40ms 60FPS - 16.67ms
 	int pause = 10;																// Delay of the start of animation
-	double dt = 0.017;																// Time elapsed (initialised to zero)
-	private boolean finished = false;
-	private int numberOfGoes = 0;
+	double dt = 0.017;															// Time elapsed (initialised to zero)
+	private boolean finished = false;                                           // Keeps track of whether the current go has ended
 
 	// Constructs a new world with the given parameters	
 	public World(int anObstructionCount, int aTargetCount) {
@@ -46,6 +45,7 @@ public class World extends JFrame{
 			Target t = new Target(targetOrigin, 30, 30);
 			targets.add(t);
 		} 
+		
 		animator = new Animator(projectile, obstructions, targets);
 		
 		// GUI
@@ -59,17 +59,10 @@ public class World extends JFrame{
 	
 	// Starts the world
 	public void startWorld() {
-		//Scanner input = new Scanner(System.in);
-		
-		/*
-		System.out.print("\n\n");
-	    System.out.print("Angle (°): ");
-	    int angle = input.nextInt();
-	    System.out.print("Speed (px/s): ");
-	    int projSpeed = input.nextInt();
-	    */
-	    boolean a = animator.getHavePoints(); 
 
+		
+		// Wait until the user has provided input 
+	    boolean a = animator.getHavePoints(); 
 		while(a == false){
 			wait(300);
 			a = animator.getHavePoints();
@@ -96,43 +89,60 @@ public class World extends JFrame{
 	    		projectile.getVelocity().updateY(-gravity*dt);						// Updates the y coordinate of the velocity
 	    		int y = -(int) (projectile.getVelocity().getYComponent() * dt);		// Calculates the y coordinate
     			projectile.move(x,y);
-	    		if (projectile.getPosition().y >= 556 && projectile.getVelocity().getAngle() < 0) {
+    			
+    			
+	    		if (projectile.getPosition().y >= 556 && projectile.getVelocity().getAngle() < 0) { // Bounce when projectile hits ground
 	    			projectile.bounce();
 	    			projectile.getVelocity().updateX(0.8);
 	    		}
+	    		
 	    		animator.repaint();
-	    		 if( projectile.getVelocity().getYComponent() == 0){
+	    		
+	    		 if( projectile.getVelocity().getYComponent() == 0){                // Ending conditions for current go
+	    			if(projectile.getHit() == false){
+	    				System.out.println("No hits");
+	    				projectile.setImageNoHit();
+	    			}
+	    			animator.repaint();
 	    			System.out.println("Finished");
 	    			long t0 = System.currentTimeMillis();
 	    			long t1;
 	    			do { 
 	    				t1 = System.currentTimeMillis();
 	    			}
-	    			while (t1 - t0 < 500);
+	    			while (t1 - t0 < 1000);
 	    			projectile.reset(new Point(50,550));
 	    			finished = true;
 	    			timer.stop();
-	    			//this.startWorld(); 
 	    		} 
 	    	}
 	    });
 	    
 		timer.setInitialDelay(pause);
 		timer.start();
+		
 		do {
-			//System.out.println("Waiting");
-			wait(300);
-			
+			wait(300);                                                              // Wait for current go to end
 		}
 		while (finished == false);
-		//System.out.println("Done Waiting");
-		numberOfGoes += 1;
-		//if (numberOfGoes < 3){
+		
 		this.startWorld();
-		//}
+
+		/*
+		
+		boolean allTargetsDead = true;                                              // Conditions for ending game
+		for (Target t : targets){
+			allTargetsDead = allTargetsDead && t.isAlive();
+		}
+		
+		if (allTargetsDead == false){
+			this.startWorld();
+		}
+		
+		 */
 	}
 	
-	public void wait(int milliseconds){
+	public void wait(int milliseconds){                                             // Wait for specified time  
 			long t0 = System.currentTimeMillis();
 			long t1;
 			do { 
