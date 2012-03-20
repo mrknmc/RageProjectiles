@@ -25,6 +25,18 @@ public class Projectile extends Component {
 		velocity = v;
 	}
 	
+	public void reset(Point p){
+		this.setPosition(p);
+		this.setVelocity(new Velocity(0,0));
+		this.resetBounceCount();
+		try {
+			this.setImage(ImageIO.read(new File("img/LolGuy.png")));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			//e1.printStackTrace();
+		}
+	}
+	
 	public void setHit(boolean b) {
 		hit = b;
 	}
@@ -45,6 +57,10 @@ public class Projectile extends Component {
 		setPosition(pos);
 	}
 	
+	public void resetBounceCount(){
+		bounceCount = 0;
+	}
+	
 	public void bounce() {
 		if (bounceCount < 7) {
 			velocity.setYComponent(velocity.getYComponent() * -0.5);
@@ -63,7 +79,7 @@ public class Projectile extends Component {
 	
 	public boolean gonnaHit(Target t) {
 		double d = Math.pow(getPosition().getX() - t.getPosition().getX(), 2) + Math.pow(getPosition().getY() - t.getPosition().getY(), 2);
-		if (d <= Math.pow((getRadius() + t.getRadius()),2)) {
+		if ((d <= Math.pow((getRadius() + t.getRadius()),2)) && t.isAlive() == true) {
 			try {                
 				image = ImageIO.read(new File("img/Troll.png"));
 			} catch (IOException ex) {

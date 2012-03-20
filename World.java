@@ -1,6 +1,10 @@
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -19,6 +23,8 @@ public class World extends JFrame{
 	int animSpeed = 17;															// Speed of the animation in ms. 25 FPS - 40ms 60FPS - 16.67ms
 	int pause = 10;																// Delay of the start of animation
 	double dt = 0.017;																// Time elapsed (initialised to zero)
+	private boolean finished = false;
+	private int numberOfGoes = 0;
 
 	// Constructs a new world with the given parameters	
 	public World(int anObstructionCount, int aTargetCount) {
@@ -62,16 +68,11 @@ public class World extends JFrame{
 	    System.out.print("Speed (px/s): ");
 	    int projSpeed = input.nextInt();
 	    */
-	    boolean a = animator.havePoints(); 
+	    boolean a = animator.getHavePoints(); 
 
 		while(a == false){
-			long t0 = System.currentTimeMillis();
-			long t1;
-			do { 
-				t1 = System.currentTimeMillis();
-			}
-			while (t1 - t0 < 300);
-			a = animator.havePoints();
+			wait(300);
+			a = animator.getHavePoints();
 		}
 		
 
@@ -79,13 +80,14 @@ public class World extends JFrame{
 		int angle = animator.getAngle();
 		int projSpeed = animator.getSpeed();
 		
-		System.out.print("Angle: " + angle + "; Length: " + projSpeed);
+		System.out.println("Angle: " + angle + "; Speed: " + projSpeed);
 		
 	    double rad = Math.toRadians(angle);
 	    double xc = Math.cos(rad)*projSpeed;
 	    double yc = Math.sin(rad)*projSpeed;
 	    Velocity v = new Velocity(xc, yc);
 	    projectile.setVelocity(v);
+	    animator.setHavePoints(false);
 	    
 	    // The thing that gets called when the timer updates
 	    timer = new Timer(animSpeed, new ActionListener() {
@@ -99,16 +101,43 @@ public class World extends JFrame{
 	    			projectile.getVelocity().updateX(0.8);
 	    		}
 	    		animator.repaint();
-	    		 if(projectile.getPosition().x > 960){
-	    			/*projectile.setPosition(new Point(50,550));
-	    			projectile.setVelocity(new Velocity(0,0));
-	    			//this.startWorld(); */
+	    		 if( projectile.getVelocity().getYComponent() == 0){
+	    			System.out.println("Finished");
+	    			long t0 = System.currentTimeMillis();
+	    			long t1;
+	    			do { 
+	    				t1 = System.currentTimeMillis();
+	    			}
+	    			while (t1 - t0 < 500);
+	    			projectile.reset(new Point(50,550));
+	    			finished = true;
+	    			timer.stop();
+	    			//this.startWorld(); 
 	    		} 
 	    	}
 	    });
 	    
 		timer.setInitialDelay(pause);
 		timer.start();
-		while (true) {}
+		do {
+			//System.out.println("Waiting");
+			wait(300);
+			
+		}
+		while (finished == false);
+		//System.out.println("Done Waiting");
+		numberOfGoes += 1;
+		//if (numberOfGoes < 3){
+		this.startWorld();
+		//}
+	}
+	
+	public void wait(int milliseconds){
+			long t0 = System.currentTimeMillis();
+			long t1;
+			do { 
+				t1 = System.currentTimeMillis();
+			}
+			while (t1 - t0 < milliseconds);
 	}
 }

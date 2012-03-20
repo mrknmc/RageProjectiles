@@ -73,8 +73,12 @@ public class Animator extends JPanel implements MouseListener{
 		this.endPoint = new Point(0,0);
 	}
 	
-	public boolean havePoints(){
+	public boolean getHavePoints(){
 		return havePoints;
+	}
+	
+	public void setHavePoints(boolean b){
+		this.havePoints = b;
 	}
 	
 	public int getAngle(){
