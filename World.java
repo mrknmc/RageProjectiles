@@ -27,7 +27,7 @@ public class World extends JFrame{
 		obstructionCount = anObstructionCount;
 		targetCount = aTargetCount;
 		Point projectileOrigin = new Point(50, 550);
-		projectile = new Projectile(projectileOrigin, 54, 54);				// Sets the height and width to 30px
+		projectile = new Projectile(projectileOrigin, 54, 54);
 		
 		// Fills the obstructions array with obstructions
 		for (int i = 0; i < obstructionCount; i++) {

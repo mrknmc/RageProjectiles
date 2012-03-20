@@ -1,6 +1,6 @@
 import java.awt.Point;
 
-public class Component {
+public abstract class Component {
 	private int height;
 	private int width;	
 	private Point position;

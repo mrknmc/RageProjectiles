@@ -11,12 +11,6 @@ public class Animator extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private Projectile projectile;
 	private BufferedImage bgImage;
-	/*
-	private BufferedImage projImage;
-	private BufferedImage tarImage;
-	private BufferedImage trollImage;
-	 */
-	
 	private ArrayList<Target> targets = new ArrayList<Target>();
 	private ArrayList<Obstruction> obstructions = new ArrayList<Obstruction>();
 
