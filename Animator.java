@@ -1,3 +1,4 @@
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.*;
@@ -7,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-public class Animator extends JPanel implements MouseListener{
+public class Animator extends JPanel implements MouseListener, MouseMotionListener{
 
 	private static final long serialVersionUID = 1L;
 	private Projectile projectile;
@@ -58,6 +59,8 @@ public class Animator extends JPanel implements MouseListener{
 		}
 		g.setColor(new Color(0,0,0));
 		g.drawLine(initialPoint.x, initialPoint.y, endPoint.x,endPoint.y);
+		DecimalFormat df = new DecimalFormat("#.##");
+		g.drawString(this.getAngle() + "\u00b0 , " + df.format((((double) this.getSpeed()/900)* 100)) + "%", endPoint.x + 10, endPoint.y + 10);
 		
 	}
 
@@ -72,12 +75,17 @@ public class Animator extends JPanel implements MouseListener{
 			// handle exception...
 		}
 		this.addMouseListener(this);
+		this.addMouseMotionListener(this);
 		this.initialPoint = new Point(0,0);
 		this.endPoint = new Point(0,0);
 	}
 	
-	public boolean havePoints(){
+	public boolean getHavePoints(){
 		return havePoints;
+	}
+	
+	public void setHavePoints(boolean b){
+		this.havePoints = b;
 	}
 	
 	public int getAngle(){
@@ -85,7 +93,6 @@ public class Animator extends JPanel implements MouseListener{
 		if (angle < 0){
 			angle = -angle;
 		}
-		//System.out.println("Angle: " + angle + "; y=" + ydiff + "; x=" + xdiff + "; y/x: " + ((double)ydiff/xdiff)); 
 		return angle;
 	}
 	
@@ -118,17 +125,26 @@ public class Animator extends JPanel implements MouseListener{
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		initialPoint = new Point(arg0.getX(),arg0.getY());
-		//System.out.println(initialPoint);
-		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
+		this.havePoints = true;
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent arg0) {
 		endPoint = new Point(arg0.getX(),arg0.getY());
 		ydiff = this.endPoint.y - this.initialPoint.y;
 		xdiff = this.initialPoint.x - this.endPoint.x;
-		this.havePoints = true;
-		//System.out.println(endPoint);
+		System.out.println(endPoint);
+		this.repaint();
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent arg0) {
+		// TODO Auto-generated method stub
 		
 	}
 }
