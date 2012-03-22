@@ -121,21 +121,27 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
+		if(!havePoints){
 		initialPoint = new Point(arg0.getX(),arg0.getY());
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
+		if(!havePoints){
 		this.havePoints = true;
+		}
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
+		if(!havePoints){
 		endPoint = new Point(arg0.getX(),arg0.getY());
 		ydiff = this.endPoint.y - this.initialPoint.y;
 		xdiff = this.initialPoint.x - this.endPoint.x;
 		System.out.println(endPoint);
 		this.repaint();
+		}
 		
 	}
 

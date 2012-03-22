@@ -61,7 +61,8 @@ public class World extends JFrame{
 	public void startWorld() {
 
 		
-		// Wait until the user has provided input 
+		// Wait until the user has provided input
+		animator.setHavePoints(false);
 	    boolean a = animator.getHavePoints(); 
 		while(a == false){
 			wait(300);
@@ -80,7 +81,7 @@ public class World extends JFrame{
 	    double yc = Math.sin(rad)*projSpeed;
 	    Velocity v = new Velocity(xc, yc);
 	    projectile.setVelocity(v);
-	    animator.setHavePoints(false);
+	   
 	    
 	    // The thing that gets called when the timer updates
 	    timer = new Timer(animSpeed, new ActionListener() {
@@ -98,17 +99,7 @@ public class World extends JFrame{
 	    		
 	    		animator.repaint();
 	    		
-	    		 if( projectile.getVelocity().getYComponent() == 0){                // Ending conditions for current go
-	    			if(projectile.getHit() == false){
-	    				System.out.println("No hits");
-	    				try {                
-	    					projectile.setImage(ImageIO.read(new File("img/okayGuy.png")));
-	    				} catch (IOException ex) {
-	    					// handle exception...
-	    				}
-	    			}
-	    			animator.repaint();
-	    			System.out.println("Finished");
+	    		 if(projectile.getVelocity().getYComponent() == 0 && projectile.getBounceCount() > 8){                // Ending conditions for current go
 	    			long t0 = System.currentTimeMillis();
 	    			long t1;
 	    			do { 
@@ -116,6 +107,7 @@ public class World extends JFrame{
 	    			}
 	    			while (t1 - t0 < 1000);
 	    			projectile.reset(new Point(50,550));
+	    			System.out.println("Finished");
 	    			finished = true;
 	    			timer.stop();
 	    		} 
@@ -132,18 +124,19 @@ public class World extends JFrame{
 		
 		this.startWorld();
 
-		/*
 		
-		boolean allTargetsDead = true;                                              // Conditions for ending game
+		
+		/*boolean allTargetsDead = true;                                              // Conditions for ending game
 		for (Target t : targets){
-			allTargetsDead = allTargetsDead && t.isAlive();
+			allTargetsDead = allTargetsDead && !t.isAlive();
+			System.out.println(allTargetsDead + " && " + !t.isAlive());
 		}
 		
-		if (allTargetsDead == false){
+		if (!allTargetsDead){
 			this.startWorld();
-		}
+		}*/
 		
-		 */
+		 
 	}
 	
 	public void wait(int milliseconds){                                             // Wait for specified time  

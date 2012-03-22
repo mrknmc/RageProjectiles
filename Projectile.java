@@ -69,7 +69,7 @@ public class Projectile extends Component {
 	public void bounce() {
 		if (bounceCount < 7) {
 			velocity.setYComponent(velocity.getYComponent() * -0.5);
-			bounceCount++;
+			//bounceCount++;
 		} else {
 			velocity.setYComponent(0);
 			if (hit == false) {
@@ -80,6 +80,11 @@ public class Projectile extends Component {
 				}
 			}
 		}
+		bounceCount++;
+	}
+	
+	public int getBounceCount(){
+		return bounceCount;
 	}
 	
 	public boolean gonnaHit(Target t) {
