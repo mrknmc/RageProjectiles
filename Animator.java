@@ -11,25 +11,52 @@ import javax.imageio.ImageIO;
 public class Animator extends JPanel implements MouseListener, MouseMotionListener{
 
 	private static final long serialVersionUID = 1L;
+	
+	// Object Attributes
 	private Projectile projectile;
+	private ArrayList<Target> targets = new ArrayList<Target>();
+	private ArrayList<Obstruction> obstructions = new ArrayList<Obstruction>();
+	
 	private BufferedImage bgImage;
-	
-	private Point initialPoint;
-	private Point endPoint;
-	private boolean havePoints = false;
-	private int xdiff;
-	private int ydiff;
-	
-	
 	/*
 	private BufferedImage projImage;
 	private BufferedImage tarImage;
 	private BufferedImage trollImage;
 	 */
 	
-	private ArrayList<Target> targets = new ArrayList<Target>();
-	private ArrayList<Obstruction> obstructions = new ArrayList<Obstruction>();
+	private Point initialPoint;
+	private Point endPoint;
+	private boolean havePoints = false;
+	private int xdiff;
+	private int ydiff;
 
+	// Getters
+	public boolean getHavePoints(){
+		return havePoints;
+	}
+		
+	public int getAngle(){
+		int angle = (int) (Math.toDegrees(Math.atan((double) ydiff/xdiff)));
+		if (angle < 0){
+			angle = -angle;
+		}
+		return angle;
+	}
+	
+	public int getSpeed(){
+		double length = Math.sqrt(xdiff * xdiff + ydiff * ydiff);
+		if(length > 450){
+			length = 450;
+		}
+		return (int)  (2 * length);		
+	}
+
+	// Setters
+	public void setHavePoints(boolean b){
+		this.havePoints = b;
+	}
+	
+	// Class Methods
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
@@ -60,47 +87,8 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 		g.drawString(this.getAngle() + "\u00b0 , " + df.format((((double) this.getSpeed()/900)* 100)) + "%", endPoint.x + 10, endPoint.y + 10);
 		
 	}
-
-	// Constructor
-	public Animator(Projectile p, ArrayList<Obstruction> o, ArrayList<Target> t) {
-		projectile = p;
-		obstructions = o;
-		targets = t;
-		try {                
-			bgImage = ImageIO.read(new File("img/bg.jpg"));
-		} catch (IOException ex) {
-			// handle exception...
-		}
-		this.addMouseListener(this);
-		this.addMouseMotionListener(this);
-		this.initialPoint = new Point(0,0);
-		this.endPoint = new Point(0,0);
-	}
 	
-	public boolean getHavePoints(){
-		return havePoints;
-	}
-	
-	public void setHavePoints(boolean b){
-		this.havePoints = b;
-	}
-	
-	public int getAngle(){
-		int angle = (int) (Math.toDegrees(Math.atan((double) ydiff/xdiff)));
-		if (angle < 0){
-			angle = -angle;
-		}
-		return angle;
-	}
-	
-	public int getSpeed(){
-		double length = Math.sqrt(xdiff * xdiff + ydiff * ydiff);
-		if(length > 450){
-			length = 450;
-		}
-		return (int)  (2 * length);		
-	}
-
+	// Events
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		//  Auto-generated method stub
@@ -150,4 +138,21 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 		// TODO Auto-generated method stub
 		
 	}
+
+	// Constructor
+	public Animator(Projectile p, ArrayList<Obstruction> o, ArrayList<Target> t) {
+		projectile = p;
+		obstructions = o;
+		targets = t;
+		try {                
+			bgImage = ImageIO.read(new File("img/bg.jpg"));
+		} catch (IOException ex) {
+			// handle exception...
+		}
+		this.addMouseListener(this);
+		this.addMouseMotionListener(this);
+		this.initialPoint = new Point(0,0);
+		this.endPoint = new Point(0,0);
+	}
+	
 }

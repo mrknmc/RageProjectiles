@@ -6,13 +6,14 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Projectile extends Component {
-	// Attributes for the object
+	
+	// Object Attributes
 	private Velocity velocity;
 	private boolean hit = false;
 	private int bounceCount = 0;
 	private BufferedImage image;
 	
-	// Methods for getting the value of attributes	
+	// Getters
 	public Velocity getVelocity() {
 		return velocity;
 	}
@@ -21,14 +22,37 @@ public class Projectile extends Component {
 		return getHeight() / 2;
 	}
 	
+	public BufferedImage getImage() {
+		return image;
+	}
+	
+	public boolean getHit() {
+		return hit;		
+	}
+	
+	public int getBounceCount(){
+		return bounceCount;
+	}
+	
+	// Setters	
 	public void setVelocity(Velocity v) {
 		velocity = v;
 	}
 	
+	public void setImage(BufferedImage i) {
+		image = i;
+		System.out.println("IMAGE SET");
+	}
+	
+	public void setHit(boolean b) {
+		hit = b;
+	}
+	
+	// Class Methods
 	public void reset(Point p){
 		this.setPosition(p);
 		this.setVelocity(new Velocity(0,0));
-		this.resetBounceCount();
+		bounceCount = 0;
 		hit = false;
 		try {
 			this.setImage(ImageIO.read(new File("img/LolGuy.png")));
@@ -36,34 +60,13 @@ public class Projectile extends Component {
 			// TODO Auto-generated catch block
 		}
 	}
-	
-	public boolean getHit() {
-		return hit;		
-	}
-	
-	public void setHit(boolean b) {
-		hit = b;
-	}
-	
-	public BufferedImage getImage() {
-		return image;
-	}
-
-	public void setImage(BufferedImage i) {
-		image = i;
-		System.out.println("IMAGE SET");
-	}
-	
+		
 	public void move(int x, int y) {
 		x = getPosition().x + x;
 		y = getPosition().y + y;
 		
 		Point pos = new Point(x,y);		
 		setPosition(pos);
-	}
-	
-	public void resetBounceCount(){
-		bounceCount = 0;
 	}
 	
 	public void bounce() {
@@ -81,10 +84,6 @@ public class Projectile extends Component {
 			}
 		}
 		bounceCount++;
-	}
-	
-	public int getBounceCount(){
-		return bounceCount;
 	}
 	
 	public boolean gonnaHit(Target t) {
