@@ -33,6 +33,6 @@ Angry Birds project for the Informatics 1 OOP tutorial
  * Attributes: Alive, shape, size, colour.
  * Keeps track of target's status.
  
- ### Velocity
+### Velocity
  * Attributes: Xcomponent, Ycomponent.
  * Calculates speed and angle of travel.
