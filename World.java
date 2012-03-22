@@ -1,7 +1,15 @@
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
 import javax.swing.*;
+import java.io.File;
+import java.util.Scanner;
 import java.util.ArrayList;
 
 public class World extends JFrame{
@@ -129,6 +137,34 @@ public class World extends JFrame{
 	    setLocationRelativeTo(null);
 	    setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+
+            // Music
+	    try {
+		playAudio();
+	    } catch (Exception e) {
+	    	
+	    }
 	}
 	
+	public static void playAudio() throws Exception {
+		AudioInputStream stream = AudioSystem.getAudioInputStream(new File("trololo.wav"));
+		
+		AudioFormat format = stream.getFormat();
+	    if (format.getEncoding() != AudioFormat.Encoding.PCM_SIGNED) {
+	      format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, format
+	          .getSampleRate(), format.getSampleSizeInBits() * 2, format
+	          .getChannels(), format.getFrameSize() * 2, format.getFrameRate(),
+	          true); // big endian
+	      stream = AudioSystem.getAudioInputStream(format, stream);
+	    }
+
+	    DataLine.Info info = new DataLine.Info(Clip.class, stream.getFormat(),
+	        ((int) stream.getFrameLength() * format.getFrameSize()));
+	    Clip clip = (Clip) AudioSystem.getLine(info);
+
+	    clip.open(stream);
+
+	    clip.loop(Clip.LOOP_CONTINUOUSLY);
+	}
+
 }
