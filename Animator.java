@@ -12,8 +12,6 @@ public class Animator extends JPanel implements MouseListener{
 	private static final long serialVersionUID = 1L;
 	private Projectile projectile;
 	private BufferedImage bgImage;
-<<<<<<< HEAD
-=======
 	
 	private Point initialPoint;
 	private Point endPoint;
@@ -28,7 +26,6 @@ public class Animator extends JPanel implements MouseListener{
 	private BufferedImage trollImage;
 	 */
 	
->>>>>>> fc71f189e436b39edc40f26029bd090b3cceaca4
 	private ArrayList<Target> targets = new ArrayList<Target>();
 	private ArrayList<Obstruction> obstructions = new ArrayList<Obstruction>();
 
