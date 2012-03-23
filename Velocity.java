@@ -1,26 +1,16 @@
 public class Velocity {
+	
+	// Object Attributes
 	private double xcomponent;
 	private double ycomponent;
 	
-	public Velocity(double xc, double yc) {
-		xcomponent = xc;
-		ycomponent = yc;
-	}
-
+	// Getters
 	public double getXComponent() {
 		return xcomponent;
 	}
 	
 	public double getYComponent() {
 		return ycomponent;
-	}
-	
-	public void setXComponent(double x) {
-		xcomponent = x;
-	}
-	
-	public void setYComponent(double y) {
-		ycomponent = y;
 	}
 	
 	public double getMagnitude() {
@@ -31,12 +21,28 @@ public class Velocity {
 		return Math.toDegrees(Math.atan(ycomponent/xcomponent));
 	}
 	
+	// Setters
+	public void setXComponent(double x) {
+		xcomponent = x;
+	}
+	
+	public void setYComponent(double y) {
+		ycomponent = y;
+	}
+	
+	// Class Methods
 	public void updateY(double a) {
 		ycomponent += a;
 	}
 	
 	public void updateX(double a) {
 		xcomponent *= a;
+	}
+	
+	// Constructor
+	public Velocity(double xc, double yc) {
+		xcomponent = xc;
+		ycomponent = yc;
 	}
 	
 }

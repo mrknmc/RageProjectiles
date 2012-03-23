@@ -1,36 +1,118 @@
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
 import javax.swing.*;
+import java.io.File;
 import java.util.Scanner;
 import java.util.ArrayList;
 
 public class World extends JFrame{
 
 	private static final long serialVersionUID = 1L;
-	double gravity = 540;	 													// Gravity constant, acceleration in px/s^2; 
-	int obstructionCount;														// Number of obstructions
-	static int targetCount;														// Number of targets
+	private double gravity = 540;	 													// Gravity constant, acceleration in px/s^2; 
+	private int obstructionCount;														// Number of obstructions
+	private static int targetCount;														// Number of targets
 	private ArrayList<Target> targets = new ArrayList<Target>();				// Target array containing targets
 	private ArrayList<Obstruction> obstructions = new ArrayList<Obstruction>();	// Obstruction array containing obstructions
-	Projectile projectile;														// Projectile
-	Timer timer;
-	Animator animator;															// Animator that will animate the GUI
-	int animSpeed = 17;															// Speed of the animation in ms. 25 FPS - 40ms 60FPS - 16.67ms
-	int pause = 10;																// Delay of the start of animation
-	double dt = 0.017;															// Time elapsed (initialised to zero)
+	private Projectile projectile;														// Projectile
+	private Timer timer;
+	private Animator animator;															// Animator that will animate the GUI
+	private int animSpeed = 17;															// Speed of the animation in ms. 25 FPS - 40ms 60FPS - 16.67ms
+	private int pause = 10;																// Delay of the start of animation
+	private double dt = 0.017;															// Time elapsed (initialised to zero)
 	private boolean finished = false;                                           // Keeps track of whether the current go has ended
 
-	// Constructs a new world with the given parameters	
+	
+	// Starts the world
+	public void startWorld() {
+
+		
+		// Wait until the user has provided input
+		animator.setHavePoints(false);
+	    boolean a = animator.getHavePoints(); 
+		while(a == false){
+			GameHandler.wait(300);
+			a = animator.getHavePoints();
+		}
+		
+		int angle = animator.getAngle();
+		int projSpeed = animator.getSpeed();
+		
+		System.out.println("Angle: " + angle + "; Speed: " + projSpeed);
+		
+	    double rad = Math.toRadians(angle);
+	    double xc = Math.cos(rad)*projSpeed;
+	    double yc = Math.sin(rad)*projSpeed;
+	    Velocity v = new Velocity(xc, yc);
+	    projectile.setVelocity(v);
+	   
+	    
+	    // The thing that gets called when the timer updates
+	    timer = new Timer(animSpeed, new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		
+	    		// Movement
+	    		int x = (int) (projectile.getVelocity().getXComponent() * dt);		// Calculates the x coordinate
+	    		projectile.getVelocity().updateY(-gravity*dt);						// Updates the y coordinate of the velocity
+	    		int y = -(int) (projectile.getVelocity().getYComponent() * dt);		// Calculates the y coordinate
+    			projectile.move(x,y);
+    			
+    			// Bouncing
+	    		if (projectile.getPosition().y >= 556 && projectile.getVelocity().getAngle() < 0) { 
+	    			projectile.bounce();
+	    			projectile.getVelocity().updateX(0.8);
+	    		}
+
+	    		// End current go
+	    		 if(projectile.getVelocity().getYComponent() == 0 && projectile.getBounceCount() > 8){
+	    			GameHandler.wait(1000);
+	    			projectile.reset(new Point(50,550));
+	    			System.out.println("Finished");
+	    			finished = true;
+	    			timer.stop();
+	    		}
+	    		 
+	    		 
+	    		// Redraw screen
+	    		animator.repaint();
+	    	}
+	    });
+	    
+		timer.setInitialDelay(pause);
+		timer.start();
+		
+		do {
+			GameHandler.wait(300);                                                              // Wait for current go to end
+		}
+		while (finished == false);
+		
+		this.startWorld();
+
+		/*boolean allTargetsDead = true;                                              // Conditions for ending game
+		for (Target t : targets){
+			allTargetsDead = allTargetsDead && !t.isAlive();
+			System.out.println(allTargetsDead + " && " + !t.isAlive());
+		}
+		
+		if (!allTargetsDead){
+			this.startWorld();
+		}*/
+		
+		 
+	}
+		
+	// Constructor	
 	public World(int anObstructionCount, int aTargetCount) {
 		obstructionCount = anObstructionCount;
 		targetCount = aTargetCount;
 		Point projectileOrigin = new Point(50, 550);
-		projectile = new Projectile(projectileOrigin, 54, 54);
+		projectile = new Projectile(projectileOrigin, 54, 54);				// Sets the height and width to 30px
 		
 		// Fills the obstructions array with obstructions
 		for (int i = 0; i < obstructionCount; i++) {
@@ -55,103 +137,34 @@ public class World extends JFrame{
 	    setLocationRelativeTo(null);
 	    setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+
+            // Music
+	    try {
+		playAudio();
+	    } catch (Exception e) {
+	    	
+	    }
 	}
 	
-	// Starts the world
-	public void startWorld() {
+	public static void playAudio() throws Exception {
+		AudioInputStream stream = AudioSystem.getAudioInputStream(new File("trololo.wav"));
+		
+		AudioFormat format = stream.getFormat();
+	    if (format.getEncoding() != AudioFormat.Encoding.PCM_SIGNED) {
+	      format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, format
+	          .getSampleRate(), format.getSampleSizeInBits() * 2, format
+	          .getChannels(), format.getFrameSize() * 2, format.getFrameRate(),
+	          true); // big endian
+	      stream = AudioSystem.getAudioInputStream(format, stream);
+	    }
 
-		
-		// Wait until the user has provided input 
-	    boolean a = animator.getHavePoints(); 
-		while(a == false){
-			wait(300);
-			a = animator.getHavePoints();
-		}
-		
+	    DataLine.Info info = new DataLine.Info(Clip.class, stream.getFormat(),
+	        ((int) stream.getFrameLength() * format.getFrameSize()));
+	    Clip clip = (Clip) AudioSystem.getLine(info);
 
+	    clip.open(stream);
 
-		int angle = animator.getAngle();
-		int projSpeed = animator.getSpeed();
-		
-		System.out.println("Angle: " + angle + "; Speed: " + projSpeed);
-		
-	    double rad = Math.toRadians(angle);
-	    double xc = Math.cos(rad)*projSpeed;
-	    double yc = Math.sin(rad)*projSpeed;
-	    Velocity v = new Velocity(xc, yc);
-	    projectile.setVelocity(v);
-	    animator.setHavePoints(false);
-	    
-	    // The thing that gets called when the timer updates
-	    timer = new Timer(animSpeed, new ActionListener() {
-	    	public void actionPerformed(ActionEvent e) {
-	    		int x = (int) (projectile.getVelocity().getXComponent() * dt);		// Calculates the x coordinate
-	    		projectile.getVelocity().updateY(-gravity*dt);						// Updates the y coordinate of the velocity
-	    		int y = -(int) (projectile.getVelocity().getYComponent() * dt);		// Calculates the y coordinate
-    			projectile.move(x,y);
-    			
-    			
-	    		if (projectile.getPosition().y >= 556 && projectile.getVelocity().getAngle() < 0) { // Bounce when projectile hits ground
-	    			projectile.bounce();
-	    			projectile.getVelocity().updateX(0.8);
-	    		}
-	    		
-	    		animator.repaint();
-	    		
-	    		 if( projectile.getVelocity().getYComponent() == 0){                // Ending conditions for current go
-	    			if(projectile.getHit() == false){
-	    				System.out.println("No hits");
-	    				try {                
-	    					projectile.setImage(ImageIO.read(new File("img/okayGuy.png")));
-	    				} catch (IOException ex) {
-	    					// handle exception...
-	    				}
-	    			}
-	    			animator.repaint();
-	    			System.out.println("Finished");
-	    			long t0 = System.currentTimeMillis();
-	    			long t1;
-	    			do { 
-	    				t1 = System.currentTimeMillis();
-	    			}
-	    			while (t1 - t0 < 1000);
-	    			projectile.reset(new Point(50,550));
-	    			finished = true;
-	    			timer.stop();
-	    		} 
-	    	}
-	    });
-	    
-		timer.setInitialDelay(pause);
-		timer.start();
-		
-		do {
-			wait(300);                                                              // Wait for current go to end
-		}
-		while (finished == false);
-		
-		this.startWorld();
-
-		/*
-		
-		boolean allTargetsDead = true;                                              // Conditions for ending game
-		for (Target t : targets){
-			allTargetsDead = allTargetsDead && t.isAlive();
-		}
-		
-		if (allTargetsDead == false){
-			this.startWorld();
-		}
-		
-		 */
+	    clip.loop(Clip.LOOP_CONTINUOUSLY);
 	}
-	
-	public void wait(int milliseconds){                                             // Wait for specified time  
-			long t0 = System.currentTimeMillis();
-			long t1;
-			do { 
-				t1 = System.currentTimeMillis();
-			}
-			while (t1 - t0 < milliseconds);
-	}
+
 }
