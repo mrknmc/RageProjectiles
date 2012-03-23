@@ -25,6 +25,13 @@ public abstract class Component {
 		this.position = p;
 	}
 	
+	public Point getCenter() {
+		int x = (int) getPosition().x + (getWidth()/2);
+		int y = (int) getPosition().y + (getHeight()/2);
+		
+		return (new Point(x,y));
+	}
+	
 	// Class Methods
 	public Point bRCorner() {
 		return new Point(position.x+width, position.y+height);

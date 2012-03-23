@@ -9,7 +9,6 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
 import javax.swing.*;
 import java.io.File;
-import java.util.Scanner;
 import java.util.ArrayList;
 
 public class World extends JFrame{

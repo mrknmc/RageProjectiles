@@ -87,7 +87,7 @@ public class Projectile extends Component {
 	}
 	
 	public boolean gonnaHit(Target t) {
-		double d = Math.pow(getPosition().getX() - t.getPosition().getX(), 2) + Math.pow(getPosition().getY() - t.getPosition().getY(), 2);
+		double d = Math.pow(getCenter().getX() - t.getCenter().getX(), 2) + Math.pow(getCenter().getY() - t.getCenter().getY(), 2);
 		if ((d <= Math.pow((getRadius() + t.getRadius()),2)) && t.isAlive() == true) {
 			hit = true;
 			try {                
