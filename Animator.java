@@ -89,6 +89,15 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 	}
 	
 	// Events
+	
+	public boolean getAllTargetsDead(){
+		for(Target t : targets){
+			if (t.isAlive()) {
+				return false;
+			}
+		}
+		return true;
+	}
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		//  Auto-generated method stub
