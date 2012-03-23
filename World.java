@@ -27,6 +27,7 @@ public class World extends JFrame{
 	private int pause = 10;																// Delay of the start of animation
 	private double dt = 0.017;															// Time elapsed (initialised to zero)
 	private boolean finished = false;                                           // Keeps track of whether the current go has ended
+	boolean allTargetsDead = true;
 
 	
 	// Starts the world
@@ -75,10 +76,13 @@ public class World extends JFrame{
 	    			projectile.reset(new Point(50,550));
 	    			System.out.println("Finished");
 	    			finished = true;
+	    			                                              // Conditions for ending game
+	 
 	    			timer.stop();
 	    		}
 	    		 
-	    		 
+	    		 allTargetsDead = animator.getAllTargetsDead();
+ 				System.out.println(allTargetsDead );
 	    		// Redraw screen
 	    		animator.repaint();
 	    	}
@@ -87,12 +91,15 @@ public class World extends JFrame{
 		timer.setInitialDelay(pause);
 		timer.start();
 		
-		do {
+		while (finished == false){
 			GameHandler.wait(300);                                                              // Wait for current go to end
+			if (!allTargetsDead){
+				this.startWorld();
+			}
 		}
-		while (finished == false);
+
 		
-		this.startWorld();
+		//this.startWorld();
 
 		/*boolean allTargetsDead = true;                                              // Conditions for ending game
 		for (Target t : targets){
@@ -106,6 +113,7 @@ public class World extends JFrame{
 		
 		 
 	}
+	
 		
 	// Constructor	
 	public World(int anObstructionCount, int aTargetCount) {
