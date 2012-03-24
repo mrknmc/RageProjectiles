@@ -11,26 +11,10 @@ import java.awt.Point;
 
 public class XMLParser { 
 
-	static XPath xpath;
-	static Document doc;
+	private XPath xpath;
+	private Document doc;
 
-	public static ArrayList<Level> xPathXML() throws XPathExpressionException { 
-
-		DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
-		domFactory.setNamespaceAware(true); // never forget this!
-		try {
-			DocumentBuilder builder = domFactory.newDocumentBuilder();
-			doc = builder.parse("levels.xml");
-		} catch (IOException e) {
-			System.out.println("Message "+e.getMessage());
-		} catch (SAXException e) {
-			System.out.println("Message "+e.getMessage());
-		} catch (ParserConfigurationException e) {
-			System.out.println("Message "+e.getMessage());
-		}
-
-		XPathFactory factory = XPathFactory.newInstance();
-		xpath = factory.newXPath();
+	public ArrayList<Level> parseLevels() throws XPathExpressionException { 
 
 		ArrayList<Level> levels = new ArrayList<Level>();
 		
@@ -90,26 +74,41 @@ public class XMLParser {
 
 	}
 
-	private static Point getPoint(String path) throws XPathExpressionException {
+	private Point getPoint(String path) throws XPathExpressionException {
 		String x = xpath.evaluate(path + "/xcoordinate", doc);
 		String y = xpath.evaluate(path + "/ycoordinate", doc);
-		System.out.println(x + "\t" + y);
 		return new Point(Integer.parseInt(x), Integer.parseInt(y));
 	}
 
-	private static int[] getDimension(String path) throws XPathExpressionException  {
+	private int[] getDimension(String path) throws XPathExpressionException  {
 		String w = xpath.evaluate(path + "/width", doc);
 		String h = xpath.evaluate(path + "/height", doc);
-		System.out.println(w + "\t" + h);
 		int[] dim = {Integer.parseInt(w), Integer.parseInt(h)};
 
 		return dim;
 	}
 
-	private static String getImage(String path) throws XPathExpressionException {
+	private String getImage(String path) throws XPathExpressionException {
 		String image = xpath.evaluate(path, doc);
-		System.out.println(image);
 		
 		return image;
+	}
+	
+	public XMLParser(String filename) {
+		DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+		domFactory.setNamespaceAware(true); // never forget this!
+		try {
+			DocumentBuilder builder = domFactory.newDocumentBuilder();
+			doc = builder.parse(filename);
+		} catch (IOException e) {
+			System.out.println("Message "+e.getMessage());
+		} catch (SAXException e) {
+			System.out.println("Message "+e.getMessage());
+		} catch (ParserConfigurationException e) {
+			System.out.println("Message "+e.getMessage());
+		}
+
+		XPathFactory factory = XPathFactory.newInstance();
+		xpath = factory.newXPath();
 	}
 }

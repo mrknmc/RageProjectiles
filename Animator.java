@@ -38,14 +38,14 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 	
 	public int getSpeed(){
 		double length = Math.sqrt(xdiff * xdiff + ydiff * ydiff);
-		if(length > 450){
+		if (length > 450) {
 			length = 450;
 		}
 		return (int)  (2 * length);		
 	}
 
 	// Setters
-	public void setHavePoints(boolean b){
+	public void setHavePoints(boolean b) {
 		this.havePoints = b;
 	}
 	
@@ -53,28 +53,22 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(bgImage, 0, 0, null);
-		g.setColor(new Color (0,0,0));
+		
+		for(Obstruction o : obstructions){
+			g.drawImage(o.getImage(), o.getPosition().x, o.getPosition().y, null);
+		}
 		
 		g.drawImage(projectile.getImage(), projectile.getPosition().x, projectile.getPosition().y, null);
 		
-		g.setColor(new Color(255,0,0));
-		
-		
-		for(Obstruction o : obstructions){
-			g.fillRect((int) o.getPosition().getX(), (int) o.getPosition().getY(), o.getWidth(), o.getHeight());
-		}
-		
-		g.setColor(new Color(0,255,0));
-
 		for(Target t : targets){
 			if (projectile.gonnaHitTarget(t) && t.isAlive()) {
 				t.destroy();
 				projectile.setHit(true);
-			}
-			if (t.isAlive()) {
+			} else if (t.isAlive()) {
 				g.drawImage(t.getImage(), t.getPosition().x, t.getPosition().y, null);
 			}
 		}
+		
 		g.setColor(new Color(0,0,0));
 		g.drawLine(initialPoint.x, initialPoint.y, endPoint.x,endPoint.y);
 		DecimalFormat df = new DecimalFormat("#.##");
@@ -92,6 +86,7 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 		}
 		return true;
 	}
+	
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		//  Auto-generated method stub
@@ -148,7 +143,7 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 		obstructions = level.getObstructions();
 		targets = level.getTargets();
 		try {                
-			bgImage = ImageIO.read(new File("img/bg.jpg"));
+			bgImage = ImageIO.read(new File("img/bg2.jpg"));
 		} catch (IOException ex) {
 			// handle exception...
 		}

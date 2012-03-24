@@ -59,8 +59,8 @@ public abstract class Component {
 		width = aWidth;
 		try {                
 			image = ImageIO.read(new File(i));
-		} catch (IOException ex) {
-			// handle exception...
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
 		}
 	}
 }

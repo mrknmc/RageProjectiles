@@ -15,7 +15,6 @@ public class World extends JFrame{
 
 	private static final long serialVersionUID = 1L;
 	private double gravity = 540;	 													// Gravity constant, acceleration in px/s^2; 
-	private ArrayList<Target> targets = new ArrayList<Target>();						// Target array containing targets
 	private ArrayList<Obstruction> obstructions = new ArrayList<Obstruction>();			// Obstruction array containing obstructions
 	private Projectile projectile;														// Projectile
 	private Timer timer;
@@ -30,7 +29,7 @@ public class World extends JFrame{
 	// Starts the world
 	public void startWorld() {
 		// Wait until the user has provided input
-		animator.setHavePoints(false);
+		animator.setHavePoints(false); //Don't need to set to false, because it's initialised to false
 	    boolean a = animator.getHavePoints(); 
 		while(a == false){
 			GameHandler.wait(300);
@@ -120,7 +119,6 @@ public class World extends JFrame{
 		animator = new Animator(level);	
 		projectile = level.getProjectile();
 		obstructions = level.getObstructions();
-		targets = level.getTargets();
 		
 		// GUI
 		add(animator);

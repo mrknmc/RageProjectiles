@@ -60,7 +60,7 @@ public class Projectile extends Component {
 	
 	public void bounce() {
 		if (bounceCount < 7) {
-			velocity.setYComponent(velocity.getYComponent() * -0.7);
+			velocity.setYComponent(velocity.getYComponent() * -0.5);
 			//bounceCount++;
 		} else {
 			velocity.setYComponent(0);
@@ -76,7 +76,7 @@ public class Projectile extends Component {
 	}
 	
 	public void bounceLeft() {
-			velocity.setXComponent(velocity.getXComponent() * -0.7);
+			velocity.setXComponent(velocity.getXComponent() * -0.5);
 	}
 	
 	public boolean gonnaHitTarget(Target t) {
@@ -103,10 +103,11 @@ public class Projectile extends Component {
 				bounceLeft();
 				return true;
 			}
-		} else if (getPosition().x <= (rightBorder - getRadius())) {
-			if (getPosition().y >= (topBorder - getHeight())) {
-				bounce();
-				return true;
+			if (getPosition().x <= (rightBorder - getRadius())) {
+				if (getPosition().y >= (topBorder - getHeight())) {
+					bounce();
+					return true;
+				}
 			}
 		}
 		return false;

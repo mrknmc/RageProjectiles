@@ -8,8 +8,9 @@ public class GameHandler {
 	static ArrayList<Level> levels = new ArrayList<Level>();
 	
 	public static void loadLevels() {
+		XMLParser parser = new XMLParser("levels.xml");
 		try {
-			levels = XMLParser.xPathXML();
+			levels = parser.parseLevels();
 		} catch (XPathExpressionException e) {
 			e.printStackTrace();
 		}
@@ -26,11 +27,10 @@ public class GameHandler {
 	
     public static void main(String[] args) {
     	loadLevels();
-    	/*
-		World world = new World(2,2); 
+    	Level l1 = levels.get(0);
+		World world = new World(l1); 
 		world.setVisible(true);
 		world.startWorld();
-		*/
     }
 }
 
