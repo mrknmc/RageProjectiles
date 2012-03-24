@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 public class Projectile extends Component {
 	
 	// Object Attributes
+	private final Point initialPosition;
 	private Velocity velocity;
 	private boolean hit = false;
 	private int bounceCount = 0;
@@ -38,8 +39,8 @@ public class Projectile extends Component {
 	}
 	
 	// Class Methods
-	public void reset(Point p){
-		this.setPosition(p);
+	public void reset() {
+		this.setPosition(initialPosition);
 		this.setVelocity(new Velocity(0,0));
 		bounceCount = 0;
 		hit = false;
@@ -60,8 +61,8 @@ public class Projectile extends Component {
 	
 	public void bounce() {
 		if (bounceCount < 7) {
-			velocity.setYComponent(velocity.getYComponent() * -0.5);
-			//bounceCount++;
+			velocity.setYComponent(velocity.getYComponent() * -0.5);			// Should make a boolean
+			velocity.setYComponent(velocity.getYComponent() * 0.8);
 		} else {
 			velocity.setYComponent(0);
 			if (hit == false) {
@@ -80,9 +81,10 @@ public class Projectile extends Component {
 	}
 	
 	public boolean gonnaHitTarget(Target t) {
-		double d = Math.pow(getCenter().getX() - t.getCenter().getX(), 2) + Math.pow(getCenter().getY() - t.getCenter().getY(), 2);
-		if ((d <= Math.pow((getRadius() + t.getRadius()),2)) && t.isAlive()) {
+		double d = Math.sqrt(Math.pow(getCenter().getX() - t.getCenter().getX(), 2) + Math.pow(getCenter().getY() - t.getCenter().getY(), 2));
+		if (d <= (getRadius() + t.getRadius())) {
 			hit = true;
+			t.destroy();
 			try {                
 				setImage(ImageIO.read(new File("img/Troll.png")));
 			} catch (IOException ex) {
@@ -116,6 +118,7 @@ public class Projectile extends Component {
 	// Constructor
 	public Projectile(Point p, int w, int h) {
 		super(p, w, h, "img/LolGuy.png");
+		initialPosition = p;
 		
 	}
 }

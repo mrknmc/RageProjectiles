@@ -52,19 +52,21 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 	// Class Methods
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		
+		// Draws background
 		g.drawImage(bgImage, 0, 0, null);
 		
+		// Draws obstructions
 		for(Obstruction o : obstructions){
 			g.drawImage(o.getImage(), o.getPosition().x, o.getPosition().y, null);
 		}
 		
+		// Draws projectile
 		g.drawImage(projectile.getImage(), projectile.getPosition().x, projectile.getPosition().y, null);
 		
+		// Draws targets
 		for(Target t : targets){
-			if (projectile.gonnaHitTarget(t) && t.isAlive()) {
-				t.destroy();
-				projectile.setHit(true);
-			} else if (t.isAlive()) {
+			if (t.isAlive()) {
 				g.drawImage(t.getImage(), t.getPosition().x, t.getPosition().y, null);
 			}
 		}

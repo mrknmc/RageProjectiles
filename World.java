@@ -1,4 +1,3 @@
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,11 +10,12 @@ import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
 
-public class World extends JFrame{
+public class World extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private double gravity = 540;	 													// Gravity constant, acceleration in px/s^2; 
 	private ArrayList<Obstruction> obstructions = new ArrayList<Obstruction>();			// Obstruction array containing obstructions
+	private ArrayList<Target> targets = new ArrayList<Target>();
 	private Projectile projectile;														// Projectile
 	private Timer timer;
 	private Animator animator;															// Animator that will animate the GUI
@@ -29,7 +29,7 @@ public class World extends JFrame{
 	// Starts the world
 	public void startWorld() {
 		// Wait until the user has provided input
-		animator.setHavePoints(false); //Don't need to set to false, because it's initialised to false
+		animator.setHavePoints(false);
 	    boolean a = animator.getHavePoints(); 
 		while(a == false){
 			GameHandler.wait(300);
@@ -61,21 +61,24 @@ public class World extends JFrame{
     			// Bouncing
 	    		if (projectile.getPosition().y >= 556 && projectile.getVelocity().getAngle() < 0) { 
 	    			projectile.bounce();
-	    			projectile.getVelocity().updateX(0.8);
 	    		}
 	    		
+	    		// Determining obstruction hit
 	    		for (Obstruction o : obstructions) {
 	    			projectile.gonnaHitObstruction(o);
 	    		}
 	    		
+	    		for (Target t : targets) {
+	    			projectile.gonnaHitTarget(t);
+	    		}
+	    		
 	    		// End current go
-	    		 if(projectile.getVelocity().getYComponent() == 0 && projectile.getBounceCount() > 8){
+	    		 if (projectile.getVelocity().getYComponent() == 0 && projectile.getBounceCount() > 8) {
 	    			GameHandler.wait(1000);
-	    			projectile.reset(new Point(50,550));
+	    			projectile.reset();
 	    			System.out.println("Finished");
 	    			finished = true;
-	    			                                              // Conditions for ending game
-	 
+	    			                                              // Conditions for ending game	 
 	    			timer.stop();
 	    		}
 	    		 
@@ -119,6 +122,7 @@ public class World extends JFrame{
 		animator = new Animator(level);	
 		projectile = level.getProjectile();
 		obstructions = level.getObstructions();
+		targets = level.getTargets();
 		
 		// GUI
 		add(animator);
