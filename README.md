@@ -1,7 +1,7 @@
 Angry Birds project for the Informatics 1 OOP tutorial
 ======================================================
 
-![World](http://f.cl.ly/items/2f0Z3K2X3930050D2Y0p/World.jpg)
+![World](http://i.imgur.com/4J9uU.jpg)
 
 ### GameHandler
  * Main Method is in GameHandler.java.
