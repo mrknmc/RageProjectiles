@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<levels>
+	<level id='1'>
+		<projectile>
+			<position>
+				<xcoordinate>50</xcoordinate>
+				<ycoordinate>550</ycoordinate>
+			</position>
+			<dimension>
+				<width>54</width>
+				<height>54</height>
+			</dimension>
+		</projectile>
+		<obstructions>
+			<obstruction id='1'>
+				<position>
+					<xcoordinate>417</xcoordinate>
+					<ycoordinate>542</ycoordinate>
+				</position>
+				<dimension>
+					<width>115</width>
+					<height>58</height>
+				</dimension>
+				<image>obs_115x58</image>
+			</obstruction>
+			<obstruction id='2'>
+				<position>
+					<xcoordinate>608</xcoordinate>
+					<ycoordinate>493</ycoordinate>
+				</position>
+				<dimension>
+					<width>115</width>
+					<height>107</height>
+				</dimension>
+				<image>obs_115x107</image>
+			</obstruction>
+			<obstruction id='3'>
+				<position>
+					<xcoordinate>807</xcoordinate>
+					<ycoordinate>443</ycoordinate>
+				</position>
+				<dimension>
+					<width>115</width>
+					<height>157</height>
+				</dimension>
+				<image>obs_115x157</image>
+			</obstruction>
+		</obstructions>
+		<targets>
+			<target id='1'>
+				<position>
+					<xcoordinate>474</xcoordinate>
+					<ycoordinate>490</ycoordinate>
+				</position>
+				<dimension>
+					<width>54</width>
+					<height>54</height>
+				</dimension>
+			</target>
+			<target id='2'>
+				<position>
+					<xcoordinate>665</xcoordinate>
+					<ycoordinate>441</ycoordinate>
+				</position>
+				<dimension>
+					<width>54</width>
+					<height>54</height>
+				</dimension>
+			</target>
+			<target id='3'>
+				<position>
+					<xcoordinate>864</xcoordinate>
+					<ycoordinate>391</ycoordinate>
+				</position>
+				<dimension>
+					<width>54</width>
+					<height>54</height>
+				</dimension>
+			</target>
+		</targets>
+	</level>
+</levels>
+			
+			
+		

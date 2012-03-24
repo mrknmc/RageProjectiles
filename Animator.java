@@ -16,14 +16,7 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 	private Projectile projectile;
 	private ArrayList<Target> targets = new ArrayList<Target>();
 	private ArrayList<Obstruction> obstructions = new ArrayList<Obstruction>();
-	
-	private BufferedImage bgImage;
-	/*
-	private BufferedImage projImage;
-	private BufferedImage tarImage;
-	private BufferedImage trollImage;
-	 */
-	
+	private BufferedImage bgImage;	
 	private Point initialPoint;
 	private Point endPoint;
 	private boolean havePoints = false;
@@ -59,21 +52,22 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 	// Class Methods
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-
 		g.drawImage(bgImage, 0, 0, null);
 		g.setColor(new Color (0,0,0));
 		
 		g.drawImage(projectile.getImage(), projectile.getPosition().x, projectile.getPosition().y, null);
+		
 		g.setColor(new Color(255,0,0));
-		/*
+		
+		
 		for(Obstruction o : obstructions){
 			g.fillRect((int) o.getPosition().getX(), (int) o.getPosition().getY(), o.getWidth(), o.getHeight());
 		}
-		*/
+		
 		g.setColor(new Color(0,255,0));
 
 		for(Target t : targets){
-			if (projectile.gonnaHit(t) && t.isAlive()) {
+			if (projectile.gonnaHitTarget(t) && t.isAlive()) {
 				t.destroy();
 				projectile.setHit(true);
 			}
@@ -144,15 +138,15 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 
 	@Override
 	public void mouseMoved(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	// Constructor
-	public Animator(Projectile p, ArrayList<Obstruction> o, ArrayList<Target> t) {
-		projectile = p;
-		obstructions = o;
-		targets = t;
+	public Animator(Level level) {
+		projectile = level.getProjectile();
+		obstructions = level.getObstructions();
+		targets = level.getTargets();
 		try {                
 			bgImage = ImageIO.read(new File("img/bg.jpg"));
 		} catch (IOException ex) {

@@ -1,8 +1,5 @@
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 
 public class Target extends Component {
 	
@@ -30,11 +27,6 @@ public class Target extends Component {
 	
 	// Constructor
 	public Target(Point p, int w, int h) {
-		super(p,w,h);
-		try {                
-			image = ImageIO.read(new File("img/MeGusta.png"));
-		} catch (IOException ex) {
-			// handle exception...
-		}
+		super(p, w, h, "img/MeGusta.png");
 	}
 }

@@ -15,10 +15,8 @@ public class World extends JFrame{
 
 	private static final long serialVersionUID = 1L;
 	private double gravity = 540;	 													// Gravity constant, acceleration in px/s^2; 
-	private int obstructionCount;														// Number of obstructions
-	private static int targetCount;														// Number of targets
-	private ArrayList<Target> targets = new ArrayList<Target>();				// Target array containing targets
-	private ArrayList<Obstruction> obstructions = new ArrayList<Obstruction>();	// Obstruction array containing obstructions
+	private ArrayList<Target> targets = new ArrayList<Target>();						// Target array containing targets
+	private ArrayList<Obstruction> obstructions = new ArrayList<Obstruction>();			// Obstruction array containing obstructions
 	private Projectile projectile;														// Projectile
 	private Timer timer;
 	private Animator animator;															// Animator that will animate the GUI
@@ -31,8 +29,6 @@ public class World extends JFrame{
 	
 	// Starts the world
 	public void startWorld() {
-
-		
 		// Wait until the user has provided input
 		animator.setHavePoints(false);
 	    boolean a = animator.getHavePoints(); 
@@ -68,7 +64,11 @@ public class World extends JFrame{
 	    			projectile.bounce();
 	    			projectile.getVelocity().updateX(0.8);
 	    		}
-
+	    		
+	    		for (Obstruction o : obstructions) {
+	    			projectile.gonnaHitObstruction(o);
+	    		}
+	    		
 	    		// End current go
 	    		 if(projectile.getVelocity().getYComponent() == 0 && projectile.getBounceCount() > 8){
 	    			GameHandler.wait(1000);
@@ -115,27 +115,12 @@ public class World extends JFrame{
 	
 		
 	// Constructor	
-	public World(int anObstructionCount, int aTargetCount) {
-		obstructionCount = anObstructionCount;
-		targetCount = aTargetCount;
-		Point projectileOrigin = new Point(50, 550);
-		projectile = new Projectile(projectileOrigin, 54, 54);				// Sets the height and width to 30px
+	public World(Level level) {
 		
-		// Fills the obstructions array with obstructions
-		for (int i = 0; i < obstructionCount; i++) {
-			Point obstructOrigin = new Point(600+(i*120), 557);
-			Obstruction o = new Obstruction(obstructOrigin, 80, 30);
-			obstructions.add(o);
-		}
-
-		// Fills the targets array with targets
-		for (int i = 0; i < targetCount; i++) {
-			Point targetOrigin = new Point(565+(i*120), 557);
-			Target t = new Target(targetOrigin, 30, 30);
-			targets.add(t);
-		} 
-		
-		animator = new Animator(projectile, obstructions, targets);
+		animator = new Animator(level);	
+		projectile = level.getProjectile();
+		obstructions = level.getObstructions();
+		targets = level.getTargets();
 		
 		// GUI
 		add(animator);
@@ -144,8 +129,7 @@ public class World extends JFrame{
 	    setLocationRelativeTo(null);
 	    setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-
-            // Music
+        // Music
 	    try {
 		playAudio();
 	    } catch (Exception e) {

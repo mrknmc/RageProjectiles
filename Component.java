@@ -1,4 +1,9 @@
 import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 public abstract class Component {
 
@@ -6,6 +11,7 @@ public abstract class Component {
 	private int height;
 	private int width;	
 	private Point position;
+	private BufferedImage image;
 
 	//Getters
 	public Point getPosition() {
@@ -18,6 +24,15 @@ public abstract class Component {
 
 	public int getHeight() {
 		return height;
+	}
+	
+	public BufferedImage getImage() {
+		return image;
+	}
+	
+	public void setImage(BufferedImage i) {
+		image = i;
+		System.out.println("IMAGE SET");
 	}
 	
 	// Setters
@@ -38,10 +53,14 @@ public abstract class Component {
 	}
 	
 	// Constructor
-	public Component(Point aPoint, int aWidth, int aHeight) {
+	public Component(Point aPoint, int aWidth, int aHeight, String i) {
 		position = aPoint;
 		height = aHeight;
 		width = aWidth;
+		try {                
+			image = ImageIO.read(new File(i));
+		} catch (IOException ex) {
+			// handle exception...
+		}
 	}
-
 }

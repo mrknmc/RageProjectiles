@@ -1,0 +1,115 @@
+import java.io.IOException;
+import org.xml.sax.SAXException;
+
+import org.w3c.dom.*;
+
+import javax.xml.parsers.*;
+import javax.xml.xpath.*;
+
+import java.util.ArrayList;
+import java.awt.Point;
+
+public class XMLParser { 
+
+	static XPath xpath;
+	static Document doc;
+
+	public static ArrayList<Level> xPathXML() throws XPathExpressionException { 
+
+		DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+		domFactory.setNamespaceAware(true); // never forget this!
+		try {
+			DocumentBuilder builder = domFactory.newDocumentBuilder();
+			doc = builder.parse("levels.xml");
+		} catch (IOException e) {
+			System.out.println("Message "+e.getMessage());
+		} catch (SAXException e) {
+			System.out.println("Message "+e.getMessage());
+		} catch (ParserConfigurationException e) {
+			System.out.println("Message "+e.getMessage());
+		}
+
+		XPathFactory factory = XPathFactory.newInstance();
+		xpath = factory.newXPath();
+
+		ArrayList<Level> levels = new ArrayList<Level>();
+		
+		int levelCount = Integer.parseInt(xpath.evaluate("count(//level)", doc));
+		
+		for (int i = 1; i <= levelCount; i++) {
+			// Projectile Position
+			Point projPoint = getPoint("//level[@id='" + i + "']//projectile/position");
+
+			// Projectile Dimensions
+			int[] projDim = getDimension("//level[@id='" + i + "']//projectile/dimension");
+
+			//Projectile init
+			Projectile projectile = new Projectile(projPoint, projDim[0], projDim[1]);
+
+			ArrayList<Obstruction> obstructions = new ArrayList<Obstruction>();
+			
+			int obstructionCount = Integer.parseInt(xpath.evaluate("count(//obstruction)", doc));
+			
+			for (int j = 1; j <= obstructionCount; j++) {
+				// Obstruction Position
+				Point obsPoint = getPoint("//level[@id='" + i + "']//obstruction[@id='" + j + "']/position");
+
+				// Obstruction Dimensions
+				int[] obsDim = getDimension("//level[@id='" + i + "']//obstruction[@id='" + j + "']/dimension");
+
+				// Obstruction Image
+				String obsImage = getImage("//level[@id='" + i + "']//obstruction[@id='" + j + "']/image");
+
+				// Obstruction init
+				Obstruction o = new Obstruction(obsPoint, obsDim[0], obsDim[1], obsImage);
+
+				obstructions.add(o);
+			}
+			
+			ArrayList<Target> targets = new ArrayList<Target>();
+			
+			int targetCount = Integer.parseInt(xpath.evaluate("count(//target)", doc));
+
+			for (int j = 1; j <= targetCount; j++) {
+				// Target Position
+				Point tarPoint = getPoint("//level[@id='" + i + "']//target[@id='" + j + "']/position");
+
+				// Target Dimensions
+				int[] tarDim = getDimension("//level[@id='" + i + "']//target[@id='" + j + "']/dimension");
+
+				// Target init
+				Target t = new Target(tarPoint, tarDim[0], tarDim[1]);
+
+				targets.add(t);
+			}
+			
+			Level level = new Level(projectile, obstructions, targets);
+			levels.add(level);
+		}
+		return levels;
+
+	}
+
+	private static Point getPoint(String path) throws XPathExpressionException {
+		String x = xpath.evaluate(path + "/xcoordinate", doc);
+		String y = xpath.evaluate(path + "/ycoordinate", doc);
+		System.out.println(x + "\t" + y);
+		return new Point(Integer.parseInt(x), Integer.parseInt(y));
+	}
+
+	private static int[] getDimension(String path) throws XPathExpressionException  {
+		String w = xpath.evaluate(path + "/width", doc);
+		String h = xpath.evaluate(path + "/height", doc);
+		System.out.println(w + "\t" + h);
+		int[] dim = {Integer.parseInt(w), Integer.parseInt(h)};
+
+		return dim;
+	}
+
+	private static String getImage(String path) throws XPathExpressionException {
+		String image = xpath.evaluate(path, doc);
+		System.out.println(image);
+		
+		return image;
+	}
+}
