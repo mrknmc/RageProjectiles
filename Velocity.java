@@ -35,10 +35,6 @@ public class Velocity {
 		ycomponent += a;
 	}
 	
-	public void updateX(double a) {
-		xcomponent *= a;
-	}
-	
 	// Constructor
 	public Velocity(double xc, double yc) {
 		xcomponent = xc;
