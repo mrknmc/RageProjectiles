@@ -13,16 +13,16 @@ import java.util.ArrayList;
 public class World extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private double gravity = 540;	 													// Gravity constant, acceleration in px/s^2; 
+	private final double gravity = 600;	 												// Gravity constant, acceleration in px/s^2; 
 	private ArrayList<Obstruction> obstructions = new ArrayList<Obstruction>();			// Obstruction array containing obstructions
 	private ArrayList<Target> targets = new ArrayList<Target>();
 	private Projectile projectile;														// Projectile
 	private Timer timer;
 	private Animator animator;															// Animator that will animate the GUI
-	private int animSpeed = 17;															// Speed of the animation in ms. 25 FPS - 40ms 60FPS - 16.67ms
-	private int pause = 10;																// Delay of the start of animation
-	private double dt = 0.017;															// Time elapsed (initialised to zero)
-	private boolean finished = false;                                           // Keeps track of whether the current go has ended
+	private final int animSpeed = 17;													// Speed of the animation in ms. 25 FPS - 40ms 60FPS - 16.67ms
+	private final int pause = 10;														// Delay of the start of animation
+	private final double dt = 0.017;													// Time elapsed (initialised to zero)
+	private boolean finished = false;                                           		// Keeps track of whether the current go has ended
 	boolean allTargetsDead = true;
 
 	
@@ -58,8 +58,8 @@ public class World extends JFrame {
 	    		int y = -(int) (projectile.getVelocity().getYComponent() * dt);		// Calculates the y coordinate
     			projectile.move(x,y);
     			
-    			// Bouncing
-	    		if (projectile.getPosition().y >= 556 && projectile.getVelocity().getAngle() < 0) { 
+    			// Bouncing, negative YComponent should take care of left bouncing
+	    		if (projectile.getPosition().y >= 557 && projectile.getVelocity().getYComponent() < 0) { 
 	    			projectile.bounce();
 	    		}
 	    		
@@ -68,12 +68,13 @@ public class World extends JFrame {
 	    			projectile.gonnaHitObstruction(o);
 	    		}
 	    		
+	    		// Determining target hit
 	    		for (Target t : targets) {
 	    			projectile.gonnaHitTarget(t);
 	    		}
 	    		
 	    		// End current go
-	    		 if (projectile.getVelocity().getYComponent() == 0 && projectile.getBounceCount() > 8) {
+	    		 if (projectile.getVelocity().getYComponent() == 0 && projectile.getBounceCount() > 11) {
 	    			GameHandler.wait(1000);
 	    			projectile.reset();
 	    			System.out.println("Finished");
@@ -94,7 +95,7 @@ public class World extends JFrame {
 		
 		while (finished == false){
 			GameHandler.wait(300);                                                              // Wait for current go to end
-			if (!allTargetsDead){
+			if (!allTargetsDead) {
 				this.startWorld();
 			}
 		}

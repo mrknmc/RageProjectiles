@@ -60,16 +60,18 @@ public class Projectile extends Component {
 	}
 	
 	public void bounce() {
-		if (bounceCount < 7) {
-			velocity.setYComponent(velocity.getYComponent() * -0.5);			// Should make a boolean
-			velocity.setYComponent(velocity.getYComponent() * 0.8);
-		} else {
-			velocity.setYComponent(0);
-			if (hit == false) {
-				try {                
-					setImage(ImageIO.read(new File("img/okayGuy.png")));
-				} catch (IOException ex) {
-					// handle exception...
+		if (getVelocity().getYComponent() < 0) {
+			if (bounceCount < 10) {
+				velocity.setYComponent(velocity.getYComponent() * -0.8);			// Should make a boolean
+				velocity.setXComponent(velocity.getXComponent() * 0.8);
+			} else {
+				velocity.setYComponent(0);
+				if (hit == false) {
+					try {                
+						setImage(ImageIO.read(new File("img/okayGuy.png")));
+					} catch (IOException ex) {
+						// handle exception...
+					}
 				}
 			}
 		}
@@ -77,7 +79,15 @@ public class Projectile extends Component {
 	}
 	
 	public void bounceLeft() {
-			velocity.setXComponent(velocity.getXComponent() * -0.5);
+		if (getVelocity().getXComponent() >= 0) {
+			velocity.setXComponent(velocity.getXComponent() * -0.6);
+		}
+	}
+	
+	public void bounceRight() {
+		if (getVelocity().getXComponent() <= 0) {
+			velocity.setXComponent(velocity.getXComponent() * -0.6);
+		}
 	}
 	
 	public boolean gonnaHitTarget(Target t) {
@@ -95,24 +105,46 @@ public class Projectile extends Component {
 		return false;
 	}
 	
-	public boolean gonnaHitObstruction(Obstruction o) {
+	public void gonnaHitObstruction(Obstruction o) {
 		int leftBorder = o.getPosition().x;
 		int rightBorder = o.getPosition().x + o.getWidth();
 		int topBorder = o.getPosition().y;
 		
-		if (getPosition().x >= (leftBorder - getWidth())) {
-			if (getPosition().y >= (topBorder - getRadius())) {
-				bounceLeft();
-				return true;
+		if ((getCenter().x + getRadius()) >= leftBorder) {
+			// Left corner bounce
+			if (getCenter().x <= leftBorder && getCenter().distance(o.getLeftCorner()) <= getRadius()) {
+				bounce();
+				// If moving right, bounce left
+				if (velocity.getXComponent() > 0) {
+					bounceLeft();
+				}
 			}
-			if (getPosition().x <= (rightBorder - getRadius())) {
-				if (getPosition().y >= (topBorder - getHeight())) {
+			// Left & right side bounce
+			else if (getCenter().y >= topBorder) {
+				// Left bounce if left from the obstruction center
+				if (getCenter().x < o.getCenter().x) {
+					bounceLeft();
+				}
+				// Right bounce otherwise
+				else {
+					bounceRight();
+				}
+			}
+			// Top bounce
+			else if (getCenter().x > leftBorder && getCenter().x <= rightBorder) {
+				if ((getCenter().y + getRadius()) >= topBorder) {
 					bounce();
-					return true;
+				}
+			}
+			// Right corner bounce
+			else if (getCenter().distance(o.getRightCorner()) <= getRadius()) {
+				bounce();
+				// If moving left, bounce right
+				if (velocity.getXComponent() < 0) {
+					bounceRight();
 				}
 			}
 		}
-		return false;
 	}
 	
 	// Constructor

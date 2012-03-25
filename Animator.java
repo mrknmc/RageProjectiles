@@ -41,7 +41,7 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 		if (length > 450) {
 			length = 450;
 		}
-		return (int)  (2 * length);		
+		return (int)  (1.8 * length);		
 	}
 
 	// Setters
