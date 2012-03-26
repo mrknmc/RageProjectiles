@@ -90,6 +90,11 @@ public class Projectile extends Component {
 			}
 		}
 		bounceCount++;
+		if(rotate < 0){
+			rotate -= 0.025;
+		} else {
+			rotate += 0.025;
+		}
 	}
 	
 	public void bounceLeft() {
