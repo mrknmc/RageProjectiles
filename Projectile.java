@@ -12,6 +12,7 @@ public class Projectile extends Component {
 	private boolean hit = false;
 	private int bounceCount = 0;
 	private double rotate = 0;
+	private double c = 1;
 	
 	// Getters
 	public Velocity getVelocity() {
@@ -19,7 +20,7 @@ public class Projectile extends Component {
 	}
 	
 	public double getRotate() {
-		return rotate;
+		return c*rotate;
 	}
 
 	public void setRotate(double rotate) {
@@ -90,11 +91,12 @@ public class Projectile extends Component {
 			}
 		}
 		bounceCount++;
-		if(rotate < 0){
-			rotate -= 0.025;
-		} else {
-			rotate += 0.025;
-		}
+		//if(rotate > 0){
+		//	rotate -= 0.1;
+		//} else {
+		//	rotate += 0.1;
+		//}
+		//c -= 0.02;
 	}
 	
 	public void bounceLeft() {
