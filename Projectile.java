@@ -11,10 +11,23 @@ public class Projectile extends Component {
 	private Velocity velocity;
 	private boolean hit = false;
 	private int bounceCount = 0;
+	private double rotate = 0;
 	
 	// Getters
 	public Velocity getVelocity() {
 		return velocity;
+	}
+	
+	public double getRotate() {
+		return rotate;
+	}
+
+	public void setRotate(double rotate) {
+		this.rotate += rotate;
+	}
+
+	public void resetRotate() {
+		this.rotate = 0;
 	}
 	
 	public int getRadius() {
@@ -44,6 +57,7 @@ public class Projectile extends Component {
 		this.setVelocity(new Velocity(0,0));
 		bounceCount = 0;
 		hit = false;
+		this.resetRotate();
 		try {
 			this.setImage(ImageIO.read(new File("img/LolGuy.png")));
 		} catch (IOException e1) {
@@ -81,12 +95,22 @@ public class Projectile extends Component {
 	public void bounceLeft() {
 		if (getVelocity().getXComponent() >= 0) {
 			velocity.setXComponent(velocity.getXComponent() * -0.6);
+			rotate = -rotate;
 		}
 	}
 	
 	public void bounceRight() {
 		if (getVelocity().getXComponent() <= 0) {
 			velocity.setXComponent(velocity.getXComponent() * -0.6);
+		}
+	}
+	
+	public void rotate(){
+		if (rotate < 0){
+			rotate -= 0.05;
+		}
+		else {
+			rotate += 0.05;
 		}
 	}
 	

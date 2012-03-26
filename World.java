@@ -58,9 +58,11 @@ public class World extends JFrame {
 	    		int y = -(int) (projectile.getVelocity().getYComponent() * dt);		// Calculates the y coordinate
     			projectile.move(x,y);
     			
+    			
     			// Bouncing, negative YComponent should take care of left bouncing
 	    		if (projectile.getPosition().y >= 557 && projectile.getVelocity().getYComponent() < 0) { 
 	    			projectile.bounce();
+	    			//projectile.setRotate(-0.025);
 	    		}
 	    		
 	    		// Determining obstruction hit
@@ -85,6 +87,7 @@ public class World extends JFrame {
 	    		 
 	    		 allTargetsDead = animator.getAllTargetsDead();
  				System.out.println(allTargetsDead );
+ 				projectile.rotate();
 	    		// Redraw screen
 	    		animator.repaint();
 	    	}
@@ -95,9 +98,10 @@ public class World extends JFrame {
 		
 		while (finished == false){
 			GameHandler.wait(300);                                                              // Wait for current go to end
-			if (!allTargetsDead) {
-				this.startWorld();
-			}
+		}
+		
+		if (!allTargetsDead) {
+			this.startWorld();
 		}
 
 		

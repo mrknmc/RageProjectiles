@@ -2,6 +2,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.*;
 import javax.swing.*;
 import java.io.File;
@@ -53,6 +54,8 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
+		
+		
 		// Draws background
 		g.drawImage(bgImage, 0, 0, null);
 		
@@ -61,8 +64,14 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 			g.drawImage(o.getImage(), o.getPosition().x, o.getPosition().y, null);
 		}
 		
+		Graphics2D g2d = (Graphics2D) g;
+		AffineTransform org = g2d.getTransform();
+		g2d.rotate(projectile.getRotate(),projectile.getCenter().x,projectile.getCenter().y);
+		
 		// Draws projectile
 		g.drawImage(projectile.getImage(), projectile.getPosition().x, projectile.getPosition().y, null);
+		
+		g2d.setTransform(org);
 		
 		// Draws targets
 		for(Target t : targets){
