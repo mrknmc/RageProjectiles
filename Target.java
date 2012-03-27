@@ -1,14 +1,9 @@
-import java.awt.Point;
+import java.awt.geom.Point2D;
 
 public class Target extends Component {
 	
 	// Object Attributes
 	private boolean alive = true;
-	
-	// Getters
-	public int getRadius() {
-		return getHeight() / 2;
-	}
 	
 	// Class Methods
 	public boolean isAlive() {
@@ -20,7 +15,7 @@ public class Target extends Component {
 	}
 	
 	// Constructor
-	public Target(Point p, int w, int h) {
+	public Target(Point2D.Double p, int w, int h) {
 		super(p, w, h, "img/MeGusta.png");
 	}
 }

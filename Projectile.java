@@ -1,4 +1,4 @@
-import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
 
@@ -7,7 +7,7 @@ import javax.imageio.ImageIO;
 public class Projectile extends Component {
 	
 	// Object Attributes
-	private final Point initialPosition;
+	private final Point2D.Double initialPosition;
 	private Velocity velocity;
 	private boolean hit = false;
 	private int bounceCount = 0;
@@ -30,10 +30,6 @@ public class Projectile extends Component {
 		this.rotate = 0;
 	}
 	
-	public int getRadius() {
-		return getHeight() / 2;
-	}
-	
 	public boolean getHit() {
 		return hit;		
 	}
@@ -53,6 +49,7 @@ public class Projectile extends Component {
 	
 	// Class Methods
 	public void reset() {
+		System.out.println(initialPosition.x + " " + initialPosition.y);
 		this.setPosition(initialPosition);
 		this.setVelocity(new Velocity(0,0));
 		bounceCount = 0;
@@ -60,23 +57,23 @@ public class Projectile extends Component {
 		this.resetRotate();
 		try {
 			this.setImage(ImageIO.read(new File("img/LolGuy.png")));
-		} catch (IOException e1) {
+		} catch (IOException e) {
 			
 		}
 	}
 		
-	public void move(int x, int y) {
-		x = getPosition().x + x;
-		y = getPosition().y + y;
-		
-		Point pos = new Point(x,y);		
-		setPosition(pos);
+	public void move(double dx, double dy) {
+		Point2D.Double pos = getPosition();
+		double x = getPosition().getX();
+		double y = getPosition().getY();
+		pos.setLocation(x+dx, y+dy);
 	}
 	
 	public void bounce() {
-		if (getVelocity().getYComponent() < 0) {
+		double yc = getVelocity().getYComponent();
+		if (yc < 0) {
 			if (bounceCount < 10) {
-				velocity.setYComponent(velocity.getYComponent() * -0.8);			// Should make a boolean
+				velocity.setYComponent(yc * -0.8);
 				velocity.setXComponent(velocity.getXComponent() * 0.8);
 			} else {
 				velocity.setYComponent(0);
@@ -93,19 +90,21 @@ public class Projectile extends Component {
 	}
 	
 	public void bounceLeft() {
-		if (getVelocity().getXComponent() >= 0) {
-			velocity.setXComponent(velocity.getXComponent() * -0.6);
+		double xc = getVelocity().getXComponent();
+		if (xc >= 0) {
+			velocity.setXComponent(xc * -0.6);
 			rotate = -rotate;
 		}
 	}
 	
 	public void bounceRight() {
-		if (getVelocity().getXComponent() <= 0) {
-			velocity.setXComponent(velocity.getXComponent() * -0.6);
+		double xc = getVelocity().getXComponent();
+		if (xc <= 0) {
+			velocity.setXComponent(xc * -0.6);
 		}
 	}
 	
-	public void rotate(){
+	public void rotate() {
 		if (rotate < 0){
 			rotate -= 0.05;
 		}
@@ -115,7 +114,7 @@ public class Projectile extends Component {
 	}
 	
 	public boolean gonnaHitTarget(Target t) {
-		double d = Math.sqrt(Math.pow(getCenter().getX() - t.getCenter().getX(), 2) + Math.pow(getCenter().getY() - t.getCenter().getY(), 2));
+		double d = getCenter().distance(t.getCenter());
 		if (d <= (getRadius() + t.getRadius())) {
 			hit = true;
 			t.destroy();
@@ -130,51 +129,60 @@ public class Projectile extends Component {
 	}
 	
 	public void gonnaHitObstruction(Obstruction o) {
-		int leftBorder = o.getPosition().x;
-		int rightBorder = o.getPosition().x + o.getWidth();
-		int topBorder = o.getPosition().y;
+		// Obstruction variables
+		double leftBorder = o.getPosition().x;
+		double rightBorder = o.getPosition().x + o.getWidth();
+		double topBorder = o.getPosition().y;
 		
-		if ((getCenter().x + getRadius()) >= leftBorder) {
+		// Projectile variables
+		Point2D.Double center = getCenter();
+		int radius = getRadius();
+		
+		if ((center.x + radius) >= leftBorder) {
 			// Left corner bounce
-			if (getCenter().x <= leftBorder && getCenter().distance(o.getLeftCorner()) <= getRadius()) {
+			if (center.x <= leftBorder && center.distance(o.getLeftCorner()) <= radius) {
 				bounce();
 				// If moving right, bounce left
 				if (velocity.getXComponent() > 0) {
 					bounceLeft();
 				}
+				System.out.println("Left corner");
 			}
 			// Left & right side bounce
-			else if (getCenter().y >= topBorder) {
+			else if (center.y >= topBorder) {
 				// Left bounce if left from the obstruction center
-				if (getCenter().x < o.getCenter().x) {
+				if (center.x < o.getCenter().x) {
 					bounceLeft();
+					System.out.println("Left side");
 				}
 				// Right bounce otherwise
-				else {
+				else if (center.x - radius <= rightBorder) {
 					bounceRight();
+					System.out.println("Right side");
 				}
 			}
 			// Top bounce
-			else if (getCenter().x > leftBorder && getCenter().x <= rightBorder) {
-				if ((getCenter().y + getRadius()) >= topBorder) {
+			else if (center.x > leftBorder && center.x <= rightBorder) {
+				if ((center.y + radius) >= topBorder) {
 					bounce();
+					System.out.println("Top");
 				}
 			}
 			// Right corner bounce
-			else if (getCenter().distance(o.getRightCorner()) <= getRadius()) {
+			else if (center.distance(o.getRightCorner()) <= radius) {
 				bounce();
 				// If moving left, bounce right
 				if (velocity.getXComponent() < 0) {
 					bounceRight();
+					System.out.println("Right corner");
 				}
 			}
 		}
 	}
 	
 	// Constructor
-	public Projectile(Point p, int w, int h) {
+	public Projectile(Point2D.Double p, int w, int h) {
 		super(p, w, h, "img/LolGuy.png");
 		initialPosition = p;
-		
 	}
 }

@@ -7,7 +7,7 @@ import javax.xml.parsers.*;
 import javax.xml.xpath.*;
 
 import java.util.ArrayList;
-import java.awt.Point;
+import java.awt.geom.Point2D;
 
 public class XMLParser { 
 
@@ -22,7 +22,7 @@ public class XMLParser {
 		
 		for (int i = 1; i <= levelCount; i++) {
 			// Projectile Position
-			Point projPoint = getPoint("//level[@id='" + i + "']//projectile/position");
+			Point2D.Double projPoint = getPoint("//level[@id='" + i + "']//projectile/position");
 
 			// Projectile Dimensions
 			int[] projDim = getDimension("//level[@id='" + i + "']//projectile/dimension");
@@ -36,7 +36,7 @@ public class XMLParser {
 			
 			for (int j = 1; j <= obstructionCount; j++) {
 				// Obstruction Position
-				Point obsPoint = getPoint("//level[@id='" + i + "']//obstruction[@id='" + j + "']/position");
+				Point2D.Double obsPoint = getPoint("//level[@id='" + i + "']//obstruction[@id='" + j + "']/position");
 
 				// Obstruction Dimensions
 				int[] obsDim = getDimension("//level[@id='" + i + "']//obstruction[@id='" + j + "']/dimension");
@@ -56,7 +56,7 @@ public class XMLParser {
 
 			for (int j = 1; j <= targetCount; j++) {
 				// Target Position
-				Point tarPoint = getPoint("//level[@id='" + i + "']//target[@id='" + j + "']/position");
+				Point2D.Double tarPoint = getPoint("//level[@id='" + i + "']//target[@id='" + j + "']/position");
 
 				// Target Dimensions
 				int[] tarDim = getDimension("//level[@id='" + i + "']//target[@id='" + j + "']/dimension");
@@ -74,10 +74,10 @@ public class XMLParser {
 
 	}
 
-	private Point getPoint(String path) throws XPathExpressionException {
+	private Point2D.Double getPoint(String path) throws XPathExpressionException {
 		String x = xpath.evaluate(path + "/xcoordinate", doc);
 		String y = xpath.evaluate(path + "/ycoordinate", doc);
-		return new Point(Integer.parseInt(x), Integer.parseInt(y));
+		return new Point2D.Double(Double.parseDouble(x), Double.parseDouble(y));
 	}
 
 	private int[] getDimension(String path) throws XPathExpressionException  {

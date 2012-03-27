@@ -53,9 +53,9 @@ public class World extends JFrame {
 	    	public void actionPerformed(ActionEvent e) {
 	    		
 	    		// Movement
-	    		int x = (int) (projectile.getVelocity().getXComponent() * dt);		// Calculates the x coordinate
-	    		projectile.getVelocity().updateY(-gravity*dt);						// Updates the y coordinate of the velocity
-	    		int y = -(int) (projectile.getVelocity().getYComponent() * dt);		// Calculates the y coordinate
+	    		double x = projectile.getVelocity().getXComponent() * dt;		// Calculates the x coordinate
+	    		projectile.getVelocity().updateY(-gravity*dt);					// Updates the y coordinate of the velocity
+	    		double y = - projectile.getVelocity().getYComponent() * dt;		// Calculates the y coordinate
     			projectile.move(x,y);
     			
     			
@@ -75,7 +75,7 @@ public class World extends JFrame {
 	    			projectile.gonnaHitTarget(t);
 	    		}
 	    		
-	    		// End current go
+	    		// End current go (SHOULD INCORPORATE XCOMPONENT HERE)
 	    		 if (projectile.getVelocity().getYComponent() == 0 && projectile.getBounceCount() > 11) {
 	    			GameHandler.wait(1000);
 	    			projectile.reset();
@@ -86,10 +86,11 @@ public class World extends JFrame {
 	    		}
 	    		 
 	    		 allTargetsDead = animator.getAllTargetsDead();
- 				System.out.println(allTargetsDead );
+ 				//System.out.println(allTargetsDead );
  				projectile.rotate();
 	    		// Redraw screen
 	    		animator.repaint();
+	    		//System.out.println(projectile.getVelocity().getXComponent());
 	    	}
 	    });
 	    

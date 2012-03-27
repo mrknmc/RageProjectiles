@@ -1,4 +1,4 @@
-import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -10,11 +10,11 @@ public abstract class Component {
 	// Object Attributes
 	private int height;
 	private int width;	
-	private Point position;
+	private Point2D.Double position;
 	private BufferedImage image;
 
 	//Getters
-	public Point getPosition() {
+	public Point2D.Double getPosition() {
 			return position;
 	}
 
@@ -26,34 +26,33 @@ public abstract class Component {
 		return height;
 	}
 	
+	// Getters
+	public int getRadius() {
+		return getHeight() / 2;
+	}
+	
 	public BufferedImage getImage() {
 		return image;
 	}
 	
 	public void setImage(BufferedImage i) {
 		image = i;
-		System.out.println("IMAGE SET");
 	}
 	
 	// Setters
-	public void setPosition(Point p) {
-		this.position = p;
+	public void setPosition(Point2D.Double p) {
+		position = p;
 	}
 	
-	public Point getCenter() {
-		int x = (int) getPosition().x + (getWidth()/2);
-		int y = (int) getPosition().y + (getHeight()/2);
+	public Point2D.Double getCenter() {
+		double x = getPosition().x + (getWidth()/2);
+		double y = getPosition().y + (getHeight()/2);
 		
-		return (new Point(x,y));
-	}
-	
-	// Class Methods
-	public Point bRCorner() {
-		return new Point(position.x+width, position.y+height);
+		return (new Point2D.Double(x,y));
 	}
 	
 	// Constructor
-	public Component(Point aPoint, int aWidth, int aHeight, String i) {
+	public Component(Point2D.Double aPoint, int aWidth, int aHeight, String i) {
 		position = aPoint;
 		height = aHeight;
 		width = aWidth;

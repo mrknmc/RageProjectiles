@@ -20,7 +20,7 @@ public class Menu extends JPanel {
 		super.paintComponent(g);
 		g.drawImage(bgImage, 0, 0, null);
 		for (Projectile p : projectiles) {
-			g.drawImage(p.getImage(), p.getPosition().x, p.getPosition().y, null);
+			g.drawImage(p.getImage(), (int) p.getPosition().x, (int) p.getPosition().y, null);
 		}
 	}
 	
