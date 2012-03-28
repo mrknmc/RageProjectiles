@@ -84,7 +84,6 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 		g.drawLine(initialPoint.x, initialPoint.y, endPoint.x,endPoint.y);
 		DecimalFormat df = new DecimalFormat("#.##");
 		g.drawString(this.getAngle() + "\u00b0 , " + df.format((((double) this.getSpeed()/900)* 100)) + "%", endPoint.x + 10, endPoint.y + 10);
-		
 	}
 	
 	// Events
@@ -161,7 +160,7 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 		this.initialPoint = new Point(0,0);
-		this.endPoint = new Point(0,0);
+		this.endPoint = new Point(-15,-15);		// endPoint starts off the jPanel
 	}
 	
 }
