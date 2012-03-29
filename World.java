@@ -103,6 +103,8 @@ public class World extends JFrame {
 		
 		if (!allTargetsDead) {
 			this.startWorld();
+		} else {
+			GameHandler.nextLevel();
 		}
 
 		

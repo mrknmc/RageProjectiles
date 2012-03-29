@@ -32,7 +32,8 @@ public class XMLParser {
 
 			ArrayList<Obstruction> obstructions = new ArrayList<Obstruction>();
 			
-			int obstructionCount = Integer.parseInt(xpath.evaluate("count(//obstruction)", doc));
+			int obstructionCount = Integer.parseInt(xpath.evaluate("count(//level[@id='" + i + "']//obstruction)", doc));
+			System.out.println(obstructionCount);
 			
 			for (int j = 1; j <= obstructionCount; j++) {
 				// Obstruction Position
@@ -52,7 +53,7 @@ public class XMLParser {
 			
 			ArrayList<Target> targets = new ArrayList<Target>();
 			
-			int targetCount = Integer.parseInt(xpath.evaluate("count(//target)", doc));
+			int targetCount = Integer.parseInt(xpath.evaluate("count(//level[@id='" + i + "']//target)", doc));
 
 			for (int j = 1; j <= targetCount; j++) {
 				// Target Position
@@ -73,7 +74,25 @@ public class XMLParser {
 		return levels;
 
 	}
+	
+	/*
+	public Level parseMenu() throws XPathExpressionException {
+		
+		// Projectile Position
+		Point2D.Double projPoint = getPoint("//menu/projectile/position");
 
+		// Projectile Dimensions
+		int[] projDim = getDimension("//menu/projectile/dimension");
+
+		//Projectile init
+		Projectile projectile = new Projectile(projPoint, projDim[0], projDim[1]);
+
+		Level menu = new Level(projectile, null, null);
+		
+		return menu;
+	}
+	*/
+	
 	private Point2D.Double getPoint(String path) throws XPathExpressionException {
 		String x = xpath.evaluate(path + "/xcoordinate", doc);
 		String y = xpath.evaluate(path + "/ycoordinate", doc);

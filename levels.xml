@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <levels>
 	<menu>
-		<projectile>
+		<projectile id="1">
 			<position>
 				<xcoordinate>50</xcoordinate>
 				<ycoordinate>550</ycoordinate>
@@ -11,7 +11,7 @@
 				<height>54</height>
 			</dimension>
 		</projectile>
-		<projectile>
+		<projectile id="2">
 			<position>
 				<xcoordinate>50</xcoordinate>
 				<ycoordinate>550</ycoordinate>
@@ -21,7 +21,7 @@
 				<height>54</height>
 			</dimension>
 		</projectile>
-		<projectile>
+		<projectile id="3">
 			<position>
 				<xcoordinate>50</xcoordinate>
 				<ycoordinate>550</ycoordinate>
@@ -31,7 +31,7 @@
 				<height>54</height>
 			</dimension>
 		</projectile>
-		<projectile>
+		<projectile id="4">
 			<position>
 				<xcoordinate>50</xcoordinate>
 				<ycoordinate>550</ycoordinate>
@@ -113,6 +113,85 @@
 				<position>
 					<xcoordinate>840</xcoordinate>
 					<ycoordinate>411</ycoordinate>
+				</position>
+				<dimension>
+					<width>54</width>
+					<height>54</height>
+				</dimension>
+			</target>
+		</targets>
+	</level>
+	<level id='2'>
+		<projectile>
+			<position>
+				<xcoordinate>50</xcoordinate>
+				<ycoordinate>550</ycoordinate>
+			</position>
+			<dimension>
+				<width>54</width>
+				<height>54</height>
+			</dimension>
+		</projectile>
+		<obstructions>
+			<obstruction id='1'>
+				<position>
+					<xcoordinate>348</xcoordinate>
+					<ycoordinate>443</ycoordinate>
+				</position>
+				<dimension>
+					<width>115</width>
+					<height>157</height>
+				</dimension>
+				<image>img/obs_115x157.jpg</image>
+			</obstruction>
+			<obstruction id='2'>
+				<position>
+					<xcoordinate>598</xcoordinate>
+					<ycoordinate>493</ycoordinate>
+				</position>
+				<dimension>
+					<width>115</width>
+					<height>107</height>
+				</dimension>
+				<image>img/obs_115x107.jpg</image>
+			</obstruction>
+			<obstruction id='3'>
+				<position>
+					<xcoordinate>809</xcoordinate>
+					<ycoordinate>542</ycoordinate>
+				</position>
+				<dimension>
+					<width>115</width>
+					<height>58</height>
+				</dimension>
+				<image>img/obs_115x58.jpg</image>
+			</obstruction>
+		</obstructions>
+		<targets>
+			<target id='1'>
+				<position>
+					<xcoordinate>472</xcoordinate>
+					<ycoordinate>540</ycoordinate>
+				</position>
+				<dimension>
+					<width>54</width>
+					<height>54</height>
+				</dimension>
+			</target>
+			<target id='2'>
+				<position>
+					<xcoordinate>625</xcoordinate>
+					<ycoordinate>461</ycoordinate>
+				</position>
+				<dimension>
+					<width>54</width>
+					<height>54</height>
+				</dimension>
+			</target>
+			<target id='3'>
+				<position>
+					<xcoordinate>835</xcoordinate>
+					<ycoordinate>510</ycoordinate>
 				</position>
 				<dimension>
 					<width>54</width>
