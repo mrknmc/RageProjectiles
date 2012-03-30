@@ -90,7 +90,6 @@ public class World extends JFrame {
  				projectile.rotate();
 	    		// Redraw screen
 	    		animator.repaint();
-	    		//System.out.println(projectile.getVelocity().getXComponent());
 	    	}
 	    });
 	    

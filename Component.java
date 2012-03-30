@@ -62,4 +62,8 @@ public abstract class Component {
 			System.out.println(e.getMessage());
 		}
 	}
+	
+	public Component() {
+		
+	}
 }

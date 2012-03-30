@@ -33,7 +33,6 @@ public class XMLParser {
 			ArrayList<Obstruction> obstructions = new ArrayList<Obstruction>();
 			
 			int obstructionCount = Integer.parseInt(xpath.evaluate("count(//level[@id='" + i + "']//obstruction)", doc));
-			System.out.println(obstructionCount);
 			
 			for (int j = 1; j <= obstructionCount; j++) {
 				// Obstruction Position

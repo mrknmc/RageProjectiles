@@ -23,6 +23,7 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 	private boolean havePoints = false;
 	private int xdiff;
 	private int ydiff;
+	//private Cloud[] clouds = new Cloud[3];
 
 	// Getters
 	public boolean getHavePoints(){
@@ -54,25 +55,30 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		
-		
 		// Draws background
 		g.drawImage(bgImage, 0, 0, null);
 		
+		/*
+		// Draw clouds
+		for (int i = 0; i < clouds.length; i++) {
+			clouds[i].advance();
+			g.drawImage(clouds[i].getImage(), (int) clouds[i].getPosition().x, (int) clouds[i].getPosition().y, null);
+		}
+		*/
 		// Draws obstructions
 		for(Obstruction o : obstructions){
 			g.drawImage(o.getImage(), (int) o.getPosition().x, (int) o.getPosition().y, null);
 		}
-		/*
+	
 		Graphics2D g2d = (Graphics2D) g;
 		AffineTransform org = g2d.getTransform();
 		g2d.rotate(projectile.getRotate(), projectile.getCenter().x,projectile.getCenter().y);
-		*/
+	
 		// Draws projectile
 		g.drawImage(projectile.getImage(), (int) projectile.getPosition().x, (int) projectile.getPosition().y, null);
-		/*
+		
 		g2d.setTransform(org);
-		*/
+		
 		// Draws targets
 		for(Target t : targets){
 			if (t.isAlive()) {
@@ -154,6 +160,11 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 		targets = level.getTargets();
 		try {                
 			bgImage = ImageIO.read(new File("img/bg2.jpg"));
+			/*
+			clouds[0] = new Cloud(new Point2D.Double(40, 30), "img/cloud1.png");
+			clouds[1] = new Cloud(new Point2D.Double(275, 150), "img/cloud2.png");
+			clouds[2] = new Cloud(new Point2D.Double(560, 40), "img/cloud3.png");
+			*/
 		} catch (IOException ex) {
 			// handle exception...
 		}

@@ -106,10 +106,10 @@ public class Projectile extends Component {
 	
 	public void rotate() {
 		if (rotate < 0){
-			rotate -= 0.05;
+			rotate -= 0.01;
 		}
 		else {
-			rotate += 0.05;
+			rotate += 0.01;
 		}
 	}
 	
@@ -146,7 +146,6 @@ public class Projectile extends Component {
 				if (velocity.getXComponent() > 0) {
 					bounceLeft();
 				}
-				System.out.println("Left corner");
 			}
 			// Right corner bounce
 			else if (center.distance(o.getRightCorner()) <= radius) {
@@ -154,7 +153,6 @@ public class Projectile extends Component {
 				// If moving left, bounce right
 				if (velocity.getXComponent() < 0) {
 					bounceRight();
-					System.out.println("Right corner");
 				}
 			}
 			// Left & right side bounce
@@ -162,19 +160,16 @@ public class Projectile extends Component {
 				// Left bounce if left from the obstruction center
 				if (center.x < o.getCenter().x) {
 					bounceLeft();
-					System.out.println("Left side");
 				}
 				// Right bounce otherwise
 				else if (center.x - radius <= rightBorder) {
 					bounceRight();
-					System.out.println("Right side");
 				}
 			}
 			// Top bounce
 			else if (center.x > leftBorder && center.x <= rightBorder) {
 				if ((center.y + radius) >= topBorder) {
 					bounce();
-					System.out.println("Top");
 				}
 			}
 		}
