@@ -131,7 +131,7 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		if(!havePoints){
-		this.havePoints = true;
+			this.havePoints = true;
 		}
 	}
 

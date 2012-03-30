@@ -63,10 +63,9 @@ public class Projectile extends Component {
 	}
 		
 	public void move(double dx, double dy) {
-		Point2D.Double pos = getPosition();
 		double x = getPosition().getX();
 		double y = getPosition().getY();
-		pos.setLocation(x+dx, y+dy);
+		setPosition(new Point2D.Double(x+dx, y+dy));
 	}
 	
 	public void bounce() {

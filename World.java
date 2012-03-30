@@ -31,15 +31,13 @@ public class World extends JFrame {
 		// Wait until the user has provided input
 		animator.setHavePoints(false);
 	    boolean a = animator.getHavePoints(); 
-		while(a == false){
+		while(a == false) {
 			GameHandler.wait(300);
 			a = animator.getHavePoints();
 		}
 		
 		int angle = animator.getAngle();
 		int projSpeed = animator.getSpeed();
-		
-		System.out.println("Angle: " + angle + "; Speed: " + projSpeed);
 		
 	    double rad = Math.toRadians(angle);
 	    double xc = Math.cos(rad)*projSpeed;
@@ -135,6 +133,7 @@ public class World extends JFrame {
 		add(animator);
 		setTitle("Angry Birds");
 	    setSize(960, 662);
+	    this.setResizable(false);
 	    setLocationRelativeTo(null);
 	    setDefaultCloseOperation(EXIT_ON_CLOSE);
 
