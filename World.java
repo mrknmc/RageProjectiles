@@ -101,6 +101,7 @@ public class World extends JFrame {
 		if (!allTargetsDead) {
 			this.startWorld();
 		} else {
+			this.setVisible(false);
 			GameHandler.nextLevel();
 		}
 
@@ -135,7 +136,7 @@ public class World extends JFrame {
 	    setSize(960, 662);
 	    this.setResizable(false);
 	    setLocationRelativeTo(null);
-	    setDefaultCloseOperation(EXIT_ON_CLOSE);
+	    //setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // Music
 	    try {

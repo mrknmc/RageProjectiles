@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import java.awt.geom.Point2D;
 
 public class Animator extends JPanel implements MouseListener, MouseMotionListener{
 
@@ -57,7 +58,6 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 		
 		// Draws background
 		g.drawImage(bgImage, 0, 0, null);
-		
 		/*
 		// Draw clouds
 		for (int i = 0; i < clouds.length; i++) {
@@ -69,7 +69,7 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 		for(Obstruction o : obstructions){
 			g.drawImage(o.getImage(), (int) o.getPosition().x, (int) o.getPosition().y, null);
 		}
-	
+		
 		Graphics2D g2d = (Graphics2D) g;
 		AffineTransform org = g2d.getTransform();
 		g2d.rotate(projectile.getRotate(), projectile.getCenter().x,projectile.getCenter().y);
