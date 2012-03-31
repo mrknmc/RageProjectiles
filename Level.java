@@ -1,13 +1,13 @@
 import java.util.ArrayList;
 
 public class Level {
-	Projectile projectile;
+	ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 	ArrayList<Obstruction> obstructions = new ArrayList<Obstruction>();
 	ArrayList<Target> targets = new ArrayList<Target>();
 	boolean finished = false;
 	
-	public Projectile getProjectile() {
-		return projectile;
+	public ArrayList<Projectile> getProjectiles() {
+		return projectiles;
 	}
 	
 	public ArrayList<Target> getTargets() {
@@ -18,8 +18,8 @@ public class Level {
 		return obstructions;
 	}
 	
-	public Level(Projectile p, ArrayList<Obstruction> obs, ArrayList<Target> ts) {
-		projectile = p;
+	public Level(ArrayList<Projectile> p, ArrayList<Obstruction> obs, ArrayList<Target> ts) {
+		projectiles = p;
 		obstructions = obs;
 		targets = ts;
 	}

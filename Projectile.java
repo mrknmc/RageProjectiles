@@ -4,15 +4,24 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class Projectile extends Component {
+public class Projectile extends ActiveComponent {
 	
 	// Object Attributes
-	private final Point2D.Double initialPosition;
+	//private final Point2D.Double initialPosition;
 	private Velocity velocity;
 	private boolean hit = false;
 	private int bounceCount = 0;
 	private double rotate = 0;
+	private boolean launched = false;
 	
+	public void setLaunched(boolean l) {
+		launched = l;
+	}
+
+	public boolean isLaunched() {
+		return launched;
+	}
+
 	// Getters
 	public Velocity getVelocity() {
 		return velocity;
@@ -47,6 +56,15 @@ public class Projectile extends Component {
 		hit = b;
 	}
 	
+	public void setBounceCount(int b) {
+		bounceCount = 0;
+	}
+	
+	public void resetVelocity() {
+		velocity = new Velocity(0,0);
+	}
+	
+	/*
 	// Class Methods
 	public void reset() {
 		System.out.println(initialPosition.x + " " + initialPosition.y);
@@ -61,6 +79,7 @@ public class Projectile extends Component {
 			
 		}
 	}
+	*/
 		
 	public void move(double dx, double dy) {
 		double x = getPosition().getX();
@@ -68,12 +87,12 @@ public class Projectile extends Component {
 		setPosition(new Point2D.Double(x+dx, y+dy));
 	}
 	
-	public void bounce() {
+	public void bounce(double a) {
 		double yc = getVelocity().getYComponent();
 		if (yc < 0) {
 			if (bounceCount < 10) {
-				velocity.setYComponent(yc * -0.8);
-				velocity.setXComponent(velocity.getXComponent() * 0.8);
+				velocity.setYComponent(yc * -a);
+				velocity.setXComponent(velocity.getXComponent() * a);
 			} else {
 				velocity.setYComponent(0);
 				if (hit == false) {
@@ -86,6 +105,10 @@ public class Projectile extends Component {
 			}
 		}
 		bounceCount++;
+	}
+	
+	public void bounce() {
+		bounce(0.8);
 	}
 	
 	public void bounceLeft() {
@@ -112,7 +135,7 @@ public class Projectile extends Component {
 		}
 	}
 	
-	public boolean gonnaHitTarget(Target t) {
+	public void gonnaHitTarget(Target t) {
 		double d = getCenter().distance(t.getCenter());
 		if (d <= (getRadius() + t.getRadius())) {
 			hit = true;
@@ -122,9 +145,7 @@ public class Projectile extends Component {
 			} catch (IOException ex) {
 				// handle exception...
 			}
-			return true;
 		}
-		return false;
 	}
 	
 	public void gonnaHitObstruction(Obstruction o) {
@@ -177,6 +198,7 @@ public class Projectile extends Component {
 	// Constructor
 	public Projectile(Point2D.Double p, int w, int h) {
 		super(p, w, h, "img/LolGuy.png");
-		initialPosition = p;
+		velocity = new Velocity(0,0);
+		//initialPosition = p;
 	}
 }

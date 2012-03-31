@@ -21,14 +21,23 @@ public class XMLParser {
 		int levelCount = Integer.parseInt(xpath.evaluate("count(//level)", doc));
 		
 		for (int i = 1; i <= levelCount; i++) {
-			// Projectile Position
-			Point2D.Double projPoint = getPoint("//level[@id='" + i + "']//projectile/position");
+			int projectileCount = Integer.parseInt(xpath.evaluate("//level[@id='" + i + "']/@projectiles", doc));
+			
+			ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
+			
+			for (int j = 1; j <= projectileCount; j++) {
+				// Projectile Position
+				//Point2D.Double projPoint = getPoint("//level[@id='" + i + "']//projectile/position");
+				Point2D.Double projPoint = new Point2D.Double(50, 400 - (60*j));
+				
+				// Projectile Dimensions
+				int[] projDim = getDimension("//level[@id='" + i + "']//projectile/dimension");
 
-			// Projectile Dimensions
-			int[] projDim = getDimension("//level[@id='" + i + "']//projectile/dimension");
+				//Projectile init
+				Projectile projectile = new Projectile(projPoint, projDim[0], projDim[1]);
 
-			//Projectile init
-			Projectile projectile = new Projectile(projPoint, projDim[0], projDim[1]);
+				projectiles.add(projectile);
+			}
 
 			ArrayList<Obstruction> obstructions = new ArrayList<Obstruction>();
 			
@@ -67,7 +76,7 @@ public class XMLParser {
 				targets.add(t);
 			}
 			
-			Level level = new Level(projectile, obstructions, targets);
+			Level level = new Level(projectiles, obstructions, targets);
 			levels.add(level);
 		}
 		return levels;

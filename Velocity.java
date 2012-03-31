@@ -3,6 +3,7 @@ public class Velocity {
 	// Object Attributes
 	private double xcomponent;
 	private double ycomponent;
+	private final int terminalVelocity = -400;
 	
 	// Getters
 	public double getXComponent() {
@@ -32,7 +33,9 @@ public class Velocity {
 	
 	// Class Methods
 	public void updateY(double a) {
-		ycomponent += a;
+		if (ycomponent > terminalVelocity) {
+			ycomponent += a;
+		}
 	}
 	
 	// Constructor

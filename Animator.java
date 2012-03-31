@@ -15,13 +15,14 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 	private static final long serialVersionUID = 1L;
 	
 	// Object Attributes
-	private Projectile projectile;
+	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 	private ArrayList<Target> targets = new ArrayList<Target>();
 	private ArrayList<Obstruction> obstructions = new ArrayList<Obstruction>();
 	private BufferedImage bgImage;	
 	private Point initialPoint;
 	private Point endPoint;
 	private boolean havePoints = false;
+	private boolean enableSetting = true;
 	private int xdiff;
 	private int ydiff;
 	//private Cloud[] clouds = new Cloud[3];
@@ -52,6 +53,13 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 		this.havePoints = b;
 	}
 	
+	// Set Level
+	public void setLevel(Level l) {
+		projectiles = l.getProjectiles();
+		targets = l.getTargets();
+		obstructions = l.getObstructions();
+	}
+	
 	// Class Methods
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -66,26 +74,32 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 		}
 		*/
 		// Draws obstructions
-		for(Obstruction o : obstructions){
+		for(Obstruction o : obstructions) {
 			g.drawImage(o.getImage(), (int) o.getPosition().x, (int) o.getPosition().y, null);
 		}
-		
+		/*
 		Graphics2D g2d = (Graphics2D) g;
 		AffineTransform org = g2d.getTransform();
 		g2d.rotate(projectile.getRotate(), projectile.getCenter().x,projectile.getCenter().y);
-	
-		// Draws projectile
-		g.drawImage(projectile.getImage(), (int) projectile.getPosition().x, (int) projectile.getPosition().y, null);
+		*/
 		
+		// Draws projectile
+		for(Projectile p : projectiles) {
+			if (p.isAlive()) {
+				g.drawImage(p.getImage(), (int) p.getPosition().x, (int) p.getPosition().y, null);
+			}
+		}
+		
+		/*
 		g2d.setTransform(org);
+		*/
 		
 		// Draws targets
-		for(Target t : targets){
+		for(Target t : targets) {
 			if (t.isAlive()) {
 				g.drawImage(t.getImage(), (int) t.getPosition().x, (int) t.getPosition().y, null);
 			}
 		}
-		
 		g.setColor(new Color(0,0,0));
 		g.drawLine(initialPoint.x, initialPoint.y, endPoint.x,endPoint.y);
 		DecimalFormat df = new DecimalFormat("#.##");
@@ -93,16 +107,6 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 	}
 	
 	// Events
-	
-	public boolean getAllTargetsDead(){
-		for(Target t : targets){
-			if (t.isAlive()) {
-				return false;
-			}
-		}
-		return true;
-	}
-	
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		//  Auto-generated method stub
@@ -123,26 +127,27 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		if(!havePoints){
-		initialPoint = new Point(arg0.getX(),arg0.getY());
+		if (!havePoints) {
+			initialPoint = new Point(arg0.getX(),arg0.getY());
 		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		if(!havePoints){
+		if (!havePoints) {
 			this.havePoints = true;
 		}
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
-		if(!havePoints){
-		endPoint = new Point(arg0.getX(),arg0.getY());
-		ydiff = this.endPoint.y - this.initialPoint.y;
-		xdiff = this.initialPoint.x - this.endPoint.x;
-		System.out.println(endPoint);
-		this.repaint();
+		if (!havePoints) {
+			endPoint = new Point(arg0.getX(),arg0.getY());
+			ydiff = this.endPoint.y - this.initialPoint.y;
+			xdiff = this.initialPoint.x - this.endPoint.x;
+			enableSetting = false;
+			//System.out.println(endPoint);
+			this.repaint();
 		}
 		
 	}
@@ -155,7 +160,7 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 
 	// Constructor
 	public Animator(Level level) {
-		projectile = level.getProjectile();
+		projectiles = level.getProjectiles();
 		obstructions = level.getObstructions();
 		targets = level.getTargets();
 		try {                

@@ -42,7 +42,7 @@
 			</dimension>
 		</projectile>
 	</menu>
-	<level id='1'>
+	<level id='1' projectiles='5'>
 		<projectile>
 			<position>
 				<xcoordinate>50</xcoordinate>
@@ -121,7 +121,7 @@
 			</target>
 		</targets>
 	</level>
-	<level id='2'>
+	<level id='2' projectiles='4'>
 		<projectile>
 			<position>
 				<xcoordinate>50</xcoordinate>
