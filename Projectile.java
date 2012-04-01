@@ -13,7 +13,17 @@ public class Projectile extends ActiveComponent {
 	private int bounceCount = 0;
 	private double rotate = 0;
 	private boolean launched = false;
+	private boolean landed = false;
+	private boolean ready = false;
 	
+	public boolean isReady() {
+		return ready;
+	}
+
+	public void setReady(boolean ready) {
+		this.ready = ready;
+	}
+
 	public void setLaunched(boolean l) {
 		launched = l;
 	}
@@ -22,6 +32,7 @@ public class Projectile extends ActiveComponent {
 		return launched;
 	}
 
+	
 	// Getters
 	public Velocity getVelocity() {
 		return velocity;
@@ -47,6 +58,10 @@ public class Projectile extends ActiveComponent {
 		return bounceCount;
 	}
 	
+	public boolean hasLanded() {
+		return landed;
+	}
+	
 	// Setters	
 	public void setVelocity(Velocity v) {
 		velocity = v;
@@ -62,6 +77,10 @@ public class Projectile extends ActiveComponent {
 	
 	public void resetVelocity() {
 		velocity = new Velocity(0,0);
+	}
+	
+	public void setLanded(boolean b) {
+		landed = b;
 	}
 	
 	/*
@@ -95,6 +114,7 @@ public class Projectile extends ActiveComponent {
 				velocity.setXComponent(velocity.getXComponent() * a);
 			} else {
 				velocity.setYComponent(0);
+				setLanded(true);
 				if (hit == false) {
 					try {                
 						setImage(ImageIO.read(new File("img/okayGuy.png")));
@@ -136,14 +156,16 @@ public class Projectile extends ActiveComponent {
 	}
 	
 	public void gonnaHitTarget(Target t) {
-		double d = getCenter().distance(t.getCenter());
-		if (d <= (getRadius() + t.getRadius())) {
-			hit = true;
-			t.destroy();
-			try {                
-				setImage(ImageIO.read(new File("img/Troll.png")));
-			} catch (IOException ex) {
-				// handle exception...
+		if (t.isAlive()) {
+			double d = getCenter().distance(t.getCenter());
+			if (d <= (getRadius() + t.getRadius())) {
+				hit = true;
+				t.destroy();
+				try {                
+					setImage(ImageIO.read(new File("img/Troll.png")));
+				} catch (IOException ex) {
+					// handle exception...
+				}
 			}
 		}
 	}

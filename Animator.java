@@ -22,7 +22,6 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 	private Point initialPoint;
 	private Point endPoint;
 	private boolean havePoints = false;
-	private boolean enableSetting = true;
 	private int xdiff;
 	private int ydiff;
 	//private Cloud[] clouds = new Cloud[3];
@@ -145,7 +144,6 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 			endPoint = new Point(arg0.getX(),arg0.getY());
 			ydiff = this.endPoint.y - this.initialPoint.y;
 			xdiff = this.initialPoint.x - this.endPoint.x;
-			enableSetting = false;
 			//System.out.println(endPoint);
 			this.repaint();
 		}
@@ -154,7 +152,6 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 
 	@Override
 	public void mouseMoved(MouseEvent arg0) {
-		
 		
 	}
 

@@ -4,6 +4,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.awt.geom.Point2D;
+import java.util.concurrent.CountDownLatch;
 
 public class World extends JFrame {
 
@@ -17,32 +18,79 @@ public class World extends JFrame {
 	private final int animSpeed = 17;													// Speed of the animation in ms. 25 FPS - 40ms 60FPS - 16.67ms
 	private final int pause = 10;														// Delay of the start of animation
 	private final double dt = 0.017;													// Time elapsed (initialised to zero)
-	//private boolean finished = false;                                           		// Keeps track of whether the current go has ended
+	private boolean finished = false;                                           		// Keeps track of whether the current go has ended
 	boolean allTargetsDead;
 	private int go = 0;
 	private Projectile curProjectile;
+	CountDownLatch latch;
 	
 	// Sets a new level
 	public void setLevel(Level l) {
-		animator.setLevel(l);
+		go = 0;
 		projectiles = l.getProjectiles();
 		targets = l.getTargets();
 		obstructions = l.getObstructions();
+		animator.setLevel(l);
 	}
-	
 	
 	// Starts the world
 	public void startWorld() {
+		// Get the current Projectile ready
+		curProjectile = projectiles.get(0);
+		curProjectile.setPosition(new Point2D.Double(50, 520));
+		curProjectile.setReady(true);
+		int projectileCount = projectiles.size();
+		
+		while (!allTargetsDead()) {
+			System.out.println("ready1:" + curProjectile.isReady());
+			process();
+			if (go >= projectileCount) {
+				break;
+			}
+			if (!allTargetsDead()) {
+				process();
+			}
+			try {
+				latch.await();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			animator.setHavePoints(false);
+		}
+		if (go >= projectileCount) {
+			RageProjectiles.resetLevel();
+		} else {
+			RageProjectiles.nextLevel();
+		}
+		/*
+		if (!allTargetsDead()) {
+			System.out.println("ready2:" + curProjectile.isReady());
+			process();
+		} else {
+
+		}
+		*/
+	}
+	
+	public void process() {
+		if (curProjectile.isReady()) {
+			launch();
+		}
+	    
+		timer.setInitialDelay(pause);
+		timer.start();
+	}
+	
+	public void launch() {
 		// Wait until the user has provided input
-		animator.setHavePoints(false);
 	    boolean a = animator.getHavePoints(); 
 	    
 		while(!a) {
-			GameHandler.wait(300);
+			RageProjectiles.wait(300);
 			a = animator.getHavePoints();
+			System.out.println("have points:" + a);
 		}
 		
-		curProjectile.setLaunched(true);
 		int angle = animator.getAngle();
 		int projSpeed = animator.getSpeed();
 		
@@ -51,14 +99,33 @@ public class World extends JFrame {
 	    double yc = Math.sin(rad)*projSpeed;
 	    Velocity v = new Velocity(xc, yc);
 	    curProjectile.setVelocity(v);
-	   
-	    
-	    // The thing that gets called when the timer updates
+		curProjectile.setLaunched(true);
+	}
+	
+	public boolean allTargetsDead(){
+		for (Target t : targets) {
+			if (t.isAlive()) {
+				return false;
+			}
+		}
+		return true;
+	}
+		
+	// Constructor	
+	public World(Level level) {
+		
+		animator = new Animator(level);	
+		projectiles = level.getProjectiles();
+		obstructions = level.getObstructions();
+		targets = level.getTargets();
+		
+		latch = new CountDownLatch(1);
+		
 	    timer = new Timer(animSpeed, new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
-	    		
+	    		System.out.println("In da timer");
 	    		// Projectile is launched and ready to hit targets
-	    		if (curProjectile.isLaunched()) {
+	    		if (curProjectile.isReady()) {
 	    			// Movement of the projectile
 	    			double x = curProjectile.getVelocity().getXComponent() * dt;		// Calculates the x coordinate
 	    			curProjectile.getVelocity().updateY(-gravity*dt);					// Updates the y coordinate of the velocity
@@ -83,107 +150,53 @@ public class World extends JFrame {
 
 	    			// End current go (SHOULD INCORPORATE XCOMPONENT HERE)
 	    			if (curProjectile.getVelocity().getYComponent() == 0 && curProjectile.getBounceCount() > 11) {
+	    				RageProjectiles.wait(1000);
 	    				go++;
-	    				GameHandler.wait(1000);			// This should call animator.repaint() until 1000ms passed
-	    				nextProjectile();
-	    				//curProjectile.reset();
-	    				System.out.println("Finished");
-	    				//finished = true;
+	    				curProjectile.destroy();
+	    				if (go < projectiles.size()) {
+	    					curProjectile = projectiles.get(go);
+	    					//curProjectile.reset();
+	    					System.out.println("Finished");
+	    					finished = true;
+	    				} else {
+	    					timer.stop();
+	    					latch.countDown();
+	    				}
 	    			}
-
 	    		}
 	    		// Projectile is getting ready for launch
 	    		else {
+	    			System.out.println(curProjectile.getBounceCount());
 	    			// Projectile is set
 	    			if (curProjectile.getBounceCount() > 0 && curProjectile.getPosition().y < 520) {
 	    				curProjectile.resetVelocity();
-	    				curProjectile.setBounceCount(0);
+	    				curProjectile.setReady(true);
 	    				System.out.println(curProjectile.getVelocity().getYComponent());
+	    				timer.stop();
+	    				latch.countDown();
 	    			}
-	    			
 	    			// Projectile is falling
 	    			else {
 	    				curProjectile.getVelocity().updateY(-gravity*dt);
+		    			double y = - curProjectile.getVelocity().getYComponent() * dt;
+		    			curProjectile.move(0,y);
 	    			}
-	    			
-	    			double y = - curProjectile.getVelocity().getYComponent() * dt;
-	    			curProjectile.move(0,y);
 	    			
 	    			// Projectile is bouncing to be set
 	    			if (curProjectile.getPosition().y >= 557 && curProjectile.getVelocity().getYComponent() < 0) { 
 	    				curProjectile.bounce(0.6);
 	    			}
 	    		}
-    			System.out.println("dt:" + dt);
-    			System.out.println("Velocity x: " + curProjectile.getVelocity().getXComponent() + "y: " + + curProjectile.getVelocity().getYComponent());
- 				
+    			System.out.println("Velocity x: " + curProjectile.getVelocity().getXComponent() + ", y: " + curProjectile.getVelocity().getYComponent());
+ 				System.out.println("Position x: " + curProjectile.getPosition().x + ", y: " + curProjectile.getPosition().y);
 	    		// Redraw screen
 	    		animator.repaint();
 	    	}
 	    });
-	    
-		timer.setInitialDelay(pause);
-		timer.start();
-		
-		
-		/* Not sure what this does
-		 * 
-		while (finished == false) {
-			GameHandler.wait(300);                                                              // Wait for current go to end
-		}
-		*/
-		
-		if (!allTargetsDead) {
-			this.startWorld();
-		} else {
-			GameHandler.nextLevel();
-		}
-
-		
-		//this.startWorld();
-
-		/*
-		 * boolean allTargetsDead = true;                                              // Conditions for ending game
-		for (Target t : targets){
-			allTargetsDead = allTargetsDead && !t.isAlive();
-			System.out.println(allTargetsDead + " && " + !t.isAlive());
-		}
-		
-		if (!allTargetsDead){
-			this.startWorld();
-		}
-		*/
-		
-		 
-	}
-	
-	public void nextProjectile() {
-		curProjectile.destroy();
-		curProjectile = projectiles.get(go);
-	}
-	
-	public boolean allTargetsDead(){
-		for (Target t : targets) {
-			if (t.isAlive()) {
-				return false;
-			}
-		}
-		return true;
-	}
-		
-	// Constructor	
-	public World(Level level) {
-		
-		animator = new Animator(level);	
-		projectiles = level.getProjectiles();
-		curProjectile = level.getProjectiles().get(0);
-		curProjectile.setPosition(new Point2D.Double(50, 520));
-		obstructions = level.getObstructions();
-		targets = level.getTargets();
 		
 		// GUI
 		add(animator);
-		setTitle("Angry Birds");
+		setTitle("Rage Projectiles");
 	    setSize(960, 662);
 	    setResizable(false);
 	    setLocationRelativeTo(null);
