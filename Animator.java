@@ -24,6 +24,7 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 	private boolean havePoints = false;
 	private int xdiff;
 	private int ydiff;
+	private boolean allowLaunch = true;
 	//private Cloud[] clouds = new Cloud[3];
 
 	// Getters
@@ -32,6 +33,7 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 	}
 		
 	public int getAngle(){
+		
 		int angle = (int) (Math.toDegrees(Math.atan((double) ydiff/xdiff)));
 		if (angle < 0){
 			angle = -angle;
@@ -123,25 +125,25 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		if(!havePoints){
+		if(!havePoints && allowLaunch){
 		initialPoint = new Point(arg0.getX(),arg0.getY());
 		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		if(!havePoints){
+		if(!havePoints && allowLaunch){
 			this.havePoints = true;
 		}
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
-		if(!havePoints){
+		if(!havePoints && allowLaunch){
 		endPoint = new Point(arg0.getX(),arg0.getY());
 		ydiff = this.endPoint.y - this.initialPoint.y;
 		xdiff = this.initialPoint.x - this.endPoint.x;
-		System.out.println(endPoint);
+		//System.out.println(endPoint);
 		this.repaint();
 		}
 		
@@ -153,6 +155,14 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 		
 	}
 
+	public void setAllowLaunch(boolean b){
+		allowLaunch = b;
+	}
+	
+	public boolean getAllowLaunch(){
+		return allowLaunch;
+	}
+	
 	// Constructor
 	public Animator(Level level) {
 		projectile = level.getProjectile();
@@ -170,7 +180,7 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 		}
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
-		this.initialPoint = new Point(0,0);
+		this.initialPoint = new Point(-1,-1);
 		this.endPoint = new Point(-15,-15);		// endPoint starts off the jPanel
 	}
 	

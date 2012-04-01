@@ -1,4 +1,4 @@
-import java.awt.Graphics;
+/*import java.awt.Graphics;
 import java.io.File;
 import java.io.IOException;
 import java.awt.image.*;
@@ -40,4 +40,4 @@ public class Menu extends JPanel {
 			projectiles.add(p);
 		}
 	}
-}
+}*/

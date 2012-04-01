@@ -24,7 +24,6 @@ public class World extends JFrame {
 	private final double dt = 0.017;													// Time elapsed (initialised to zero)
 	private boolean finished = false;                                           		// Keeps track of whether the current go has ended
 	boolean allTargetsDead = true;
-
 	
 	// Starts the world
 	public void startWorld() {
@@ -44,8 +43,9 @@ public class World extends JFrame {
 	    double yc = Math.sin(rad)*projSpeed;
 	    Velocity v = new Velocity(xc, yc);
 	    projectile.setVelocity(v);
-	   
-	    
+	    animator.setAllowLaunch(false);
+	    animator.setHavePoints(false);
+		
 	    // The thing that gets called when the timer updates
 	    timer = new Timer(animSpeed, new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
@@ -79,6 +79,7 @@ public class World extends JFrame {
 	    			projectile.reset();
 	    			System.out.println("Finished");
 	    			finished = true;
+	    			animator.setAllowLaunch(true);
 	    			                                              // Conditions for ending game	 
 	    			timer.stop();
 	    		}
@@ -99,6 +100,7 @@ public class World extends JFrame {
 		}
 		
 		if (!allTargetsDead) {
+
 			this.startWorld();
 		} else {
 			this.setVisible(false);
