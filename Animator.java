@@ -79,10 +79,18 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 		// Draws background
 		g.drawImage(bgImage, 0, 0, null);
 		
+		// Draws the launching line
+		g.setColor(Color.WHITE);
+		g.drawLine(initialPoint.x, initialPoint.y, endPoint.x,endPoint.y);
+		DecimalFormat df = new DecimalFormat("#.##");
+		g.setFont(new Font("Helvetica", Font.BOLD, 14));
+		g.drawString(this.getAngle() + "\u00b0 , " + df.format((((double) this.getSpeed()/900)* 100)) + "%", endPoint.x + 10, endPoint.y + 10);
+		
 		// Draws obstructions
 		for(Obstruction o : obstructions) {
 			g.drawImage(o.getImage(), (int) o.getPosition().x, (int) o.getPosition().y, null);
 		}
+		
 		/*
 		Graphics2D g2d = (Graphics2D) g;
 		AffineTransform org = g2d.getTransform();
@@ -106,12 +114,8 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 				g.drawImage(t.getImage(), (int) t.getPosition().x, (int) t.getPosition().y, null);
 			}
 		}
-		g.setColor(Color.WHITE);
-		g.drawLine(initialPoint.x, initialPoint.y, endPoint.x,endPoint.y);
-		DecimalFormat df = new DecimalFormat("#.##");
-		g.setFont(new Font("Helvetica", Font.BOLD, 14));
-		g.drawString(this.getAngle() + "\u00b0 , " + df.format((((double) this.getSpeed()/900)* 100)) + "%", endPoint.x + 10, endPoint.y + 10);
-
+		
+		// Display finished game image
 		if (finishedGame) {
 			BufferedImage end = null;
 			try {
@@ -120,7 +124,9 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 				e.printStackTrace();
 			}
 			g.drawImage(end, 0, 0, null);
-		} else if (failedGame) {
+		}
+		// Display failed game image
+		else if (failedGame) {
 			BufferedImage fail = null;
 			try {
 				fail = ImageIO.read(new File("img/fail.jpg"));
@@ -128,7 +134,9 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 				e.printStackTrace();
 			}
 			g.drawImage(fail, 0, 0, null);
-		} else if (nextLevel) {
+		}
+		// Display next level image
+		else if (nextLevel) {
 			BufferedImage next = null;
 			try {
 				next = ImageIO.read(new File("img/next.jpg"));
