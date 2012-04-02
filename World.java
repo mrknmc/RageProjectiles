@@ -46,18 +46,18 @@ public class World extends JFrame {
 		animator.repaint();
 		
 		while (!levelFailed && !levelFinished) {
+			animator.setHavePoints(false);
 			try {
 				process();
 				latch.await();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			animator.setHavePoints(false);
 		}
-		if (levelFailed) {
-			RageProjectiles.resetLevel();
-		} else {
+		if (levelFinished) {
 			RageProjectiles.nextLevel();
+		} else {
+			RageProjectiles.resetLevel();
 		}
 	}
 	
@@ -75,7 +75,6 @@ public class World extends JFrame {
 		while(!a) {
 			RageProjectiles.wait(300);
 			a = animator.getHavePoints();
-			System.out.println("have points:" + a);
 		}
 		
 		int angle = animator.getAngle();
@@ -102,6 +101,13 @@ public class World extends JFrame {
 		animator.setFailedGame(false);
 	}
 	
+	public void nextLevel() {
+		animator.setNextLevel(true);
+		animator.repaint();
+		RageProjectiles.wait(2000);
+		animator.setNextLevel(false);
+	}
+	
 	public boolean allTargetsDead() {
 		for (Target t : targets) {
 			if (t.isAlive()) {
@@ -123,9 +129,6 @@ public class World extends JFrame {
 		
 	    timer = new Timer(animSpeed, new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
-	    		System.out.println("In da timer");
-    			System.out.println("Velocity x: " + curProjectile.getVelocity().getXComponent() + ", y: " + curProjectile.getVelocity().getYComponent());
- 				System.out.println("Position x: " + curProjectile.getPosition().x + ", y: " + curProjectile.getPosition().y);
 	    		// Redraw screen
 	    		animator.repaint();
 	    		// Projectile is launched and ready to hit targets
@@ -159,13 +162,11 @@ public class World extends JFrame {
 	    				curProjectile.destroy();
 	    				if (allTargetsDead()) {
 	    					levelFinished = true;
-	    					System.out.println("Level finished");
 	    					latch.countDown();
 	    					timer.stop();
 	    				}
 	    				else if (go >= projectiles.size()) {
 	    					levelFailed = true;
-	    					System.out.println("Level failed");
 	    					latch.countDown();
 	    					timer.stop();
 	    				} else {
@@ -175,12 +176,10 @@ public class World extends JFrame {
 	    		}
 	    		// Projectile is getting ready for launch
 	    		else {
-	    			System.out.println(curProjectile.getBounceCount());
 	    			// Projectile is set
 	    			if (curProjectile.getBounceCount() > 0 && curProjectile.getPosition().y < 520) {
 	    				curProjectile.resetVelocity();
 	    				curProjectile.setReady(true);
-	    				System.out.println(curProjectile.getVelocity().getYComponent());
 	    				latch.countDown();
 	    				timer.stop();
 	    			}

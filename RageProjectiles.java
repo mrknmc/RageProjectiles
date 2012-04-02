@@ -51,6 +51,7 @@ public class RageProjectiles {
 		levelCount++;
 		if (levelCount < levels.size()) {
 			world.setLevel(levels.get(levelCount));
+			world.nextLevel();
 			world.startWorld();
 		} else {
 			world.finishedGame();
@@ -94,14 +95,14 @@ public class RageProjectiles {
     	loadLevels();
 		world = new World(levels.get(0));
 		world.setVisible(true);
-		/*
+		
         // Music
 	    try {
 	    	playAudio();
 	    } catch (Exception e) {
 	    	
 	    }
-		*/
+		
 		world.startWorld();
     }
 }

@@ -200,7 +200,7 @@
 			</target>
 		</targets>
 	</level>
-	<level id='3' projectiles='4'>
+	<level id='3' projectiles='3'>
 		<projectile>
 			<position>
 				<xcoordinate>50</xcoordinate>
@@ -214,7 +214,7 @@
 		<obstructions>
 			<obstruction id='1'>
 				<position>
-					<xcoordinate>348</xcoordinate>
+					<xcoordinate>387</xcoordinate>
 					<ycoordinate>461</ycoordinate>
 				</position>
 				<dimension>
@@ -226,17 +226,6 @@
 			<obstruction id='2'>
 				<position>
 					<xcoordinate>598</xcoordinate>
-					<ycoordinate>511</ycoordinate>
-				</position>
-				<dimension>
-					<width>115</width>
-					<height>107</height>
-				</dimension>
-				<image>img/obs_115x107.jpg</image>
-			</obstruction>
-			<obstruction id='3'>
-				<position>
-					<xcoordinate>809</xcoordinate>
 					<ycoordinate>560</ycoordinate>
 				</position>
 				<dimension>
@@ -245,12 +234,23 @@
 				</dimension>
 				<image>img/obs_115x58.jpg</image>
 			</obstruction>
+			<obstruction id='3'>
+				<position>
+					<xcoordinate>809</xcoordinate>
+					<ycoordinate>461</ycoordinate>
+				</position>
+				<dimension>
+					<width>115</width>
+					<height>157</height>
+				</dimension>
+				<image>img/obs_115x157.jpg</image>
+			</obstruction>
 		</obstructions>
 		<targets>
 			<target id='1'>
 				<position>
-					<xcoordinate>472</xcoordinate>
-					<ycoordinate>558</ycoordinate>
+					<xcoordinate>520</xcoordinate>
+					<ycoordinate>560</ycoordinate>
 				</position>
 				<dimension>
 					<width>54</width>
@@ -260,7 +260,7 @@
 			<target id='2'>
 				<position>
 					<xcoordinate>625</xcoordinate>
-					<ycoordinate>461</ycoordinate>
+					<ycoordinate>510</ycoordinate>
 				</position>
 				<dimension>
 					<width>54</width>
@@ -269,8 +269,8 @@
 			</target>
 			<target id='3'>
 				<position>
-					<xcoordinate>835</xcoordinate>
-					<ycoordinate>510</ycoordinate>
+					<xcoordinate>730</xcoordinate>
+					<ycoordinate>560</ycoordinate>
 				</position>
 				<dimension>
 					<width>54</width>
@@ -279,7 +279,6 @@
 			</target>
 		</targets>
 	</level>
-	
 </levels>
 			
 			

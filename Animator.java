@@ -8,7 +8,6 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import java.awt.geom.Point2D;
 
 public class Animator extends JPanel implements MouseListener, MouseMotionListener{
 
@@ -26,6 +25,7 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 	private int ydiff;
 	private boolean finishedGame = false;
 	private boolean failedGame = false;
+	private boolean nextLevel = false;
 
 	public void setFinishedGame(boolean b) {
 		finishedGame = b;
@@ -33,6 +33,10 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 	
 	public void setFailedGame(boolean b) {
 		failedGame = b;
+	}
+	
+	public void setNextLevel(boolean b) {
+		nextLevel = b;
 	}
 
 	// Getters
@@ -50,8 +54,8 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 	
 	public int getSpeed(){
 		double length = Math.sqrt(xdiff * xdiff + ydiff * ydiff);
-		if (length > 400) {
-			length = 400;
+		if (length > 450) {
+			length = 450;
 		}
 		return (int)  (2 * length);		
 	}
@@ -106,7 +110,8 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 		g.drawLine(initialPoint.x, initialPoint.y, endPoint.x,endPoint.y);
 		DecimalFormat df = new DecimalFormat("#.##");
 		g.setFont(new Font("Helvetica", Font.BOLD, 14));
-		g.drawString(this.getAngle() + "\u00b0 , " + df.format((((double) this.getSpeed()/800)* 100)) + "%", endPoint.x + 10, endPoint.y + 10);
+		g.drawString(this.getAngle() + "\u00b0 , " + df.format((((double) this.getSpeed()/900)* 100)) + "%", endPoint.x + 10, endPoint.y + 10);
+
 		if (finishedGame) {
 			BufferedImage end = null;
 			try {
@@ -123,6 +128,14 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 				e.printStackTrace();
 			}
 			g.drawImage(fail, 0, 0, null);
+		} else if (nextLevel) {
+			BufferedImage next = null;
+			try {
+				next = ImageIO.read(new File("img/next.jpg"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			g.drawImage(next, 0, 0, null);
 		}
 	}
 	
