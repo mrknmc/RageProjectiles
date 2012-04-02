@@ -55,6 +55,13 @@ public class RageProjectiles {
 			world.startWorld();
 		} else {
 			world.finishedGame();
+			levelCount = 0;
+			try {
+				world.setLevel(parser.getLevel(levelCount+1));
+			} catch (XPathExpressionException e) {
+				e.printStackTrace();
+			}
+			world.startWorld();
 		}
 	}
 	

@@ -45,6 +45,7 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 	}
 		
 	public int getAngle(){
+		
 		int angle = (int) (Math.toDegrees(Math.atan((double) ydiff/xdiff)));
 		if (angle < 0){
 			angle = -angle;
@@ -54,8 +55,8 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 	
 	public int getSpeed(){
 		double length = Math.sqrt(xdiff * xdiff + ydiff * ydiff);
-		if (length > 450) {
-			length = 450;
+		if (length > 420) {
+			length = 420;
 		}
 		return (int)  (2 * length);		
 	}
@@ -84,7 +85,7 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 		g.drawLine(initialPoint.x, initialPoint.y, endPoint.x,endPoint.y);
 		DecimalFormat df = new DecimalFormat("#.##");
 		g.setFont(new Font("Helvetica", Font.BOLD, 14));
-		g.drawString(this.getAngle() + "\u00b0 , " + df.format((((double) this.getSpeed()/900)* 100)) + "%", endPoint.x + 10, endPoint.y + 10);
+		g.drawString(this.getAngle() + "\u00b0 , " + df.format((((double) this.getSpeed()/840)* 100)) + "%", endPoint.x + 10, endPoint.y + 10);
 		
 		// Draws obstructions
 		for(Obstruction o : obstructions) {
@@ -196,7 +197,7 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 	public void mouseMoved(MouseEvent arg0) {
 		
 	}
-
+	
 	// Constructor
 	public Animator(Level level) {
 		projectiles = level.getProjectiles();
@@ -209,7 +210,7 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 		}
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
-		this.initialPoint = new Point(0,0);
+		this.initialPoint = new Point(-1,-1);
 		this.endPoint = new Point(-15,-15);		// endPoint starts off the jPanel
 	}
 	

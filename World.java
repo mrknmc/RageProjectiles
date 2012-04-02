@@ -91,6 +91,7 @@ public class World extends JFrame {
 	public void finishedGame() {
 		animator.setFinishedGame(true);
 		animator.repaint();
+		RageProjectiles.wait(2000);
 		animator.setFinishedGame(false);
 	}
 	
@@ -116,7 +117,7 @@ public class World extends JFrame {
 		}
 		return true;
 	}
-	
+
 	// Constructor	
 	public World(Level level) {
 		
