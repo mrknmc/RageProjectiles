@@ -82,23 +82,6 @@ public class Projectile extends ActiveComponent {
 	public void setLanded(boolean b) {
 		landed = b;
 	}
-	
-	/*
-	// Class Methods
-	public void reset() {
-		System.out.println(initialPosition.x + " " + initialPosition.y);
-		this.setPosition(initialPosition);
-		this.setVelocity(new Velocity(0,0));
-		bounceCount = 0;
-		hit = false;
-		this.resetRotate();
-		try {
-			this.setImage(ImageIO.read(new File("img/LolGuy.png")));
-		} catch (IOException e) {
-			
-		}
-	}
-	*/
 		
 	public void move(double dx, double dy) {
 		double x = getPosition().getX();

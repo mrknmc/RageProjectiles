@@ -5,6 +5,10 @@ public class ActiveComponent extends Component {
 	// Object Attributes
 	private boolean alive = true;
 	
+	public void setAlive(boolean b) {
+		alive = b;
+	}
+
 	// Class Methods
 	public boolean isAlive() {
 		return alive;

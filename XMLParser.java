@@ -21,85 +21,71 @@ public class XMLParser {
 		int levelCount = Integer.parseInt(xpath.evaluate("count(//level)", doc));
 		
 		for (int i = 1; i <= levelCount; i++) {
-			int projectileCount = Integer.parseInt(xpath.evaluate("//level[@id='" + i + "']/@projectiles", doc));
-			
-			ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
-			
-			for (int j = 1; j <= projectileCount; j++) {
-				// Projectile Position
-				//Point2D.Double projPoint = getPoint("//level[@id='" + i + "']//projectile/position");
-				Point2D.Double projPoint = new Point2D.Double(50, 400 - (60*j));
-				
-				// Projectile Dimensions
-				int[] projDim = getDimension("//level[@id='" + i + "']//projectile/dimension");
-
-				//Projectile init
-				Projectile projectile = new Projectile(projPoint, projDim[0], projDim[1]);
-
-				projectiles.add(projectile);
-			}
-
-			ArrayList<Obstruction> obstructions = new ArrayList<Obstruction>();
-			
-			int obstructionCount = Integer.parseInt(xpath.evaluate("count(//level[@id='" + i + "']//obstruction)", doc));
-			
-			for (int j = 1; j <= obstructionCount; j++) {
-				// Obstruction Position
-				Point2D.Double obsPoint = getPoint("//level[@id='" + i + "']//obstruction[@id='" + j + "']/position");
-
-				// Obstruction Dimensions
-				int[] obsDim = getDimension("//level[@id='" + i + "']//obstruction[@id='" + j + "']/dimension");
-
-				// Obstruction Image
-				String obsImage = getImage("//level[@id='" + i + "']//obstruction[@id='" + j + "']/image");
-
-				// Obstruction init
-				Obstruction o = new Obstruction(obsPoint, obsDim[0], obsDim[1], obsImage);
-
-				obstructions.add(o);
-			}
-			
-			ArrayList<Target> targets = new ArrayList<Target>();
-			
-			int targetCount = Integer.parseInt(xpath.evaluate("count(//level[@id='" + i + "']//target)", doc));
-
-			for (int j = 1; j <= targetCount; j++) {
-				// Target Position
-				Point2D.Double tarPoint = getPoint("//level[@id='" + i + "']//target[@id='" + j + "']/position");
-
-				// Target Dimensions
-				int[] tarDim = getDimension("//level[@id='" + i + "']//target[@id='" + j + "']/dimension");
-
-				// Target init
-				Target t = new Target(tarPoint, tarDim[0], tarDim[1]);
-
-				targets.add(t);
-			}
-			
-			Level level = new Level(projectiles, obstructions, targets);
-			levels.add(level);
+			levels.add(getLevel(i));
 		}
 		return levels;
 
 	}
 	
-	/*
-	public Level parseMenu() throws XPathExpressionException {
+	public Level getLevel(int i) throws XPathExpressionException {
+		int projectileCount = Integer.parseInt(xpath.evaluate("//level[@id='" + i + "']/@projectiles", doc));
 		
-		// Projectile Position
-		Point2D.Double projPoint = getPoint("//menu/projectile/position");
-
-		// Projectile Dimensions
-		int[] projDim = getDimension("//menu/projectile/dimension");
-
-		//Projectile init
-		Projectile projectile = new Projectile(projPoint, projDim[0], projDim[1]);
-
-		Level menu = new Level(projectile, null, null);
+		ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 		
-		return menu;
+		for (int j = 1; j <= projectileCount; j++) {
+			// Projectile Position
+			//Point2D.Double projPoint = getPoint("//level[@id='" + i + "']//projectile/position");
+			Point2D.Double projPoint = new Point2D.Double(50, 400 - (60*j));
+			
+			// Projectile Dimensions
+			int[] projDim = getDimension("//level[@id='" + i + "']//projectile/dimension");
+
+			//Projectile init
+			Projectile projectile = new Projectile(projPoint, projDim[0], projDim[1]);
+
+			projectiles.add(projectile);
+		}
+
+		ArrayList<Obstruction> obstructions = new ArrayList<Obstruction>();
+		
+		int obstructionCount = Integer.parseInt(xpath.evaluate("count(//level[@id='" + i + "']//obstruction)", doc));
+		
+		for (int j = 1; j <= obstructionCount; j++) {
+			// Obstruction Position
+			Point2D.Double obsPoint = getPoint("//level[@id='" + i + "']//obstruction[@id='" + j + "']/position");
+
+			// Obstruction Dimensions
+			int[] obsDim = getDimension("//level[@id='" + i + "']//obstruction[@id='" + j + "']/dimension");
+
+			// Obstruction Image
+			String obsImage = getImage("//level[@id='" + i + "']//obstruction[@id='" + j + "']/image");
+
+			// Obstruction init
+			Obstruction o = new Obstruction(obsPoint, obsDim[0], obsDim[1], obsImage);
+
+			obstructions.add(o);
+		}
+		
+		ArrayList<Target> targets = new ArrayList<Target>();
+		
+		int targetCount = Integer.parseInt(xpath.evaluate("count(//level[@id='" + i + "']//target)", doc));
+
+		for (int j = 1; j <= targetCount; j++) {
+			// Target Position
+			Point2D.Double tarPoint = getPoint("//level[@id='" + i + "']//target[@id='" + j + "']/position");
+
+			// Target Dimensions
+			int[] tarDim = getDimension("//level[@id='" + i + "']//target[@id='" + j + "']/dimension");
+
+			// Target init
+			Target t = new Target(tarPoint, tarDim[0], tarDim[1]);
+
+			targets.add(t);
+		}
+		
+		Level level = new Level(projectiles, obstructions, targets);
+		return level;
 	}
-	*/
 	
 	private Point2D.Double getPoint(String path) throws XPathExpressionException {
 		String x = xpath.evaluate(path + "/xcoordinate", doc);

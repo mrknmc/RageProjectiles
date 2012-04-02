@@ -24,7 +24,16 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 	private boolean havePoints = false;
 	private int xdiff;
 	private int ydiff;
-	//private Cloud[] clouds = new Cloud[3];
+	private boolean finishedGame = false;
+	private boolean failedGame = false;
+
+	public void setFinishedGame(boolean b) {
+		finishedGame = b;
+	}
+	
+	public void setFailedGame(boolean b) {
+		failedGame = b;
+	}
 
 	// Getters
 	public boolean getHavePoints(){
@@ -41,10 +50,10 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 	
 	public int getSpeed(){
 		double length = Math.sqrt(xdiff * xdiff + ydiff * ydiff);
-		if (length > 450) {
-			length = 450;
+		if (length > 400) {
+			length = 400;
 		}
-		return (int)  (1.8 * length);		
+		return (int)  (2 * length);		
 	}
 
 	// Setters
@@ -65,13 +74,7 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 		
 		// Draws background
 		g.drawImage(bgImage, 0, 0, null);
-		/*
-		// Draw clouds
-		for (int i = 0; i < clouds.length; i++) {
-			clouds[i].advance();
-			g.drawImage(clouds[i].getImage(), (int) clouds[i].getPosition().x, (int) clouds[i].getPosition().y, null);
-		}
-		*/
+		
 		// Draws obstructions
 		for(Obstruction o : obstructions) {
 			g.drawImage(o.getImage(), (int) o.getPosition().x, (int) o.getPosition().y, null);
@@ -99,10 +102,28 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 				g.drawImage(t.getImage(), (int) t.getPosition().x, (int) t.getPosition().y, null);
 			}
 		}
-		g.setColor(new Color(0,0,0));
+		g.setColor(Color.WHITE);
 		g.drawLine(initialPoint.x, initialPoint.y, endPoint.x,endPoint.y);
 		DecimalFormat df = new DecimalFormat("#.##");
-		g.drawString(this.getAngle() + "\u00b0 , " + df.format((((double) this.getSpeed()/900)* 100)) + "%", endPoint.x + 10, endPoint.y + 10);
+		g.setFont(new Font("Helvetica", Font.BOLD, 14));
+		g.drawString(this.getAngle() + "\u00b0 , " + df.format((((double) this.getSpeed()/800)* 100)) + "%", endPoint.x + 10, endPoint.y + 10);
+		if (finishedGame) {
+			BufferedImage end = null;
+			try {
+				end = ImageIO.read(new File("img/end.jpg"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			g.drawImage(end, 0, 0, null);
+		} else if (failedGame) {
+			BufferedImage fail = null;
+			try {
+				fail = ImageIO.read(new File("img/fail.jpg"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			g.drawImage(fail, 0, 0, null);
+		}
 	}
 	
 	// Events
@@ -162,11 +183,6 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 		targets = level.getTargets();
 		try {                
 			bgImage = ImageIO.read(new File("img/bg2.jpg"));
-			/*
-			clouds[0] = new Cloud(new Point2D.Double(40, 30), "img/cloud1.png");
-			clouds[1] = new Cloud(new Point2D.Double(275, 150), "img/cloud2.png");
-			clouds[2] = new Cloud(new Point2D.Double(560, 40), "img/cloud3.png");
-			*/
 		} catch (IOException ex) {
 			// handle exception...
 		}

@@ -18,11 +18,11 @@ public class World extends JFrame {
 	private final int animSpeed = 17;													// Speed of the animation in ms. 25 FPS - 40ms 60FPS - 16.67ms
 	private final int pause = 10;														// Delay of the start of animation
 	private final double dt = 0.017;													// Time elapsed (initialised to zero)
-	private boolean finished = false;                                           		// Keeps track of whether the current go has ended
-	boolean allTargetsDead;
+	private boolean levelFinished = false;                                           		// Keeps track of whether the current go has ended
+	private boolean levelFailed = false;
 	private int go = 0;
 	private Projectile curProjectile;
-	CountDownLatch latch;
+	private CountDownLatch latch;
 	
 	// Sets a new level
 	public void setLevel(Level l) {
@@ -35,49 +35,36 @@ public class World extends JFrame {
 	
 	// Starts the world
 	public void startWorld() {
+		// Level starts off as neither finished or failed
+		levelFailed = false;
+		levelFinished = false;
+		
 		// Get the current Projectile ready
 		curProjectile = projectiles.get(0);
 		curProjectile.setPosition(new Point2D.Double(50, 520));
 		curProjectile.setReady(true);
-		int projectileCount = projectiles.size();
+		animator.repaint();
 		
-		while (!allTargetsDead()) {
-			System.out.println("ready1:" + curProjectile.isReady());
-			process();
-			if (go >= projectileCount) {
-				break;
-			}
-			if (!allTargetsDead()) {
-				process();
-			}
+		while (!levelFailed && !levelFinished) {
 			try {
+				process();
 				latch.await();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			animator.setHavePoints(false);
 		}
-		if (go >= projectileCount) {
+		if (levelFailed) {
 			RageProjectiles.resetLevel();
 		} else {
 			RageProjectiles.nextLevel();
 		}
-		/*
-		if (!allTargetsDead()) {
-			System.out.println("ready2:" + curProjectile.isReady());
-			process();
-		} else {
-
-		}
-		*/
 	}
 	
 	public void process() {
-		if (curProjectile.isReady()) {
+		if (!curProjectile.isLaunched()) {
 			launch();
 		}
-	    
-		timer.setInitialDelay(pause);
 		timer.start();
 	}
 	
@@ -102,7 +89,20 @@ public class World extends JFrame {
 		curProjectile.setLaunched(true);
 	}
 	
-	public boolean allTargetsDead(){
+	public void finishedGame() {
+		animator.setFinishedGame(true);
+		animator.repaint();
+		animator.setFinishedGame(false);
+	}
+	
+	public void failedGame() {
+		animator.setFailedGame(true);
+		animator.repaint();
+		RageProjectiles.wait(2000);
+		animator.setFailedGame(false);
+	}
+	
+	public boolean allTargetsDead() {
 		for (Target t : targets) {
 			if (t.isAlive()) {
 				return false;
@@ -110,7 +110,7 @@ public class World extends JFrame {
 		}
 		return true;
 	}
-		
+	
 	// Constructor	
 	public World(Level level) {
 		
@@ -124,6 +124,10 @@ public class World extends JFrame {
 	    timer = new Timer(animSpeed, new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
 	    		System.out.println("In da timer");
+    			System.out.println("Velocity x: " + curProjectile.getVelocity().getXComponent() + ", y: " + curProjectile.getVelocity().getYComponent());
+ 				System.out.println("Position x: " + curProjectile.getPosition().x + ", y: " + curProjectile.getPosition().y);
+	    		// Redraw screen
+	    		animator.repaint();
 	    		// Projectile is launched and ready to hit targets
 	    		if (curProjectile.isReady()) {
 	    			// Movement of the projectile
@@ -153,14 +157,19 @@ public class World extends JFrame {
 	    				RageProjectiles.wait(1000);
 	    				go++;
 	    				curProjectile.destroy();
-	    				if (go < projectiles.size()) {
-	    					curProjectile = projectiles.get(go);
-	    					//curProjectile.reset();
-	    					System.out.println("Finished");
-	    					finished = true;
-	    				} else {
-	    					timer.stop();
+	    				if (allTargetsDead()) {
+	    					levelFinished = true;
+	    					System.out.println("Level finished");
 	    					latch.countDown();
+	    					timer.stop();
+	    				}
+	    				else if (go >= projectiles.size()) {
+	    					levelFailed = true;
+	    					System.out.println("Level failed");
+	    					latch.countDown();
+	    					timer.stop();
+	    				} else {
+	    					curProjectile = projectiles.get(go);
 	    				}
 	    			}
 	    		}
@@ -172,8 +181,8 @@ public class World extends JFrame {
 	    				curProjectile.resetVelocity();
 	    				curProjectile.setReady(true);
 	    				System.out.println(curProjectile.getVelocity().getYComponent());
-	    				timer.stop();
 	    				latch.countDown();
+	    				timer.stop();
 	    			}
 	    			// Projectile is falling
 	    			else {
@@ -181,18 +190,15 @@ public class World extends JFrame {
 		    			double y = - curProjectile.getVelocity().getYComponent() * dt;
 		    			curProjectile.move(0,y);
 	    			}
-	    			
 	    			// Projectile is bouncing to be set
 	    			if (curProjectile.getPosition().y >= 557 && curProjectile.getVelocity().getYComponent() < 0) { 
 	    				curProjectile.bounce(0.6);
 	    			}
 	    		}
-    			System.out.println("Velocity x: " + curProjectile.getVelocity().getXComponent() + ", y: " + curProjectile.getVelocity().getYComponent());
- 				System.out.println("Position x: " + curProjectile.getPosition().x + ", y: " + curProjectile.getPosition().y);
-	    		// Redraw screen
-	    		animator.repaint();
 	    	}
 	    });
+	    
+		timer.setInitialDelay(pause);
 		
 		// GUI
 		add(animator);

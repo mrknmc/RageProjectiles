@@ -4,7 +4,6 @@ public class Level {
 	ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 	ArrayList<Obstruction> obstructions = new ArrayList<Obstruction>();
 	ArrayList<Target> targets = new ArrayList<Target>();
-	boolean finished = false;
 	
 	public ArrayList<Projectile> getProjectiles() {
 		return projectiles;

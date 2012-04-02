@@ -1,3 +1,4 @@
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -13,10 +14,11 @@ public class RageProjectiles {
 	//static Level menu;
 	static int levelCount = 0;
 	static World world;
+	static XMLParser parser;
 	
 	// Parse levels from an XML File
 	public static void loadLevels() {
-		XMLParser parser = new XMLParser("levels.xml");
+		parser = new XMLParser("levels.xml");
 		try {
 			levels = parser.parseLevels();
 		} catch (XPathExpressionException e) {
@@ -24,17 +26,16 @@ public class RageProjectiles {
 		}
 	}
 	
-	/*
-	// Parse the menu from the XML
-	public static void loadMenu() {
-		XMLParser parser = new XMLParser("levels.xml");
-		try {
-		menu = parser.parseMenu();
-		} catch (XPathExpressionException e) {
-			e.printStackTrace();
+	public static Level loadMenu() {
+		ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
+		for (int i = 0; i < 4; i++) {
+			Point2D.Double projPoint = new Point2D.Double(50 + i*30, 400);
+			Projectile p = new Projectile(projPoint, 54, 54);
+			projectiles.add(p);
 		}
+		Level menu = new Level(projectiles, null, null);
+		return menu;
 	}
-	*/
 	
 	public static void wait(int milliseconds) {                                             // Wait for specified time  
 		long t0 = System.currentTimeMillis();
@@ -52,12 +53,17 @@ public class RageProjectiles {
 			world.setLevel(levels.get(levelCount));
 			world.startWorld();
 		} else {
-			//finishedGame();
+			world.finishedGame();
 		}
 	}
 	
 	public static void resetLevel() {
-		world.setLevel(levels.get(levelCount));
+		try {
+			world.setLevel(parser.getLevel(levelCount+1));
+		} catch (XPathExpressionException e) {
+			e.printStackTrace();
+		}
+		world.failedGame();
 		world.startWorld();
 	}
 	
@@ -84,8 +90,9 @@ public class RageProjectiles {
 	}
 	
     public static void main(String[] args) {
+    	//world = new World(loadMenu());
     	loadLevels();
-		world = new World(levels.get(0)); 
+		world = new World(levels.get(0));
 		world.setVisible(true);
 		/*
         // Music
