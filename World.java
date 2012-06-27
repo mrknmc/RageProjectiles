@@ -139,11 +139,12 @@ public class World extends JFrame {
 	    			curProjectile.getVelocity().updateY(-gravity*dt);					// Updates the y coordinate of the velocity
 	    			double y = - curProjectile.getVelocity().getYComponent() * dt;		// Calculates the y coordinate
 	    			curProjectile.move(x,y);
+	    			curProjectile.rotate();
 
 	    			// Bouncing, negative YComponent should take care of left bouncing
 	    			if (curProjectile.getPosition().y >= 557 && curProjectile.getVelocity().getYComponent() < 0) { 
 	    				curProjectile.bounce();
-	    				//projectile.setRotate(-0.025);
+	    				curProjectile.setRotate(-0.025);
 	    			}
 
 	    			// Determining obstruction hit

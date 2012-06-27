@@ -92,17 +92,20 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 			g.drawImage(o.getImage(), (int) o.getPosition().x, (int) o.getPosition().y, null);
 		}
 		
-		/*
-		Graphics2D g2d = (Graphics2D) g;
-		AffineTransform org = g2d.getTransform();
-		g2d.rotate(projectile.getRotate(), projectile.getCenter().x,projectile.getCenter().y);
-		*/
+		
 		
 		// Draws projectile
 		for(Projectile p : projectiles) {
-			if (p.isAlive()) {
-				g.drawImage(p.getImage(), (int) p.getPosition().x, (int) p.getPosition().y, null);
+			Graphics2D g2d = (Graphics2D) g;
+			AffineTransform org = g2d.getTransform();
+			// If current projectile is the active one, rotate it
+			if (p.isReady()){
+				g2d.rotate(p.getRotate(), p.getCenter().x,p.getCenter().y);
 			}
+			if (p.isAlive()) {
+				g2d.drawImage(p.getImage(), (int) p.getPosition().x, (int) p.getPosition().y, null);
+			}
+			g2d.setTransform(org);
 		}
 		
 		/*
