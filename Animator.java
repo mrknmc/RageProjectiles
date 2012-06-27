@@ -80,12 +80,12 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 		// Draws background
 		g.drawImage(bgImage, 0, 0, null);
 		
-		// Draws the launching line
+		/*// Draws the launching line
 		g.setColor(Color.WHITE);
 		g.drawLine(initialPoint.x, initialPoint.y, endPoint.x,endPoint.y);
 		DecimalFormat df = new DecimalFormat("#.##");
 		g.setFont(new Font("Helvetica", Font.BOLD, 14));
-		g.drawString(this.getAngle() + "\u00b0 , " + df.format((((double) this.getSpeed()/840)* 100)) + "%", endPoint.x + 10, endPoint.y + 10);
+		g.drawString(this.getAngle() + "\u00b0 , " + df.format((((double) this.getSpeed()/840)* 100)) + "%", endPoint.x + 10, endPoint.y + 10);*/
 		
 		// Draws obstructions
 		for(Obstruction o : obstructions) {
@@ -119,6 +119,13 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 			}
 		}
 		
+		// Draws the launching line
+		g.setColor(Color.WHITE);
+		g.drawLine(initialPoint.x, initialPoint.y, endPoint.x,endPoint.y);
+		DecimalFormat df = new DecimalFormat("#.##");
+		g.setFont(new Font("Helvetica", Font.BOLD, 14));
+		g.drawString(this.getAngle() + "\u00b0 , " + df.format((((double) this.getSpeed()/840)* 100)) + "%", endPoint.x + 10, endPoint.y + 10);
+		
 		// Display finished game image
 		if (finishedGame) {
 			BufferedImage end = null;
@@ -128,7 +135,7 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 				e.printStackTrace();
 			}
 			g.drawImage(end, 0, 0, null);
-		}
+		}		
 		// Display failed game image
 		else if (failedGame) {
 			BufferedImage fail = null;
@@ -147,6 +154,8 @@ public class Animator extends JPanel implements MouseListener, MouseMotionListen
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			initialPoint = new Point(1000,700);
+			endPoint = new Point(1000,700);
 			g.drawImage(next, 0, 0, null);
 		}
 	}
